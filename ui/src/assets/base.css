@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Outfit', 'sans-serif';
+  --font-logo: 'Maven Pro', 'Outfit', 'sans-serif';
+
+  --color-primary: #192454;
+  --color-secondary: #192454;
+  --color-accent: #ffad0e;
+  --color-gray-800: #1c224d;
+  --color-gray-600: #4d557d;
+  --color-gray-300: #abb1c2;
+}

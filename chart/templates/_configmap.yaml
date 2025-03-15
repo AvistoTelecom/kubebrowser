@@ -1,0 +1,36 @@
+{{- /*
+Author: Yann Lacroix <yann.lacroix@avisto.com>
+*/}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "kubebrowser.server.configmapName" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
+    app.kubernetes.io/component: server
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+data:
+{{- if not .Values.server.overrideConfiguration }}
+  config.json: |
+    {
+      "host": "{{ ternary "https" "http" .Values.ingress.tls }}://{{ .Values.ingress.hostname }}",
+      "port": {{ .Values.server.containerPorts.http }},
+      "kubectlUsername": "{{ .Values.server.configuration.defaultUsername }}",
+      "kubeconfigsPath": "{{ .Values.server.configuration.kubeconfigsPath }}",
+      "logLevel": "{{ .Values.server.configuration.logLevel }}",
+      "oidc": {
+        "clientId": "{{ .Values.server.configuration.clientId }}",
+        "clientSecret": "{{ .Values.server.configuration.clientSecret }}",
+        "authorizationEndpoint": "{{ .Values.server.configuration.authorizationEndpoint }}",
+        "tokenEndpoint": "{{ .Values.server.configuration.tokenEndpoint }}",
+        "issuerUrl": "{{ .Values.server.configuration.issuerUrl }}",
+        "scopes": {{ toJson .Values.server.configuration.scopes }}
+      }
+    }
+{{- else }}
+  config.json: |-
+  {{- include "common.tplvalues.render" ( dict "value" .Values.server.overrideConfiguration "context" $ ) | nindent 4 }}
+{{- end }}

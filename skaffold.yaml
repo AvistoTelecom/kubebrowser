@@ -1,0 +1,46 @@
+apiVersion: skaffold/v4beta12
+kind: Config
+metadata:
+  name: kubebrowser
+build:
+  artifacts:
+    - image: backend
+      context: server
+      # context: .
+      # hooks:
+      #   before:
+      #     - command: ["sh", "-c", "./hook.sh"]
+      #       os: [darwin, linux]
+      ko: {}
+      # ko:
+      #   dependencies:
+      #     paths:
+      #       - ui
+      #       - server
+      #       - k8s
+      #     ignore:
+      #       - dist
+      #       - kodata
+      #   dir: server
+  # local:
+  #   push: true
+manifests:
+  rawYaml:
+    - k8s/*yaml
+portForward:
+  - resourceType: deployment
+    resourceName: kubebrowser-server
+    namespace: default
+    port: 8080
+deploy:
+  helm:
+    releases:
+      - name: kubebrowser
+        chartPath: chart
+        setValueTemplates:
+          server.image.registry: "{{.IMAGE_DOMAIN_backend}}"
+          server.image.repository: "{{.IMAGE_REPO_NO_DOMAIN_backend}}"
+          server.image.tag: "{{.IMAGE_TAG_backend}}@{{.IMAGE_DIGEST_backend}}"
+          server.configuration.clientID: "{{.OAUTH2_CLIENT_ID}}"
+          server.configuration.clientSecret: "{{.OAUTH2_CLIENT_SECRET}}"
+          server.configuration.issuerURL: "{{.OAUTH2_ISSUER_URL}}"

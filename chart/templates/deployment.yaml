@@ -1,0 +1,145 @@
+{{- /*
+Author: Yann Lacroix <yann.lacroix@avisto.com>
+*/}}
+
+apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
+kind: Deployment
+metadata:
+  name: {{ include "kubebrowser.server.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  {{- $labels := include "common.tplvalues.merge" ( dict "values" ( list .Values.server.labels .Values.commonLabels ) "context" . ) }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" $labels "context" $ ) | nindent 4 }}
+    app.kubernetes.io/component: server
+  annotations:
+    {{- if or .Values.commonAnnotations .Values.server.annotations }}
+    {{- $annotations := include "common.tplvalues.merge" ( dict "values" ( list .Values.server.annotations .Values.commonAnnotations ) "context" . ) }}
+    {{- include "common.tplvalues.render" ( dict "value" $annotations "context" $) }}
+  {{- end }}
+spec:
+  {{- if .Values.server.strategy }}
+  strategy: {{- toYaml .Values.server.strategy | nindent 4 }}
+  {{- end }}
+  {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.server.podLabels .Values.commonLabels ) "context" . ) }}
+  selector:
+    matchLabels: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 6 }}
+      app.kubernetes.io/component: server
+  replicas: {{ .Values.server.replicaCount | default 1 }}
+  template:
+    metadata:
+      name: {{ include "kubebrowser.server.fullname" . }}
+      labels: {{- include "common.labels.standard" ( dict "customLabels" $podLabels "context" $ ) | nindent 8 }}
+        app.kubernetes.io/component: server
+      {{- if .Values.server.podAnnotations }}
+      annotations:
+        checksum/configuration: {{ pick (include (print $.Template.BasePath "/configmap.yaml") . | fromYaml) "data" | toYaml | sha256sum }}
+        checksum/kubeconfigs: {{ pick (include (print $.Template.BasePath "/kubeconfigs.yaml") . | fromYaml) "data" | toYaml | sha256sum }}
+      {{- include "common.tplvalues.render" ( dict "value" .Values.server.podAnnotations "context" $ ) | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- if .Values.server.extraPodSpec }}
+      {{- include "common.tplvalues.render" (dict "value" .Values.server.extraPodSpec "context" $) | nindent 6 }}
+      {{- end }}
+      {{- include "kubebrowser.server.imagePullSecrets" . | indent 6 }}
+      {{- if .Values.server.hostAliases }}
+      hostAliases: {{- include "common.tplvalues.render" (dict "value" .Values.server.hostAliases "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.server.affinity }}
+      affinity: {{- include "common.tplvalues.render" (dict "value" .Values.server.affinity "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.server.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.server.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.server.tolerations }}
+      tolerations: {{- include "common.tplvalues.render" (dict "value" .Values.server.tolerations "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.server.topologySpreadConstraints }}
+      topologySpreadConstraints: {{- include "common.tplvalues.render" (dict "value" .Values.server.topologySpreadConstraints "context" .) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.server.priorityClassName }}
+      priorityClassName: {{ .Values.server.priorityClassName }}
+      {{- end }}
+      {{- if .Values.server.schedulerName }}
+      schedulerName: {{ .Values.server.schedulerName | quote }}
+      {{- end }}
+      {{- if .Values.server.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.server.terminationGracePeriodSeconds }}
+      {{- end }}
+      {{- if .Values.server.podSecurityContext.enabled }}
+      securityContext: {{- omit .Values.server.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ .Values.server.serviceAccountName | quote }}
+      hostNetwork: {{ .Values.server.hostNetwork }}
+      hostIPC: {{ .Values.server.hostIPC }}
+      containers:
+        - name: server
+          image: {{ include "kubebrowser.server.image" . }}
+          imagePullPolicy: {{ coalesce .Values.global.imagePullPolicy .Values.server.image.pullPolicy | quote }}
+          {{- if .Values.server.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.server.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .Values.server.command }}
+          command: {{- include "common.tplvalues.render" (dict "value" .Values.server.command "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.server.args }}
+          args: {{- include "common.tplvalues.render" (dict "value" .Values.server.args "context" $) | nindent 12 }}
+          {{- end }}
+          env:
+            - name: OAUTH2_CLIENT_ID
+              value: {{ .Values.server.configuration.clientID | quote }}
+            - name: OAUTH2_CLIENT_SECRET
+              value: {{ .Values.server.configuration.clientSecret | quote }}
+            - name: OAUTH2_ISSUER_URL
+              value: {{ .Values.server.configuration.issuerURL | quote }}
+          {{- if .Values.server.extraEnvVars }}
+          {{- include "common.tplvalues.render" (dict "value" .Values.server.extraEnvVars "context" $) | nindent 12 }}
+          {{- end }}
+          envFrom:
+            {{- if .Values.server.extraEnvVarsCM }}
+            - configMapRef:
+                name: {{ include "common.tplvalues.render" (dict "value" .Values.server.extraEnvVarsCM "context" $) }}
+            {{- end }}
+            {{- if .Values.server.extraEnvVarsSecret }}
+            - secretRef:
+                name: {{ include "common.tplvalues.render" (dict "value" .Values.server.extraEnvVarsSecret "context" $) }}
+            {{- end }}
+          {{- if .Values.server.livenessProbe.enabled }}
+          livenessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .Values.server.livenessProbe "enabled") "context" $) | nindent 12 }}
+            httpGet:
+              path: /healthz
+              port: {{ .Values.server.containerPorts.http }}
+          {{- end }}
+          {{- if .Values.server.readinessProbe.enabled }}
+          readinessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .Values.server.readinessProbe "enabled") "context" $) | nindent 12 }}
+            httpGet:
+              path: /healthz
+              port: {{ .Values.server.containerPorts.http }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.server.containerPorts.http }}
+              protocol: TCP
+          {{- if .Values.server.resources }}
+          resources: {{- toYaml .Values.server.resources | nindent 12 }}
+          {{- end }}
+          {{- if .Values.server.lifecycleHooks }}
+          lifecycle: {{- include "common.tplvalues.render" (dict "value" .Values.server.lifecycleHooks "context" $) | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            # - name: configuration
+            #   mountPath: {{ .Values.server.configuration.mountPath }}/config.json
+            #   subPath: config.json
+            # - name: kubeconfigs
+            #   mountPath: {{ .Values.server.configuration.kubeconfigsPath }}
+            {{- if .Values.server.extraVolumeMounts }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.server.extraVolumeMounts "context" $) | nindent 12 }}
+            {{- end }}
+      volumes:
+        # - name: configuration
+        #   configMap:
+        #     name: {{ include "kubebrowser.server.configmapName" . }}
+        # - name: kubeconfigs
+        #   configMap:
+        #     name: {{ include "kubebrowser.server.kubeconfigsName" . }}
+        {{- if .Values.server.extraVolumes }}
+        {{- include "common.tplvalues.render" ( dict "value" .Values.server.extraVolumes "context" $ ) | nindent 8 }}
+        {{- end }}

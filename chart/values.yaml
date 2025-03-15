@@ -1,0 +1,483 @@
+# Author: Yann Lacroix <yann.lacroix@avisto.com>
+
+## @section Global values
+## Please, note that this will override the parameters, including dependencies, configured to use the global value
+##
+global:
+  ## @param global.imageRegistry Global Docker image registry
+  ##
+  imageRegistry: "docker.io"
+  ## @param global.imagePullPolicy kubebrowser image pull policy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  imagePullPolicy: ""
+  ## @param global.imagePullSecrets Global Docker registry secret names as an array
+  ## e.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: []
+  ## @param global.storageClass Global StorageClass for Persistent Volume(s)
+  ##
+  storageClass: ""
+  ## @param global.observability.otlpExporterEndpoint OTLP exporter endpoint (overrides *.observability.otlpExporterEndpoint for all components)
+  ##
+  observability:
+    otlpExporterEndpoint: ""
+
+## @param kubeVersion Override Kubernetes version
+##
+kubeVersion: ""
+## @param nameOverride String to partially override common.names.fullname template (will maintain the release name)
+##
+nameOverride: ""
+## @param fullnameOverride String to fully override common.names.fullname template
+##
+fullnameOverride: ""
+## @param clusterDomain Kubernetes Cluster Domain
+##
+clusterDomain: cluster.local
+## @param commonLabels Add labels to all the deployed resources
+##
+commonLabels: {}
+## @param commonAnnotations Add annotations to all the deployed resources
+##
+commonAnnotations: {}
+
+## @section kubebrowser server values
+##
+server:
+  ## @param server.name Name of the server
+  ##
+  name: server
+
+  ## @param server.replicaCount Number of kubebrowser server replicas
+  ##
+  replicaCount: 1
+
+  ## server image version
+  ## @param server.image.registry server image registry
+  ## @param server.image.repository server image repository
+  ## @param server.image.tag server image tag (immutable tags are recommended)
+  ## @param server.image.digest server image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag
+  ## @param server.image.pullPolicy server image pull policy
+  ## @param server.image.pullSecrets Specify image pull secrets for server
+  ##
+  image:
+    registry: ""
+    repository: brawdunoir/kubebrowser
+    tag: "1.0.0"
+    digest: ""
+    ## Specify a pullPolicy
+    ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+    ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+    ##
+    pullPolicy: ""
+    ## Optionally specify an array of imagePullSecrets.
+    ## Secrets must be manually created in the namespace.
+    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+    ## Example:
+    ## pullSecrets:
+    ##   - myRegistryKeySecretName
+    ##
+    pullSecrets: []
+  ## @param server.configuration.defaultUsername Default username on the kubectl set-credentials subcommand
+  ## @param server.configuration.clientId Client ID of your application
+  ## @param server.configuration.clientSecret Client secret of your application
+  ## @param server.configuration.authorizationEndpoint Authorization endpoint of your OIDC provider (e.g. https://login.microsoftonline.com/<tenant_id>/oauth2/v2.0/authorize)
+  ## @param server.configuration.tokenEndpoint Token endpoint of your OIDC provider (e.g. https://login.microsoftonline.com/<tenant_id>/oauth2/v2.0/token)
+  ## @param server.configuration.issuerURL Issuer URL of your OIDC provider (e.g. https://login.microsoftonline.com/<tenant_id>/v2.0)
+  ## @param server.configuration.logLevel Log level of the server
+  ## @param server.configuration.mountPath Mount path of the configuration file
+  ## @param server.configuration.kubeconfigsPath Path to the kubeconfigs directory
+  ##
+  configuration:
+    # defaultUsername: "oidc-user"
+    clientID: ""
+    clientSecret: ""
+    issuerURL: ""
+    # authorizationEndpoint: ""
+    # tokenEndpoint: ""
+    # scopes: []
+    # logLevel: "INFO"
+    # mountPath: "/app"
+    # kubeconfigsPath: "/app/kubeconfigs"
+  ## @param server.kubeconfigs List of kubeconfigs to fetch. See values.yaml for usage.
+  ## e.g:
+  ## kubeconfigs:
+  ##   - name: "User Friendly Name"
+  ##     kubeconfig:
+  ##       apiVersion: v1
+  ##       kind: Config
+  ##       clusters:
+  ##         - cluster:
+  ##             certificate-authority-data: xxx
+  ##             server: xxx
+  ##           name: external_prod
+  ##       contexts:
+  ##         - context:
+  ##             cluster: external_prod
+  ##             namespace: xxx
+  ##             user: xxx
+  ##           name: external_prod
+  ##       current-context: external_prod
+  ##       preferences: {}
+  kubeconfigs: []
+  ## @param server.overrideConfiguration Configuration to override all server.configuration.* values
+  ## e.g:
+  ## overrideConfiguration: |
+  ## {
+  ## "host": "0.0.0.0",
+  ## "port": 8080,
+  ## "kubectl_username": "oidc",
+  ## "oidc": {
+  ##   "clientId": "<client_id>",
+  ##   "clientSecret": "<client_secret>",
+  ##   "authorizationEndpoint": "https://login.microsoftonline.com/<tenant_id>/oauth2/v2.0/authorize",
+  ##   "tokenEndpoint": "https://login.microsoftonline.com/<tenant_id>/oauth2/v2.0/token",
+  ##   "issuerUrl": "https://login.microsoftonline.com/<tenant_id>/v2.0"
+  ##   }
+  ## }
+  overrideConfiguration: ""
+  ## @param server.serviceAccountName Service account to use
+  ##
+  serviceAccountName: server
+  ## @param server.extraEnvVars Array with extra environment variables to add to kubebrowser server nodes
+  ## e.g:
+  ## extraEnvVars:
+  ##   - name: FOO
+  ##     value: "bar"
+  ##
+  extraEnvVars: []
+  ## @param server.extraEnvVarsCM Name of existing ConfigMap containing extra env vars for kubebrowser server nodes
+  ##
+  extraEnvVarsCM: ""
+  ## @param server.extraEnvVarsSecret Name of existing Secret containing extra env vars for kubebrowser server nodes
+  ##
+  extraEnvVarsSecret: ""
+  ## @param server.command Override default container command (useful when using custom images)
+  ##
+  command: []
+  ## @param server.args Override default container args (useful when using custom images)
+  ##
+  args: []
+  ## Configure extra options for kubebrowser server containers' liveness, readiness and startup probes
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
+  ## @param server.livenessProbe.enabled Enable livenessProbe on kubebrowser server containers
+  ## @param server.livenessProbe.initialDelaySeconds Initial delay seconds for livenessProbe
+  ## @param server.livenessProbe.periodSeconds Period seconds for livenessProbe
+  ## @param server.livenessProbe.timeoutSeconds Timeout seconds for livenessProbe
+  ## @param server.livenessProbe.failureThreshold Failure threshold for livenessProbe
+  ##
+  livenessProbe:
+    enabled: false
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 1
+    failureThreshold: 3
+
+  ## @param server.readinessProbe.enabled Enable readinessProbe on kubebrowser server containers
+  ## @param server.readinessProbe.initialDelaySeconds Initial delay seconds for readinessProbe
+  ## @param server.readinessProbe.periodSeconds Period seconds for readinessProbe
+  ## @param server.readinessProbe.timeoutSeconds Timeout seconds for readinessProbe
+  ## @param server.readinessProbe.failureThreshold Failure threshold for readinessProbe
+  ##
+  readinessProbe:
+    enabled: false
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 1
+    failureThreshold: 5
+  ## @param server.lifecycleHooks for the kubebrowser server container to automate configuration before or after startup
+  ##
+  lifecycleHooks: {}
+  ## kubebrowser server resource requests and limits
+  ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+  ## @param server.resources.limits The resources limits for the kubebrowser server containers
+  ## @param server.resources.requests The requested resources for the kubebrowser server containers
+  ##
+  resources:
+    limits: {}
+    requests: {}
+  ## Pod Security Context
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  ## @param server.podSecurityContext.enabled Enable security context
+  ## @param server.podSecurityContext.fsGroup Group ID for the pod
+  ##
+  podSecurityContext:
+    enabled: true
+    fsGroup: 101
+  ## Container Security Context
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  ## @param server.containerSecurityContext.enabled Enable container security context
+  ## @param server.containerSecurityContext.runAsUser User ID for the container
+  ## @param server.containerSecurityContext.runAsGroup Group ID for the container
+  ## @param server.containerSecurityContext.runAsNonRoot Set runAsNonRoot for the container
+  ## @param server.containerSecurityContext.allowPrivilegeEscalation Set allowPrivilegeEscalation for the container
+  ## @param server.containerSecurityContext.seccompProfile.type Set seccompProfile.type for the container
+  ## @param server.containerSecurityContext.capabilities.drop Set capabilities.drop for the container
+  ##
+  containerSecurityContext:
+    enabled: true
+    runAsUser: 101
+    runAsGroup: 0
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+    seccompProfile:
+      type: RuntimeDefault
+    capabilities:
+      drop:
+        - ALL
+  ## @param server.hostAliases kubebrowser server pods host aliases
+  ## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
+  ##
+  hostAliases: []
+  ## @param server.hostNetwork Specify if host network should be enabled for kubebrowser pod
+  ##
+  ## @param server.containerPorts.http kubebrowser server container port for http
+  ##
+  containerPorts:
+    http: 8080
+  hostNetwork: false
+  ## @param server.hostIPC Specify if host IPC should be enabled for kubebrowser pod
+  ##
+  hostIPC: false
+  ## @param server.labels Map of labels to add to the statefulset
+  ##
+  labels: {}
+  ## @param server.annotations Annotations for server pods
+  ##
+  annotations: {}
+  ## @param server.podLabels Map of labels to add to the pods
+  ##
+  podLabels: {}
+  ## @param server.podAnnotations Map of annotations to add to the pods
+  ##
+  podAnnotations: {}
+  ## @param server.priorityClassName Priority Class to use for each pod
+  ##
+  priorityClassName: ""
+  ## @param server.schedulerName Use an alternate scheduler, e.g. "stork".
+  ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
+  ##
+  schedulerName: ""
+  ## @param server.terminationGracePeriodSeconds Seconds kubebrowser server pod needs to terminate gracefully
+  ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods
+  ##
+  terminationGracePeriodSeconds: ""
+  ## @extra server.strategy kubebrowser server deployment strategy
+  ## @param server.strategy.type kubebrowser server deployment strategy type
+  ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#updating-a-deployment
+  ##
+  strategy:
+    type: RollingUpdate
+  ## @param server.extraVolumeMounts Optionally specify extra list of additional volumeMounts for the kubebrowser server container(s)
+  ##
+  extraVolumeMounts: []
+  ## @param server.extraVolumes Optionally specify extra list of additional volumes for the kubebrowser server pod(s)
+  ##
+  extraVolumes: []
+  ## @param server.sidecars Add additional sidecar containers to the kubebrowser server pod(s)
+  ## For example:
+  ## sidecars:
+  ##   - name: your-image-name
+  ##     image: your-image
+  ##     imagePullPolicy: Always
+  ##     ports:
+  ##       - name: portname
+  ##         containerPort: 1234
+  ##
+  sidecars: []
+  ## @param server.initContainers Add additional init containers to the kubebrowser server pod(s)
+  ## Example
+  ##
+  ## initContainers:
+  ##   - name: do-something
+  ##     image: busybox
+  ##     command: ['do', 'something']
+  ##
+  initContainers: []
+  ## @param server.extraPodSpec Optionally specify extra PodSpec for the kubebrowser server pod(s)
+  ##
+  extraPodSpec: {}
+  ## @param server.affinity Affinity for server
+  ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+  ## NOTE: `server.podAffinityPreset`, `server.podAntiAffinityPreset`, and `server.nodeAffinityPreset` will be ignored when it's set
+  ##
+  affinity: {}
+  ## @param server.nodeSelector Node labels for kubebrowser server pods assignment
+  ## ref: https://kubernetes.io/docs/user-guide/node-selection/
+  ##
+  nodeSelector: {}
+  ## @param server.tolerations Tolerations for kubebrowser server pods assignment
+  ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+  ##
+  tolerations: []
+  ## @param server.topologySpreadConstraints Topology Spread Constraints for pod assignment spread across your cluster among failure-domains. Evaluated as a template
+  ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#spread-constraints-for-pods
+  ##
+  topologySpreadConstraints: []
+  ## Persistence Parameters for server configuration
+  ## ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+  ##
+  service:
+    ## @param server.service.create Enable creation of Service for kubebrowser server pod
+    ##
+    create: true
+    ## @param server.service.type Kubernetes Service type
+    ##
+    type: ClusterIP
+    ## Node ports to expose
+    ## NOTE: choose port between <30000-32767>
+    ## @param server.service.nodePorts.http Node port for kubebrowser server http traffic
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+    ##
+    nodePorts:
+      http: ""
+    ## @param server.service.clusterIP Static clusterIP or None for headless services
+    ## e.g:
+    ## clusterIP: None
+    ##
+    clusterIP: ""
+    ## @param server.service.annotations Annotations for kubebrowser server service
+    ##
+    annotations: {}
+    ## @param server.service.loadBalancerIP Load balancer IP if service type is `LoadBalancer`
+    ## Set the LoadBalancer service type to internal only
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+    ##
+    loadBalancerIP: ""
+    ## @param server.service.externalTrafficPolicy Enable client source IP preservation
+    ## ref https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+    ##
+    externalTrafficPolicy: Cluster
+    ## @param server.service.loadBalancerSourceRanges Addresses that are allowed when service is LoadBalancer
+    ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
+    ##
+    ## loadBalancerSourceRanges:
+    ## - 10.10.10.0/24
+    ##
+    loadBalancerSourceRanges: []
+    ## @param server.service.extraPorts Extra ports to expose in the kubebrowser server service
+    ##
+    extraPorts: []
+    ## @param server.service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
+    ## If "ClientIP", consecutive client requests will be directed to the same Pod
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
+    ##
+    sessionAffinity: None
+    ## @param server.service.sessionAffinityConfig Additional settings for the sessionAffinity
+    ## sessionAffinityConfig:
+    ##   clientIP:
+    ##     timeoutSeconds: 300
+    ##
+    sessionAffinityConfig: {}
+    ## Headless service properties
+    ##
+    headless:
+      ## @param server.service.headless.annotations Additional custom annotations for headless kubebrowser server service
+      ##
+      annotations: {}
+## Configure the ingress resource that allows you to access the server
+## ref: https://kubernetes.io/docs/user-guide/ingress/
+##
+ingress:
+  ## @param ingress.enabled Enable ingress controller resource for frontend
+  ##
+  enabled: false
+  ## @param ingress.apiVersion Force Ingress API version (automatically detected if not set)
+  ##
+  apiVersion: ""
+  ## @param ingress.ingressClassName IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)
+  ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster.
+  ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
+  ##
+  ingressClassName: ""
+  ## @param ingress.hostname Default host for the ingress resource
+  ##
+  hostname: kubebrowser.local
+  ## @param ingress.pathType Ingress path type
+  ##
+  pathType: ImplementationSpecific
+  ## @param ingress.path Ingress path
+  ##
+  path: "/"
+  ## @param ingress.annotations Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations.
+  ## For a full list of possible ingress annotations, please see
+  ## ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md
+  ## Use this parameter to set the required annotations for cert-manager, see
+  ## ref: https://cert-manager.io/docs/usage/ingress/#supported-annotations
+  ##
+  ## e.g:
+  ## annotations:
+  ##   kubernetes.io/ingress.class: nginx
+  ##   cert-manager.io/cluster-issuer: cluster-issuer-name
+  ##
+  annotations: {}
+  ## @param ingress.tls Enable TLS configuration for the hostname defined at `ingress.hostname` parameter
+  ## TLS certificates will be retrieved from a TLS secret with name: `{{- printf "%s-tls" .Values.ingress.hostname }}`
+  ## You can:
+  ##   - Use the `ingress.secrets` parameter to create this TLS secret
+  ##   - Rely on cert-manager to create it by setting the corresponding annotations
+  ##   - Rely on Helm to create self-signed certificates by setting `ingress.selfSigned=true`
+  ##
+  tls: false
+  ## @param ingress.selfSigned Create a TLS secret for this ingress record using self-signed certificates generated by Helm
+  ##
+  selfSigned: false
+  ## @param ingress.extraHosts The list of additional hostnames to be covered with this ingress record.
+  ## Most likely the hostname above will be enough, but in the event more hosts are needed, this is an array
+  ## e.g:
+  ## extraHosts:
+  ##   - name: frontend.local
+  ##
+  extraHosts: []
+  ## @param ingress.extraPaths Any additional paths that may need to be added to the ingress under all hosts
+  ## For example: The ALB ingress controller requires a special rule for handling SSL redirection.
+  ## extraPaths:
+  ## - path: /*
+  ##   backend:
+  ##     serviceName: ssl-redirect
+  ##     servicePort: use-annotation
+  ##
+  extraPaths: []
+  ## @param ingress.extraTls The tls configuration for additional hostnames to be covered with this ingress record.
+  ## see: https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
+  ## e.g:
+  ## extraTls:
+  ## - hosts:
+  ##     - backend.local
+  ##   secretName: backend.local-tls
+  ##
+  extraTls: []
+  ## @param ingress.secrets If you're providing your own certificates, please use this to add the certificates as secrets
+  ## key and certificate are expected in PEM format
+  ## name should line up with a secretName set further up
+  ##
+  ## If it is not set and you're using cert-manager, this is unneeded, as it will create a secret for you with valid certificates
+  ## If it is not set and you're NOT using cert-manager either, self-signed certificates will be created valid for 365 days
+  ## It is also possible to create and manage the certificates outside of this helm chart
+  ## Please see README.md for more information
+  ##
+  ## Example
+  ## secrets:
+  ##   - name: backend.local-tls
+  ##     key: ""
+  ##     certificate: ""
+  ##
+  secrets: []
+  ## @param ingress.extraRules Additional rules to be covered with this ingress record
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-rules
+  ## e.g:
+  ## extraRules:
+  ## - host: example.local
+  ##     http:
+  ##       path: /
+  ##       backend:
+  ##         service:
+  ##           name: example-svc
+  ##           port:
+  ##             name: http
+  ##
+  extraRules: []
