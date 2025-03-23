@@ -28,7 +28,7 @@ watch(
 <template>
   <div
     class="w-full min-h-5/6 border-2 border-gray-600 rounded-md p-4"
-    :class="{ 'flex items-center justify-center': !yaml }"
+    :class="{ 'flex items-center justify-center': !yaml, 'bg-primary-950': yaml }"
   >
     <div v-if="yaml" class="relative">
       <div

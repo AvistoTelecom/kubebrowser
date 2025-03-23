@@ -29,7 +29,7 @@ function selectKubeconfig(kubeconfig: object, name: string) {
       :key="kubeconfig.name"
       class="text-lg py-8 px-12 rounded-md border-2 border-gray-600 cursor-pointer"
       :class="{
-        'bg-accent text-primary': selectedKubeconfigName === kubeconfig.name,
+        'bg-accent text-primary-950': selectedKubeconfigName === kubeconfig.name,
         'bg-gray-600': selectedKubeconfigName !== kubeconfig.name,
       }"
       @click="selectKubeconfig(kubeconfig.kubeconfig, kubeconfig.name)"
