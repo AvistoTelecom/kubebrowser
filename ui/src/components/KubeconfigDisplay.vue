@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { copyToClipboard } from '@/utils/clipboard'
+import { AkCopy } from '@kalimahapps/vue-icons'
 
 const props = defineProps<{
   yaml: string | null
@@ -30,12 +31,13 @@ watch(
     :class="{ 'flex items-center justify-center': !yaml }"
   >
     <div v-if="yaml" class="relative">
-      <button
-        class="absolute top-1 right-1 p-3 bg-accent text-gray-800 rounded-tr-xl rounded-bl-xl"
+      <div
+        class="absolute top-1 right-1 inline-flex items-center justify-center gap-1 cursor-pointer p-3 bg-accent min-w-min text-gray-800 rounded-tr-xl rounded-bl-xl"
         @click="handleCopy"
       >
-        {{ copied ? 'Copied' : 'Copy' }}
-      </button>
+        <AkCopy />
+        <span> {{ copied ? 'Copied' : 'Copy' }}</span>
+      </div>
       <pre>{{ yaml }}</pre>
     </div>
     <div v-else>
