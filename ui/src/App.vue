@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import HomePage from './components/HomePage.vue'
-import Header from './components/Header.vue'
+import Header from './components/HeaderComponent.vue'
 </script>
 
 <template>
