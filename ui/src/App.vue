@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Home from './components/Home.vue'
+import HomePage from './components/HomePage.vue'
 import Header from './components/Header.vue'
 </script>
 
 <template>
   <Header />
   <div class="p-8">
-    <Home />
+    <HomePage />
   </div>
 </template>
