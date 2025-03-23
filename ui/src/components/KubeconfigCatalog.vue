@@ -11,11 +11,11 @@ const emit = defineEmits<{
   (e: 'kubeconfig-selected', kubeconfig: string): void
 }>()
 
-const selectedKubeconfig = ref<string | null>(null)
+const selectedKubeconfigName = ref<string | null>(null)
 
-function selectKubeconfig(kubeconfig: object) {
-  selectedKubeconfig.value = YAML.stringify(kubeconfig)
-  emit('kubeconfig-selected', selectedKubeconfig.value)
+function selectKubeconfig(kubeconfig: object, name: string) {
+  selectedKubeconfigName.value = name
+  emit('kubeconfig-selected', YAML.stringify(kubeconfig))
 }
 </script>
 
@@ -27,8 +27,12 @@ function selectKubeconfig(kubeconfig: object) {
     <button
       v-for="kubeconfig in kubeconfigs"
       :key="kubeconfig.name"
-      class="text-lg py-8 px-12 rounded-md bg-gray-600 border-2 border-gray-600"
-      @click="selectKubeconfig(kubeconfig.kubeconfig)"
+      class="text-lg py-8 px-12 rounded-md border-2 border-gray-600"
+      :class="{
+        'bg-accent text-primary': selectedKubeconfigName === kubeconfig.name,
+        'bg-gray-600': selectedKubeconfigName !== kubeconfig.name,
+      }"
+      @click="selectKubeconfig(kubeconfig.kubeconfig, kubeconfig.name)"
     >
       {{ kubeconfig.name }}
     </button>
