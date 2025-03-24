@@ -20,16 +20,14 @@ function updateValue(event: Event) {
 </script>
 
 <template>
-  <div
-    class="inline-flex items-center gap-1 p-3 rounded-md bg-gray-800 w-full border-2 border-gray-600"
-  >
-    <AnOutlinedSearch />
+  <div class="relative flex items-center w-fulls">
+    <AnOutlinedSearch class="absolute left-3 text-gray-400 pointer-events-none" />
     <input
       :value="modelValue"
       @input="updateValue"
-      type="text"
+      type="search"
       :placeholder="placeholder"
-      class=""
+      class="pl-10 py-2 border border-gray-600 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-accent w-full"
     />
   </div>
 </template>
