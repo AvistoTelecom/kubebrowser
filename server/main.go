@@ -32,7 +32,7 @@ const (
 
 func main() {
 	// Set up logger
-	l, _ := zap.NewDevelopment()
+	l, _ := zap.NewProduction()
 	defer l.Sync()
 	logger := l.Sugar()
 
@@ -112,7 +112,7 @@ func handleGetKubeconfigs(c *gin.Context) {
 	ec := extractFromContext(c)
 
 	ec.logger.Debug("Getting kubeconfigs")
-	kubeconfigs, err := ec.kubeconfigLister.Kubeconfigs("default").List(labels.Everything())
+	kubeconfigs, err := ec.kubeconfigLister.Kubeconfigs(namespace).List(labels.Everything())
 	if err != nil {
 		ec.logger.Errorf("Error listing kubeconfigs: %s", err)
 		c.String(http.StatusInternalServerError, "Error listing kubeconfigs")

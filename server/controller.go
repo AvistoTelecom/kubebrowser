@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	"os"
 	"time"
 
 	clientset "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned"
@@ -10,6 +11,10 @@ import (
 	v1 "github.com/brawdunoir/kubebrowser/pkg/client/listers/kubeconfig/v1"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
+)
+
+var (
+	namespace = os.Getenv("POD_NAMESPACE")
 )
 
 // Setup the Kubernetes client and the SharedInformerFactory
@@ -26,8 +31,12 @@ func setupKubeconfigLister(ctx context.Context) (kubeconfigLister v1.KubeconfigL
 		return nil, err
 	}
 
-	// Create the informer factory
-	kubeInformerFactory := informers.NewSharedInformerFactory(exampleClient, time.Second*30)
+	// Create the namespace-scoped informer factory
+	kubeInformerFactory := informers.NewSharedInformerFactoryWithOptions(
+		exampleClient,
+		time.Second*30,
+		informers.WithNamespace(namespace),
+	)
 
 	// Get the lister for Kubeconfigs
 	kubeconfigLister = kubeInformerFactory.Kubeconfig().V1().Kubeconfigs().Lister()
