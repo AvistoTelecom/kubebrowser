@@ -27,7 +27,7 @@ watch(
 
 <template>
   <div
-    class="w-full min-h-5/6 border-2 border-gray-600 rounded-md p-4"
+    class="w-full max-w-full max-h-96 border-2 border-gray-600 rounded-md p-4 overflow-auto"
     :class="{ 'flex items-center justify-center': !yaml, 'bg-primary-950': yaml }"
   >
     <div v-if="yaml" class="relative">
