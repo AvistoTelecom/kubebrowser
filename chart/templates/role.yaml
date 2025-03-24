@@ -2,10 +2,10 @@
 Author: Yann Lacroix <yann.lacroix@avisto.com>
 */}}
 
-apiVersion: v1
-kind: ServiceAccount
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
 metadata:
-  name: {{ .Values.server.serviceAccountName | quote }}
+  name: {{ include "common.names.fullname" . }}-role
   namespace: {{ include "common.names.namespace" . | quote }}
   labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
   {{- if or .Values.secretAnnotations .Values.commonAnnotations }}
@@ -14,3 +14,7 @@ metadata:
     {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
     {{- end }}
   {{- end }}
+rules:
+  - apiGroups: ["kubebrowser.io"]
+    resources: ["kubeconfigs"]
+    verbs: ["list", "get", "watch"]

@@ -67,7 +67,7 @@ server:
   image:
     registry: ""
     repository: brawdunoir/kubebrowser
-    tag: "1.0.0"
+    tag: "0.1.0"
     digest: ""
     ## Specify a pullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -142,7 +142,7 @@ server:
   overrideConfiguration: ""
   ## @param server.serviceAccountName Service account to use
   ##
-  serviceAccountName: server
+  serviceAccountName: "kubebrowser"
   ## @param server.extraEnvVars Array with extra environment variables to add to kubebrowser server nodes
   ## e.g:
   ## extraEnvVars:

@@ -85,11 +85,24 @@ spec:
           {{- end }}
           env:
             - name: OAUTH2_CLIENT_ID
-              value: {{ .Values.server.configuration.clientID | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "common.names.fullname" . }}-oauth2
+                  key: "clientID"
             - name: OAUTH2_CLIENT_SECRET
-              value: {{ .Values.server.configuration.clientSecret | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "common.names.fullname" . }}-oauth2
+                  key: "clientSecret"
             - name: OAUTH2_ISSUER_URL
-              value: {{ .Values.server.configuration.issuerURL | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "common.names.fullname" . }}-oauth2
+                  key: "issuerURL"
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
           {{- if .Values.server.extraEnvVars }}
           {{- include "common.tplvalues.render" (dict "value" .Values.server.extraEnvVars "context" $) | nindent 12 }}
           {{- end }}
