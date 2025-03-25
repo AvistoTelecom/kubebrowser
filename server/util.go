@@ -94,7 +94,7 @@ func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1.Kubeconfig) ([]*v1.Ku
 		return nil, err
 	}
 
-	user := v1.User{Name: "oidc", Users: v1.UserSpec{
+	user := v1.User{Name: "oidc", User: v1.UserSpec{
 		AuthProvider: v1.AuthProviderSpec{Name: "oidc", Config: v1.AuthProviderConfig{
 			ClientID:     ec.oauth2Config.ClientID,
 			ClientSecret: ec.oauth2Config.ClientSecret,

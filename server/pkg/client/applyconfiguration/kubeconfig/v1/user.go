@@ -21,8 +21,8 @@ package v1
 // UserApplyConfiguration represents a declarative configuration of the User type for use
 // with apply.
 type UserApplyConfiguration struct {
-	Name  *string                     `json:"name,omitempty"`
-	Users *UserSpecApplyConfiguration `json:"users,omitempty"`
+	Name *string                     `json:"name,omitempty"`
+	User *UserSpecApplyConfiguration `json:"user,omitempty"`
 }
 
 // UserApplyConfiguration constructs a declarative configuration of the User type for use with
@@ -39,10 +39,10 @@ func (b *UserApplyConfiguration) WithName(value string) *UserApplyConfiguration 
 	return b
 }
 
-// WithUsers sets the Users field in the declarative configuration to the given value
+// WithUser sets the User field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
-// If called multiple times, the Users field is set to the value of the last call.
-func (b *UserApplyConfiguration) WithUsers(value *UserSpecApplyConfiguration) *UserApplyConfiguration {
-	b.Users = value
+// If called multiple times, the User field is set to the value of the last call.
+func (b *UserApplyConfiguration) WithUser(value *UserSpecApplyConfiguration) *UserApplyConfiguration {
+	b.User = value
 	return b
 }

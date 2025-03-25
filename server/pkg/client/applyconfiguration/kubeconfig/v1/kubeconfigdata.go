@@ -26,6 +26,7 @@ type KubeconfigDataApplyConfiguration struct {
 	Clusters       []ClusterApplyConfiguration `json:"clusters,omitempty"`
 	Contexts       []ContextApplyConfiguration `json:"contexts,omitempty"`
 	CurrentContext *string                     `json:"current-context,omitempty"`
+	Users          []UserApplyConfiguration    `json:"users,omitempty"`
 }
 
 // KubeconfigDataApplyConfiguration constructs a declarative configuration of the KubeconfigData type for use with
@@ -81,5 +82,18 @@ func (b *KubeconfigDataApplyConfiguration) WithContexts(values ...*ContextApplyC
 // If called multiple times, the CurrentContext field is set to the value of the last call.
 func (b *KubeconfigDataApplyConfiguration) WithCurrentContext(value string) *KubeconfigDataApplyConfiguration {
 	b.CurrentContext = &value
+	return b
+}
+
+// WithUsers adds the given value to the Users field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the Users field.
+func (b *KubeconfigDataApplyConfiguration) WithUsers(values ...*UserApplyConfiguration) *KubeconfigDataApplyConfiguration {
+	for i := range values {
+		if values[i] == nil {
+			panic("nil value passed to WithUsers")
+		}
+		b.Users = append(b.Users, *values[i])
+	}
 	return b
 }

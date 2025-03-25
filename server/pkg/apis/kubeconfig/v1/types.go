@@ -36,7 +36,7 @@ type KubeconfigData struct {
 	Clusters       []Cluster `json:"clusters"`
 	Contexts       []Context `json:"contexts,omitempty"`
 	CurrentContext string    `json:"current-context,omitempty"`
-	Users          []User    `json:"users,omitempty`
+	Users          []User    `json:"users,omitempty"`
 }
 
 // +k8s:deepcopy-gen=true
@@ -69,8 +69,8 @@ type Context struct {
 
 // Context represents a user entry
 type User struct {
-	Name  string   `json:"name"`
-	Users UserSpec `json:"users"`
+	Name string   `json:"name"`
+	User UserSpec `json:"user"`
 }
 
 // ContextSpec defines the details of a context
