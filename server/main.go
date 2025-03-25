@@ -34,12 +34,13 @@ const (
 	kubeconfigListerKey contextKey = "kubeconfig_lister"
 	// Normal const
 	callbackRoute string = "/auth/callback"
+	defaultPort   string = "8080"
 )
 
 func init() {
 	viper.SetEnvPrefix("kubebrowser")
 	viper.AutomaticEnv()
-	viper.SetDefault(hostnameKey, "http://localhost:8080")
+	viper.SetDefault(hostnameKey, "http://localhost:"+defaultPort)
 	viper.SetDefault(sessionSecretKey, "changeme")
 }
 
@@ -97,7 +98,7 @@ func main() {
 	authorized.GET("/api/me", handleGetMe)
 
 	srv := &http.Server{
-		Addr:    strings.TrimPrefix(viper.GetString(hostnameKey), "http://"),
+		Addr:    ":" + defaultPort,
 		Handler: router,
 		BaseContext: func(net.Listener) context.Context {
 			return ctx
