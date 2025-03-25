@@ -5,7 +5,6 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/brawdunoir/kubebrowser/pkg/signals"
@@ -83,16 +82,13 @@ func main() {
 	router.GET("/healthz", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
-	router.NoRoute(func(c *gin.Context) {
-		path := c.Request.RequestURI
-		if path == "/" || strings.HasSuffix(path, ".svg") || strings.HasSuffix(path, ".js") || strings.HasSuffix(path, ".css") || strings.HasSuffix(path, ".ico") || strings.HasSuffix(path, ".html") {
-			gin.WrapH(http.FileServer(gin.Dir(static, false)))(c)
-		} else {
-			c.File(static + "/index.html")
-		}
+
+	router.GET("/", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "/home")
 	})
 
 	authorized := router.Group("/", AuthMiddleware)
+	authorized.StaticFS("/home", http.Dir(static))
 	authorized.GET(callbackRoute, handleOAuth2Callback)
 	authorized.GET("/api/kubeconfigs", handleGetKubeconfigs)
 	authorized.GET("/api/me", handleGetMe)
