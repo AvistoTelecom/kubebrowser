@@ -107,6 +107,7 @@ func main() {
 
 	// Run the server in a goroutine
 	go func() {
+		logger.Warn("Start to listen and serve")
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			logger.Fatal("listen: %s\n", err)
 		}
