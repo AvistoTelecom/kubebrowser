@@ -76,10 +76,12 @@ func main() {
 	store := memstore.NewStore([]byte(viper.GetString(sessionSecretKey)))
 
 	router := gin.New()
-	router.Use(sessions.Sessions("kubebrowser_session", store))
-	router.Use(ginzap.Ginzap(logger.Desugar(), time.RFC3339, true))
-	router.Use(AuthMiddleware)
 
+	router.Use(sessions.Sessions("kubebrowser_session", store))
+	router.Use(ginzap.GinzapWithConfig(logger.Desugar(), &ginzap.Config{TimeFormat: time.RFC3339, UTC: true, SkipPaths: []string{"/healthz"}}))
+	router.GET("/healthz", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"status": "ok"})
+	})
 	router.NoRoute(func(c *gin.Context) {
 		path := c.Request.RequestURI
 		if path == "/" || strings.HasSuffix(path, ".svg") || strings.HasSuffix(path, ".js") || strings.HasSuffix(path, ".css") || strings.HasSuffix(path, ".ico") || strings.HasSuffix(path, ".html") {
@@ -89,9 +91,10 @@ func main() {
 		}
 	})
 
-	router.GET(callbackRoute, handleOAuth2Callback)
-	router.GET("/api/kubeconfigs", handleGetKubeconfigs)
-	router.GET("/api/me", handleGetMe)
+	authorized := router.Group("/", AuthMiddleware)
+	authorized.GET(callbackRoute, handleOAuth2Callback)
+	authorized.GET("/api/kubeconfigs", handleGetKubeconfigs)
+	authorized.GET("/api/me", handleGetMe)
 
 	srv := &http.Server{
 		Addr:    strings.TrimPrefix(viper.GetString(hostnameKey), "http://"),
