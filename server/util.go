@@ -116,13 +116,18 @@ func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1.Kubeconfig) ([]*v1.Ku
 }
 
 func extractFromContext(c *gin.Context) enhancedContext {
-	return enhancedContext{
-		logger:           c.Request.Context().Value(loggerKey).(*zap.SugaredLogger),
-		oauth2Config:     c.Request.Context().Value(oauth2ConfigKey).(oauth2.Config),
-		oauth2Verifier:   c.Request.Context().Value(oauth2VerifierKey).(*oidc.IDTokenVerifier),
-		session:          sessions.Default(c),
-		kubeconfigLister: c.Request.Context().Value(kubeconfigListerKey).(v1client.KubeconfigLister),
+	ec := enhancedContext{
+		logger:         c.Request.Context().Value(loggerKey).(*zap.SugaredLogger),
+		oauth2Config:   c.Request.Context().Value(oauth2ConfigKey).(oauth2.Config),
+		oauth2Verifier: c.Request.Context().Value(oauth2VerifierKey).(*oidc.IDTokenVerifier),
+		session:        sessions.Default(c),
 	}
+	kl := c.Request.Context().Value(kubeconfigListerKey)
+	if kl == nil {
+		return ec
+	}
+	ec.kubeconfigLister = kl.(v1client.KubeconfigLister)
+	return ec
 }
 
 func extractTokens(session sessions.Session) (rawIDToken string, refreshToken string) {
