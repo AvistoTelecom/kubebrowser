@@ -11,6 +11,7 @@ import (
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"golang.org/x/oauth2"
 )
@@ -97,7 +98,7 @@ func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1.Kubeconfig) ([]*v1.Ku
 		AuthProvider: v1.AuthProviderSpec{Name: "oidc", Config: v1.AuthProviderConfig{
 			ClientID:     ec.oauth2Config.ClientID,
 			ClientSecret: ec.oauth2Config.ClientSecret,
-			IDPIssuerURL: issuerURL,
+			IDPIssuerURL: viper.GetString("oauth2_issuer_url"),
 			IDToken:      rawIDToken,
 			RefreshToken: refreshToken,
 		}},

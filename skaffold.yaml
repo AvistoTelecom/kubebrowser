@@ -4,18 +4,18 @@ metadata:
   name: kubebrowser
 build:
   artifacts:
-    - image: backend
+    - image: kubebrowser
       context: server
+      ko: {}
       # context: .
       # hooks:
       #   before:
       #     - command: ["sh", "-c", "./hook.sh"]
       #       os: [darwin, linux]
-      ko: {}
       # ko:
       #   dependencies:
       #     paths:
-      #       - ui
+      #       - ui/src
       #       - server
       #       - k8s
       #     ignore:
@@ -38,9 +38,9 @@ deploy:
       - name: kubebrowser
         chartPath: chart
         setValueTemplates:
-          server.image.registry: "{{.IMAGE_DOMAIN_backend}}"
-          server.image.repository: "{{.IMAGE_REPO_NO_DOMAIN_backend}}"
-          server.image.tag: "{{.IMAGE_TAG_backend}}@{{.IMAGE_DIGEST_backend}}"
-          server.configuration.clientID: "{{.OAUTH2_CLIENT_ID}}"
-          server.configuration.clientSecret: "{{.OAUTH2_CLIENT_SECRET}}"
-          server.configuration.issuerURL: "{{.OAUTH2_ISSUER_URL}}"
+          server.image.registry: "{{.IMAGE_DOMAIN_kubebrowser}}"
+          server.image.repository: "{{.IMAGE_REPO_NO_DOMAIN_kubebrowser}}"
+          server.image.tag: "{{.IMAGE_TAG_kubebrowser}}@{{.IMAGE_DIGEST_kubebrowser}}"
+          server.configuration.clientID: "{{.KUBEBROWSER_OAUTH2_CLIENT_ID}}"
+          server.configuration.clientSecret: "{{.KUBEBROWSER_OAUTH2_CLIENT_SECRET}}"
+          server.configuration.issuerURL: "{{.KUBEBROWSER_OAUTH2_ISSUER_URL}}"

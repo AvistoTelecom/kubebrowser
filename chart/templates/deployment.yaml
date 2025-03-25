@@ -84,22 +84,22 @@ spec:
           args: {{- include "common.tplvalues.render" (dict "value" .Values.server.args "context" $) | nindent 12 }}
           {{- end }}
           env:
-            - name: OAUTH2_CLIENT_ID
+            - name: KUBEBROWSER_OAUTH2_CLIENT_ID
               valueFrom:
                 secretKeyRef:
                   name: {{ include "common.names.fullname" . }}-oauth2
                   key: "clientID"
-            - name: OAUTH2_CLIENT_SECRET
+            - name: KUBEBROWSER_OAUTH2_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "common.names.fullname" . }}-oauth2
                   key: "clientSecret"
-            - name: OAUTH2_ISSUER_URL
+            - name: KUBEBROWSER_OAUTH2_ISSUER_URL
               valueFrom:
                 secretKeyRef:
                   name: {{ include "common.names.fullname" . }}-oauth2
                   key: "issuerURL"
-            - name: POD_NAMESPACE
+            - name: KUBEBROWSER_POD_NAMESPACE
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
@@ -138,21 +138,10 @@ spec:
           lifecycle: {{- include "common.tplvalues.render" (dict "value" .Values.server.lifecycleHooks "context" $) | nindent 12 }}
           {{- end }}
           volumeMounts:
-            # - name: configuration
-            #   mountPath: {{ .Values.server.configuration.mountPath }}/config.json
-            #   subPath: config.json
-            # - name: kubeconfigs
-            #   mountPath: {{ .Values.server.configuration.kubeconfigsPath }}
             {{- if .Values.server.extraVolumeMounts }}
             {{- include "common.tplvalues.render" (dict "value" .Values.server.extraVolumeMounts "context" $) | nindent 12 }}
             {{- end }}
       volumes:
-        # - name: configuration
-        #   configMap:
-        #     name: {{ include "kubebrowser.server.configmapName" . }}
-        # - name: kubeconfigs
-        #   configMap:
-        #     name: {{ include "kubebrowser.server.kubeconfigsName" . }}
         {{- if .Values.server.extraVolumes }}
         {{- include "common.tplvalues.render" ( dict "value" .Values.server.extraVolumes "context" $ ) | nindent 8 }}
         {{- end }}

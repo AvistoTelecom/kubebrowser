@@ -13,6 +13,7 @@ import (
 	"github.com/gin-contrib/sessions/memstore"
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"k8s.io/apimachinery/pkg/labels"
 )
@@ -22,13 +23,25 @@ type contextKey string
 var static = os.Getenv("KO_DATA_PATH")
 
 const (
+	// Viper const
+	hostnameKey      string = "hostname"
+	podNamespaceKey  string = "pod_namespace"
+	sessionSecretKey string = "session_secret"
+	// Context keys
 	loggerKey           contextKey = "logger"
 	oauth2ConfigKey     contextKey = "oauth2_config"
 	oauth2VerifierKey   contextKey = "oauth2_verifier"
 	kubeconfigListerKey contextKey = "kubeconfig_lister"
-	callbackRoute       string     = "/auth/callback"
-	sessionSecret       string     = "secret"
+	// Normal const
+	callbackRoute string = "/auth/callback"
 )
+
+func init() {
+	viper.SetEnvPrefix("kubebrowser")
+	viper.AutomaticEnv()
+	viper.SetDefault(hostnameKey, "http://localhost:8080")
+	viper.SetDefault(sessionSecretKey, "changeme")
+}
 
 func main() {
 	// Set up logger
@@ -47,7 +60,7 @@ func main() {
 	}
 
 	// Create OIDC related config and verifier
-	config, verifier, err := setupOidc(ctx, clientID, clientSecret)
+	config, verifier, err := setupOidc(ctx, viper.GetString(clientIDKey), viper.GetString(clientSecretKey))
 	if err != nil {
 		logger.Error(err, "Failed to setup Oidc")
 		os.Exit(1)
@@ -60,7 +73,7 @@ func main() {
 	ctx = context.WithValue(ctx, kubeconfigListerKey, kubeconfigLister)
 
 	// Create session store
-	store := memstore.NewStore([]byte(sessionSecret))
+	store := memstore.NewStore([]byte(viper.GetString(sessionSecretKey)))
 
 	router := gin.New()
 	router.Use(sessions.Sessions("kubebrowser_session", store))
@@ -81,7 +94,7 @@ func main() {
 	router.GET("/api/me", handleGetMe)
 
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    strings.TrimPrefix(viper.GetString(hostnameKey), "http://"),
 		Handler: router,
 		BaseContext: func(net.Listener) context.Context {
 			return ctx
@@ -112,7 +125,7 @@ func handleGetKubeconfigs(c *gin.Context) {
 	ec := extractFromContext(c)
 
 	ec.logger.Debug("Getting kubeconfigs")
-	kubeconfigs, err := ec.kubeconfigLister.Kubeconfigs(namespace).List(labels.Everything())
+	kubeconfigs, err := ec.kubeconfigLister.Kubeconfigs(viper.GetString(podNamespaceKey)).List(labels.Everything())
 	if err != nil {
 		ec.logger.Errorf("Error listing kubeconfigs: %s", err)
 		c.String(http.StatusInternalServerError, "Error listing kubeconfigs")

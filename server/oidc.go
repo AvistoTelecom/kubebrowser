@@ -3,23 +3,22 @@ package main
 import (
 	"context"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"golang.org/x/oauth2"
 )
 
-var (
-	clientID     = os.Getenv("OAUTH2_CLIENT_ID")
-	clientSecret = os.Getenv("OAUTH2_CLIENT_SECRET")
-	issuerURL    = os.Getenv("OAUTH2_ISSUER_URL")
-)
-
 const (
-	initialRoute    = "initial_route"
+	// Viper keys
+	clientIDKey     = "oauth2_client_id"
+	clientSecretKey = "oauth2_client_secret"
+	issuerURLKey    = "oauth2_issuer_url"
+	// Session keys
+	initialRouteKey = "initial_route"
 	rawIDTokenKey   = "id_token"
 	refreshTokenKey = "refresh_token"
 )
@@ -32,7 +31,7 @@ func setCallbackCookie(c *gin.Context, name, value string) {
 		value,
 		int(time.Hour.Seconds()),              // MaxAge in seconds
 		"/",                                   // Path
-		strings.Split(c.Request.Host, ":")[0], // Domain (empty for default)
+		strings.Split(c.Request.Host, ":")[0], // Domain
 		c.Request.TLS != nil,                  // Secure (set to false for local development)
 		true,                                  // HttpOnly
 	)
@@ -40,7 +39,7 @@ func setCallbackCookie(c *gin.Context, name, value string) {
 }
 
 func setupOidc(ctx context.Context, clientID string, clientSecret string) (oauth2.Config, *oidc.IDTokenVerifier, error) {
-	provider, err := oidc.NewProvider(ctx, issuerURL)
+	provider, err := oidc.NewProvider(ctx, viper.GetString("oauth2_issuer_url"))
 	if err != nil {
 		return oauth2.Config{}, nil, err
 	}
@@ -53,7 +52,7 @@ func setupOidc(ctx context.Context, clientID string, clientSecret string) (oauth
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
 		Endpoint:     provider.Endpoint(),
-		RedirectURL:  "http://localhost:8080" + callbackRoute,
+		RedirectURL:  viper.GetString(hostnameKey) + callbackRoute,
 		Scopes:       []string{oidc.ScopeOpenID, "profile", "email", oidc.ScopeOfflineAccess},
 	}
 	return config, verifier, nil
@@ -150,7 +149,7 @@ func handleOAuth2Callback(c *gin.Context) {
 		ec.logger.Error(err, "Cannot save session")
 		c.String(http.StatusInternalServerError, "Cannot save session")
 	}
-	redirectURI := ec.session.Get(initialRoute)
+	redirectURI := ec.session.Get(initialRouteKey)
 	c.Redirect(http.StatusFound, redirectURI.(string))
 }
 
@@ -164,7 +163,7 @@ func AuthMiddleware(c *gin.Context) {
 		c.Next()
 	}
 
-	ec.session.Set(initialRoute, c.Request.RequestURI)
+	ec.session.Set(initialRouteKey, c.Request.RequestURI)
 	err := ec.session.Save()
 	if err != nil {
 		ec.logger.Error(err, "Cannot save session")
