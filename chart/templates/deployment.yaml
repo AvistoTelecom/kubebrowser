@@ -84,6 +84,12 @@ spec:
           args: {{- include "common.tplvalues.render" (dict "value" .Values.server.args "context" $) | nindent 12 }}
           {{- end }}
           env:
+            - name: GIN_MODE
+              value: "release"
+            {{- if .Values.ingress.enabled }}
+            - name: KUBEBROWSER_HOSTNAME
+              value: {{ printf "%s://%s" (ternary "https" "http" .Values.ingress.tls) .Values.ingress.hostname }}
+            {{- end }}
             - name: KUBEBROWSER_OAUTH2_CLIENT_ID
               valueFrom:
                 secretKeyRef:
