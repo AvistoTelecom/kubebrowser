@@ -44,7 +44,7 @@ deploy:
           server.configuration.clientID: "{{.KUBEBROWSER_OAUTH2_CLIENT_ID}}"
           server.configuration.clientSecret: "{{.KUBEBROWSER_OAUTH2_CLIENT_SECRET}}"
           server.configuration.issuerURL: "{{.KUBEBROWSER_OAUTH2_ISSUER_URL}}"
-          server.logLevel: "DEBUG"
+          server.logLevel: "{{.KUBEBROWSER_LOG_LEVEL}}"
           server.extraEnvVars: |
             - name: "KUBEBROWSER_DEV"
               value: "{{.KUBEBROWSER_DEV}}"
