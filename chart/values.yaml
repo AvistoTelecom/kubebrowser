@@ -103,27 +103,7 @@ server:
     # logLevel: "INFO"
     # mountPath: "/app"
     # kubeconfigsPath: "/app/kubeconfigs"
-  ## @param server.kubeconfigs List of kubeconfigs to fetch. See values.yaml for usage.
-  ## e.g:
-  ## kubeconfigs:
-  ##   - name: "User Friendly Name"
-  ##     kubeconfig:
-  ##       apiVersion: v1
-  ##       kind: Config
-  ##       clusters:
-  ##         - cluster:
-  ##             certificate-authority-data: xxx
-  ##             server: xxx
-  ##           name: external_prod
-  ##       contexts:
-  ##         - context:
-  ##             cluster: external_prod
-  ##             namespace: xxx
-  ##             user: xxx
-  ##           name: external_prod
-  ##       current-context: external_prod
-  ##       preferences: {}
-  kubeconfigs: []
+  logLevel: "INFO"
   ## @param server.overrideConfiguration Configuration to override all server.configuration.* values
   ## e.g:
   ## overrideConfiguration: |

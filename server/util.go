@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"fmt"
 	"io"
 	"slices"
 
@@ -13,6 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 	"golang.org/x/oauth2"
 )
 
@@ -132,4 +134,41 @@ func extractFromContext(c *gin.Context) enhancedContext {
 
 func extractTokens(session sessions.Session) (rawIDToken string, refreshToken string) {
 	return session.Get(rawIDTokenKey).(string), session.Get(refreshTokenKey).(string)
+}
+
+func newLogger() (*zap.Logger, error) {
+	isDev := viper.GetBool(devKey)
+	logLevel := viper.GetString(logLevelKey)
+
+	var level zapcore.Level
+	switch logLevel {
+	case "DEBUG":
+		level = zapcore.DebugLevel
+	case "INFO":
+		level = zapcore.InfoLevel
+	case "WARN":
+		level = zapcore.WarnLevel
+	case "ERROR":
+		level = zapcore.ErrorLevel
+	default:
+		level = zapcore.InfoLevel // Default to INFO if logLevel is not set or invalid
+		fmt.Println("Log level is invalid, defaults to INFO")
+	}
+
+	if isDev {
+		return zap.Config{
+			Level:         zap.NewAtomicLevelAt(level),
+			Encoding:      "console",
+			OutputPaths:   []string{"stdout"},
+			Development:   true,
+			EncoderConfig: zap.NewDevelopmentEncoderConfig(),
+		}.Build()
+	}
+
+	return zap.Config{
+		Level:         zap.NewAtomicLevelAt(level),
+		Encoding:      "json",
+		OutputPaths:   []string{"stdout"},
+		EncoderConfig: zap.NewProductionEncoderConfig(),
+	}.Build()
 }

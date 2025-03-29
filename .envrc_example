@@ -2,3 +2,4 @@ export SKAFFOLD_KUBE_CONTEXT=minikube
 export KUBEBROWSER_OAUTH2_CLIENT_ID=<your-client-id>
 export KUBEBROWSER_OAUTH2_CLIENT_SECRET=<your-client-secret>
 export KUBEBROWSER_OAUTH2_ISSUER_URL=<your-issuer-url>
+export KUBEBROWSER_DEV=true

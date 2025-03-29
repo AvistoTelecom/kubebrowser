@@ -13,7 +13,6 @@ import (
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"go.uber.org/zap"
 	"k8s.io/apimachinery/pkg/labels"
 )
 
@@ -26,6 +25,8 @@ const (
 	hostnameKey      string = "hostname"
 	podNamespaceKey  string = "pod_namespace"
 	sessionSecretKey string = "session_secret"
+	devKey           string = "dev"
+	logLevelKey      string = "log_level"
 	// Context keys
 	loggerKey           contextKey = "logger"
 	oauth2ConfigKey     contextKey = "oauth2_config"
@@ -41,11 +42,16 @@ func init() {
 	viper.AutomaticEnv()
 	viper.SetDefault(hostnameKey, "http://localhost:"+defaultPort)
 	viper.SetDefault(sessionSecretKey, "changeme")
+	viper.SetDefault(devKey, false)
+	viper.SetDefault(logLevelKey, "INFO")
 }
 
 func main() {
 	// Set up logger
-	l, _ := zap.NewProduction()
+	l, err := newLogger()
+	if err != nil {
+		panic(err)
+	}
 	defer l.Sync()
 	logger := l.Sugar()
 
