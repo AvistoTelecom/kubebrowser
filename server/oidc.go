@@ -69,7 +69,7 @@ func refreshTokens(ctx context.Context, config oauth2.Config, refreshToken strin
 
 func redirectToOIDCLogin(c *gin.Context) {
 	ec := extractFromContext(c)
-	ec.logger.Debug("Entering in redirectToOIDCLogin")
+	ec.logger.Debug("Entering redirectToOIDCLogin")
 
 	state, err := randString(16)
 	if err != nil {
@@ -93,7 +93,7 @@ func redirectToOIDCLogin(c *gin.Context) {
 func handleOAuth2Callback(c *gin.Context) {
 	ec := extractFromContext(c)
 
-	ec.logger.Debug("Entering in handleOAuth2Callback")
+	ec.logger.Debug("Entering handleOAuth2Callback")
 
 	// Retrieve and validate state
 	state, err := c.Cookie("state")
@@ -155,7 +155,7 @@ func handleOAuth2Callback(c *gin.Context) {
 
 func AuthMiddleware(c *gin.Context) {
 	ec := extractFromContext(c)
-	ec.logger.Debug("Entering in AuthMiddleware")
+	ec.logger.Debug("Entering AuthMiddleware")
 
 	// Skip authentication for callback route
 	if c.Request.URL.Path == callbackRoute {

@@ -37,45 +37,48 @@ func randString(nByte int) (string, error) {
 // Returns a subset of initial Kubeconfigs depending on the whitelist in each Kubeconfig and the
 // claims (user and groups) in the idToken
 func filterKubeconfig(c *gin.Context, kubeconfigs []*v1.Kubeconfig, idToken *oidc.IDToken) ([]*v1.KubeconfigSpec, error) {
-	logger := c.Request.Context().Value(loggerKey).(*zap.SugaredLogger)
+	logger := extractFromContext(c).logger
 
-	logger.Debug("Entering in filterKubeconfig")
+	logger.Debug("Entering filterKubeconfig")
 
-	claims := struct {
+	// Extract claims from ID token
+	var claims struct {
 		Email  string   `json:"email"`
 		Groups []string `json:"groups"`
-	}{}
-
+	}
 	if err := idToken.Claims(&claims); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse ID token claims: %w", err)
 	}
 
-	logger.Debugw("Extracted from ID token", "claims", claims)
+	logger.Debugw("Extracted claims from ID token", "claims", claims)
 
-	var filtered []*v1.KubeconfigSpec
+	filtered := make([]*v1.KubeconfigSpec, 0, len(kubeconfigs)) // Preallocate slice
+
 	for _, kubeconfig := range kubeconfigs {
-		logger.Debugw("Start to process the kubeconfig", "name", kubeconfig.Name, "whitelist", kubeconfig.Spec.Whitelist)
-		if kubeconfig.Spec.Whitelist == nil {
-			filtered = append(filtered, &kubeconfig.Spec)
-			logger.Debug("Whitelist empty, process next one")
-			continue
-		}
-		logger.Debug("Whitelist not empty, continue filtering")
+		logger.Debugw("Processing kubeconfig", "name", kubeconfig.Name)
 
-		if slices.Contains(kubeconfig.Spec.Whitelist.Users, claims.Email) {
+		whitelist := kubeconfig.Spec.Whitelist
+		if whitelist == nil {
+			logger.Debug("Whitelist is empty, adding kubeconfig")
 			filtered = append(filtered, &kubeconfig.Spec)
-			logger.Debugw("Match", "kubeconfig", kubeconfig.Name, "whitelist", kubeconfig.Spec.Whitelist.Users, "user", claims.Email)
 			continue
 		}
-		logger.Debug("No match on user, continue filtering")
+
+		// Check if user email is in whitelist
+		if slices.Contains(whitelist.Users, claims.Email) {
+			logger.Debugw("User match found", "name", kubeconfig.Name)
+			filtered = append(filtered, &kubeconfig.Spec)
+			continue
+		}
+
+		// Check if any group matches the whitelist
 		for _, group := range claims.Groups {
-			if slices.Contains(kubeconfig.Spec.Whitelist.Groups, group) {
-				logger.Debugw("Match", "kubeconfig", kubeconfig.Name, "whitelist", kubeconfig.Spec.Whitelist.Groups, "group", group)
+			if slices.Contains(whitelist.Groups, group) {
+				logger.Debugw("Group match found", "name", kubeconfig.Name, "group", group)
 				filtered = append(filtered, &kubeconfig.Spec)
 				break
 			}
 		}
-		logger.Debug("Zero match found, process next one")
 	}
 
 	return filtered, nil
@@ -83,7 +86,7 @@ func filterKubeconfig(c *gin.Context, kubeconfigs []*v1.Kubeconfig, idToken *oid
 
 func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1.Kubeconfig) ([]*v1.KubeconfigSpec, error) {
 	ec := extractFromContext(c)
-	ec.logger.Debug("Entering in prepareKubeconfigs")
+	ec.logger.Debug("Entering prepareKubeconfigs")
 
 	rawIDToken, refreshToken := extractTokens(ec.session)
 
