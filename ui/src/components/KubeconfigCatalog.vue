@@ -21,15 +21,15 @@ function selectKubeconfig(kubeconfig: object, name: string) {
 
 <template>
   <div
-    class="flex-none flex flex-col gap-8 max-w-max min-w-min"
+    class="flex-none flex flex-col gap-4 max-w-max min-w-min"
   >
     <button
       v-for="kubeconfig in kubeconfigs"
       :key="kubeconfig.name"
-      class="text-lg py-8 px-12 rounded-md border-2 border-gray-600 cursor-pointer"
+      class="text-lg py-6 px-12 rounded-md border-2 border-gray-600 cursor-pointer"
       :class="{
         'bg-accent text-primary-950': selectedKubeconfigName === kubeconfig.name,
-        'bg-gray-600': selectedKubeconfigName !== kubeconfig.name,
+        'bg-gray-700': selectedKubeconfigName !== kubeconfig.name,
       }"
       @click="selectKubeconfig(kubeconfig.kubeconfig, kubeconfig.name)"
     >
