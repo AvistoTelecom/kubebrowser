@@ -54,27 +54,28 @@ func filterKubeconfig(c *gin.Context, kubeconfigs []*v1.Kubeconfig, idToken *oid
 
 	var filtered []*v1.KubeconfigSpec
 	for _, kubeconfig := range kubeconfigs {
-		logger.Debugw("Start to filter the kubeconfig", "name", kubeconfig.Name, "whitelist", kubeconfig.Spec.Whitelist)
+		logger.Debugw("Start to process the kubeconfig", "name", kubeconfig.Name, "whitelist", kubeconfig.Spec.Whitelist)
 		if kubeconfig.Spec.Whitelist == nil {
-			logger.Debug("Kubeconfig has no whitelist, process next one")
 			filtered = append(filtered, &kubeconfig.Spec)
+			logger.Debug("Whitelist empty, process next one")
 			continue
 		}
+		logger.Debug("Whitelist not empty, continue filtering")
 
 		if slices.Contains(kubeconfig.Spec.Whitelist.Users, claims.Email) {
-			logger.Debugw("Found a match on", "kubeconfig", kubeconfig.Name, "user", claims.Email)
 			filtered = append(filtered, &kubeconfig.Spec)
+			logger.Debugw("Match", "kubeconfig", kubeconfig.Name, "whitelist", kubeconfig.Spec.Whitelist.Users, "user", claims.Email)
 			continue
-		} else {
-			logger.Debug("Did not found a match on user, continue with groups")
 		}
+		logger.Debug("No match on user, continue filtering")
 		for _, group := range claims.Groups {
 			if slices.Contains(kubeconfig.Spec.Whitelist.Groups, group) {
-				logger.Debugw("Found a match on", "kubeconfig", kubeconfig.Name, "group", group)
+				logger.Debugw("Match", "kubeconfig", kubeconfig.Name, "whitelist", kubeconfig.Spec.Whitelist.Groups, "group", group)
 				filtered = append(filtered, &kubeconfig.Spec)
 				break
 			}
 		}
+		logger.Debug("Zero match found, process next one")
 	}
 
 	return filtered, nil
