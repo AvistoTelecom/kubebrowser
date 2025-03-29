@@ -5,6 +5,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"regexp"
 	"time"
 
 	"github.com/brawdunoir/kubebrowser/pkg/signals"
@@ -84,7 +85,12 @@ func main() {
 	router := gin.New()
 
 	router.Use(sessions.Sessions("kubebrowser_session", store))
-	router.Use(ginzap.GinzapWithConfig(logger.Desugar(), &ginzap.Config{TimeFormat: time.RFC3339, UTC: true, SkipPaths: []string{"/healthz"}}))
+	router.Use(ginzap.GinzapWithConfig(logger.Desugar(), &ginzap.Config{
+		TimeFormat:      time.RFC3339,
+		UTC:             true,
+		SkipPaths:       []string{"/healthz", callbackRoute},
+		SkipPathRegexps: []*regexp.Regexp{regexp.MustCompile(`^/home.*`)},
+	}))
 	router.GET("/healthz", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})

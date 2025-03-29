@@ -173,7 +173,7 @@ func AuthMiddleware(c *gin.Context) {
 	// Retrieve ID token from session
 	rawIDToken := ec.session.Get(rawIDTokenKey)
 	if rawIDToken == nil {
-		ec.logger.Info("ID token missing, redirecting to login")
+		ec.logger.Debug("ID token missing, redirecting to login")
 		redirectToOIDCLogin(c)
 		c.Abort()
 		return
