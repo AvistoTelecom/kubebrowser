@@ -17,7 +17,12 @@ Managing access across multiple Kubernetes clusters can be challenging, especial
 ## Getting started
 To deploy Kubebrowser and start using it:
 
+1. **Configure OIDC authentication** with your identity provider.
 1. **Install Kubebrowser** using Helm or Kubernetes manifests.
-2. **Configure OIDC authentication** with your identity provider.
-3. **Add Kubernetes clusters** to the catalog.
-4. **Grant appropriate permissions** to teams and users.
+1. **Add Kubernetes clusters** to the catalog.
+1. **Grant appropriate permissions** to teams and users.
+
+
+## How to contribute
+
+WIP 🚧
