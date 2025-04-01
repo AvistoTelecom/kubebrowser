@@ -19,9 +19,9 @@ limitations under the License.
 package applyconfiguration
 
 import (
-	v1 "github.com/brawdunoir/kubebrowser/pkg/apis/kubeconfig/v1"
+	v1alpha1 "github.com/brawdunoir/kubebrowser/pkg/apis/kubeconfig/v1alpha1"
 	internal "github.com/brawdunoir/kubebrowser/pkg/client/applyconfiguration/internal"
-	kubeconfigv1 "github.com/brawdunoir/kubebrowser/pkg/client/applyconfiguration/kubeconfig/v1"
+	kubeconfigv1alpha1 "github.com/brawdunoir/kubebrowser/pkg/client/applyconfiguration/kubeconfig/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	testing "k8s.io/client-go/testing"
@@ -31,31 +31,31 @@ import (
 // apply configuration type exists for the given GroupVersionKind.
 func ForKind(kind schema.GroupVersionKind) interface{} {
 	switch kind {
-	// Group=kubeconfig, Version=v1
-	case v1.SchemeGroupVersion.WithKind("AuthProviderConfig"):
-		return &kubeconfigv1.AuthProviderConfigApplyConfiguration{}
-	case v1.SchemeGroupVersion.WithKind("AuthProviderSpec"):
-		return &kubeconfigv1.AuthProviderSpecApplyConfiguration{}
-	case v1.SchemeGroupVersion.WithKind("Cluster"):
-		return &kubeconfigv1.ClusterApplyConfiguration{}
-	case v1.SchemeGroupVersion.WithKind("Context"):
-		return &kubeconfigv1.ContextApplyConfiguration{}
-	case v1.SchemeGroupVersion.WithKind("ContextSpec"):
-		return &kubeconfigv1.ContextSpecApplyConfiguration{}
-	case v1.SchemeGroupVersion.WithKind("Details"):
-		return &kubeconfigv1.DetailsApplyConfiguration{}
-	case v1.SchemeGroupVersion.WithKind("Kubeconfig"):
-		return &kubeconfigv1.KubeconfigApplyConfiguration{}
-	case v1.SchemeGroupVersion.WithKind("KubeconfigData"):
-		return &kubeconfigv1.KubeconfigDataApplyConfiguration{}
-	case v1.SchemeGroupVersion.WithKind("KubeconfigSpec"):
-		return &kubeconfigv1.KubeconfigSpecApplyConfiguration{}
-	case v1.SchemeGroupVersion.WithKind("User"):
-		return &kubeconfigv1.UserApplyConfiguration{}
-	case v1.SchemeGroupVersion.WithKind("UserSpec"):
-		return &kubeconfigv1.UserSpecApplyConfiguration{}
-	case v1.SchemeGroupVersion.WithKind("Whitelist"):
-		return &kubeconfigv1.WhitelistApplyConfiguration{}
+	// Group=kubeconfig, Version=v1alpha1
+	case v1alpha1.SchemeGroupVersion.WithKind("AuthProviderConfig"):
+		return &kubeconfigv1alpha1.AuthProviderConfigApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("AuthProviderSpec"):
+		return &kubeconfigv1alpha1.AuthProviderSpecApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("Cluster"):
+		return &kubeconfigv1alpha1.ClusterApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("Context"):
+		return &kubeconfigv1alpha1.ContextApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("ContextSpec"):
+		return &kubeconfigv1alpha1.ContextSpecApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("Details"):
+		return &kubeconfigv1alpha1.DetailsApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("Kubeconfig"):
+		return &kubeconfigv1alpha1.KubeconfigApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("KubeconfigData"):
+		return &kubeconfigv1alpha1.KubeconfigDataApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("KubeconfigSpec"):
+		return &kubeconfigv1alpha1.KubeconfigSpecApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("User"):
+		return &kubeconfigv1alpha1.UserApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("UserSpec"):
+		return &kubeconfigv1alpha1.UserSpecApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("Whitelist"):
+		return &kubeconfigv1alpha1.WhitelistApplyConfiguration{}
 
 	}
 	return nil

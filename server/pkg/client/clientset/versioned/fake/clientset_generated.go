@@ -21,8 +21,8 @@ package fake
 import (
 	applyconfiguration "github.com/brawdunoir/kubebrowser/pkg/client/applyconfiguration"
 	clientset "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned"
-	kubeconfigv1 "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned/typed/kubeconfig/v1"
-	fakekubeconfigv1 "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned/typed/kubeconfig/v1/fake"
+	kubeconfigv1alpha1 "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned/typed/kubeconfig/v1alpha1"
+	fakekubeconfigv1alpha1 "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned/typed/kubeconfig/v1alpha1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -116,7 +116,7 @@ var (
 	_ testing.FakeClient  = &Clientset{}
 )
 
-// KubeconfigV1 retrieves the KubeconfigV1Client
-func (c *Clientset) KubeconfigV1() kubeconfigv1.KubeconfigV1Interface {
-	return &fakekubeconfigv1.FakeKubeconfigV1{Fake: &c.Fake}
+// KubeconfigV1alpha1 retrieves the KubeconfigV1alpha1Client
+func (c *Clientset) KubeconfigV1alpha1() kubeconfigv1alpha1.KubeconfigV1alpha1Interface {
+	return &fakekubeconfigv1alpha1.FakeKubeconfigV1alpha1{Fake: &c.Fake}
 }

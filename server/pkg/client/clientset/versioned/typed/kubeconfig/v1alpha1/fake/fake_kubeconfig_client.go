@@ -19,22 +19,22 @@ limitations under the License.
 package fake
 
 import (
-	v1 "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned/typed/kubeconfig/v1"
+	v1alpha1 "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned/typed/kubeconfig/v1alpha1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )
 
-type FakeKubeconfigV1 struct {
+type FakeKubeconfigV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeKubeconfigV1) Kubeconfigs(namespace string) v1.KubeconfigInterface {
+func (c *FakeKubeconfigV1alpha1) Kubeconfigs(namespace string) v1alpha1.KubeconfigInterface {
 	return newFakeKubeconfigs(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *FakeKubeconfigV1) RESTClient() rest.Interface {
+func (c *FakeKubeconfigV1alpha1) RESTClient() rest.Interface {
 	var ret *rest.RESTClient
 	return ret
 }

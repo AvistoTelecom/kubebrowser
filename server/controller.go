@@ -7,7 +7,7 @@ import (
 
 	clientset "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned"
 	informers "github.com/brawdunoir/kubebrowser/pkg/client/informers/externalversions"
-	v1 "github.com/brawdunoir/kubebrowser/pkg/client/listers/kubeconfig/v1"
+	v1alpha1 "github.com/brawdunoir/kubebrowser/pkg/client/listers/kubeconfig/v1alpha1"
 	"github.com/spf13/viper"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
@@ -15,7 +15,7 @@ import (
 
 // Setup the Kubernetes client and the SharedInformerFactory
 // Returns a KubeconfigLister
-func setupKubeconfigLister(ctx context.Context) (kubeconfigLister v1.KubeconfigLister, err error) {
+func setupKubeconfigLister(ctx context.Context) (kubeconfigLister v1alpha1.KubeconfigLister, err error) {
 	// creates the in-cluster config
 	cfg, err := rest.InClusterConfig()
 	if err != nil {
@@ -35,13 +35,13 @@ func setupKubeconfigLister(ctx context.Context) (kubeconfigLister v1.KubeconfigL
 	)
 
 	// Get the lister for Kubeconfigs
-	kubeconfigLister = kubeInformerFactory.Kubeconfig().V1().Kubeconfigs().Lister()
+	kubeconfigLister = kubeInformerFactory.Kubeconfig().V1alpha1().Kubeconfigs().Lister()
 
 	// Start the informer factory
 	kubeInformerFactory.Start(ctx.Done())
 
 	// Wait for the caches to sync
-	if !cache.WaitForCacheSync(ctx.Done(), kubeInformerFactory.Kubeconfig().V1().Kubeconfigs().Informer().HasSynced) {
+	if !cache.WaitForCacheSync(ctx.Done(), kubeInformerFactory.Kubeconfig().V1alpha1().Kubeconfigs().Informer().HasSynced) {
 		return nil, errors.New("failed to sync caches")
 	}
 

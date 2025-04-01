@@ -7,8 +7,8 @@ import (
 	"io"
 	"slices"
 
-	v1 "github.com/brawdunoir/kubebrowser/pkg/apis/kubeconfig/v1"
-	v1client "github.com/brawdunoir/kubebrowser/pkg/client/listers/kubeconfig/v1"
+	v1alpha1 "github.com/brawdunoir/kubebrowser/pkg/apis/kubeconfig/v1alpha1"
+	v1alpha1client "github.com/brawdunoir/kubebrowser/pkg/client/listers/kubeconfig/v1alpha1"
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -23,7 +23,7 @@ type enhancedContext struct {
 	oauth2Config     oauth2.Config
 	oauth2Verifier   *oidc.IDTokenVerifier
 	session          sessions.Session
-	kubeconfigLister v1client.KubeconfigLister
+	kubeconfigLister v1alpha1client.KubeconfigLister
 }
 
 func randString(nByte int) (string, error) {
@@ -36,7 +36,7 @@ func randString(nByte int) (string, error) {
 
 // Returns a subset of initial Kubeconfigs depending on the whitelist in each Kubeconfig and the
 // claims (user and groups) in the idToken
-func filterKubeconfig(c *gin.Context, kubeconfigs []*v1.Kubeconfig, idToken *oidc.IDToken) ([]*v1.Kubeconfig, error) {
+func filterKubeconfig(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig, idToken *oidc.IDToken) ([]*v1alpha1.Kubeconfig, error) {
 	logger := extractFromContext(c).logger
 
 	logger.Debug("Entering filterKubeconfig")
@@ -51,7 +51,7 @@ func filterKubeconfig(c *gin.Context, kubeconfigs []*v1.Kubeconfig, idToken *oid
 
 	logger.Debugw("Extracted claims from ID token", "claims", claims)
 
-	filtered := make([]*v1.Kubeconfig, 0, len(kubeconfigs))
+	filtered := make([]*v1alpha1.Kubeconfig, 0, len(kubeconfigs))
 	for _, kubeconfig := range kubeconfigs {
 		whitelist := kubeconfig.Spec.Whitelist
 		logger.Debugw("Processing kubeconfig", "name", kubeconfig.Name, "whitelist", whitelist)
@@ -82,7 +82,7 @@ func filterKubeconfig(c *gin.Context, kubeconfigs []*v1.Kubeconfig, idToken *oid
 	return filtered, nil
 }
 
-func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1.Kubeconfig) ([]*v1.KubeconfigSpec, error) {
+func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig) ([]*v1alpha1.KubeconfigSpec, error) {
 	ec := extractFromContext(c)
 	ec.logger.Debug("Entering prepareKubeconfigs")
 
@@ -98,8 +98,8 @@ func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1.Kubeconfig) ([]*v1.Ku
 		return nil, err
 	}
 
-	user := v1.User{Name: "oidc", User: v1.UserSpec{
-		AuthProvider: v1.AuthProviderSpec{Name: "oidc", Config: v1.AuthProviderConfig{
+	user := v1alpha1.User{Name: "oidc", User: v1alpha1.UserSpec{
+		AuthProvider: v1alpha1.AuthProviderSpec{Name: "oidc", Config: v1alpha1.AuthProviderConfig{
 			ClientID:     ec.oauth2Config.ClientID,
 			ClientSecret: ec.oauth2Config.ClientSecret,
 			IDPIssuerURL: viper.GetString("oauth2_issuer_url"),
@@ -108,7 +108,7 @@ func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1.Kubeconfig) ([]*v1.Ku
 		}},
 	}}
 
-	copiedKubeconfig := make([]*v1.KubeconfigSpec, 0, len(filteredKubeconfigs))
+	copiedKubeconfig := make([]*v1alpha1.KubeconfigSpec, 0, len(filteredKubeconfigs))
 	for _, kubeconfig := range filteredKubeconfigs {
 		k := kubeconfig.DeepCopy()
 		ks := k.Spec
@@ -134,7 +134,7 @@ func extractFromContext(c *gin.Context) enhancedContext {
 	if kl == nil {
 		return ec
 	}
-	ec.kubeconfigLister = kl.(v1client.KubeconfigLister)
+	ec.kubeconfigLister = kl.(v1alpha1client.KubeconfigLister)
 	return ec
 }
 
