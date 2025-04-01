@@ -144,8 +144,7 @@ func handleGetKubeconfigs(c *gin.Context) {
 		c.String(http.StatusInternalServerError, "Error listing kubeconfigs")
 	}
 
-	kubeconfigValues := ConvertPointersToValues(kubeconfigs)
-	k, err := preprareKubeconfigs(c, kubeconfigValues)
+	k, err := preprareKubeconfigs(c, kubeconfigs)
 	if err != nil {
 		ec.logger.Error(err, "Error preparing kubeconfigs")
 		c.String(http.StatusInternalServerError, "Error preparing kubeconfigs")
