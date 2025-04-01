@@ -4,21 +4,22 @@ import { copyToClipboard } from '@/utils/clipboard'
 import { AkCopy } from '@kalimahapps/vue-icons'
 
 const props = defineProps<{
-  yaml: string | null
+  kubeconfig: string | null
+  catalogLength: number
 }>()
 
 const copied = ref(false)
 
 const handleCopy = () => {
-  if (props.yaml) {
-    copyToClipboard(props.yaml)
+  if (props.kubeconfig) {
+    copyToClipboard(props.kubeconfig)
     copied.value = true
   }
 }
 
 // Reset the "Copied" message when `yaml` changes
 watch(
-  () => props.yaml,
+  () => props.kubeconfig,
   () => {
     copied.value = false
   },
@@ -28,9 +29,9 @@ watch(
 <template>
   <div
     class="border-2 border-gray-600 rounded-md p-4 overflow-auto"
-    :class="{ 'flex items-center justify-center': !yaml, 'bg-primary-950': yaml }"
+    :class="{ 'flex items-center justify-center': !kubeconfig, 'bg-primary-950': kubeconfig }"
   >
-    <div v-if="yaml" class="relative">
+    <div v-if="kubeconfig" class="relative">
       <div
         class="absolute top-1 right-1 inline-flex items-center justify-center gap-1 cursor-pointer p-3 bg-accent min-w-min text-gray-800 rounded-tr-xl rounded-bl-xl"
         @click="handleCopy"
@@ -38,10 +39,15 @@ watch(
         <AkCopy />
         <span> {{ copied ? 'Copied' : 'Copy' }}</span>
       </div>
-      <pre>{{ yaml }}</pre>
+      <pre>{{ kubeconfig }}</pre>
     </div>
     <div v-else>
-      <p class="text-gray-300 text-center">Select a cluster to display kubeconfig content</p>
+      <div v-if="!props.catalogLength">
+        <p class="text-gray-300 text-center">No results</p>
+      </div>
+      <div v-else>
+        <p class="text-gray-300 text-center">Select a cluster to display kubeconfig content</p>
+      </div>
     </div>
   </div>
 </template>

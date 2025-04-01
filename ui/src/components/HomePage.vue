@@ -6,18 +6,25 @@ import KubeconfigCatalog from './KubeconfigCatalog.vue'
 import KubeconfigDisplay from './KubeconfigDisplay.vue'
 import HelloComponent from './HelloComponent.vue'
 import SearchBox from './SearchBox.vue'
+import { BsEmojiSurpriseFill } from '@kalimahapps/vue-icons';
 
 const kubeconfigs = ref<Kubeconfig[]>([])
-const searchQuery = ref<string>('')
+const searchQuery = ref('')
 const selectedKubeconfig = ref<string | null>(null)
+const indexSelected = ref<number | null>(null)
+const emptyKubeconfigs = ref(false)
 
 const filteredKubeconfigs = computed(() => {
   if (!searchQuery.value) return kubeconfigs.value
+  selectedKubeconfig.value = null
+  indexSelected.value = null
   const query = searchQuery.value.toLowerCase()
-  return kubeconfigs.value.filter((kubeconfig) => kubeconfig.name.toLowerCase().includes(query))
+  const filtered = kubeconfigs.value.filter((kubeconfig) => kubeconfig.name.toLowerCase().includes(query))
+  return filtered
 })
 
-function updateSelectedKubeconfig(kubeconfig: string) {
+function updateSelectedKubeconfig(kubeconfig: string, index: number) {
+  indexSelected.value = index
   selectedKubeconfig.value = kubeconfig
 }
 
@@ -36,6 +43,9 @@ onMounted(async () => {
     ]
   } else {
     const response = await axios.get<Kubeconfig[]>('/api/kubeconfigs')
+    if (!response.data.length) {
+      emptyKubeconfigs.value = true
+    }
     kubeconfigs.value = response.data
   }
 })
@@ -43,14 +53,22 @@ onMounted(async () => {
 
 <template>
   <HelloComponent />
-  <div class="my-10">
-    <SearchBox v-model="searchQuery" placeholder="Search clusters..." />
-    <div class="flex space-x-8 my-8">
-      <KubeconfigCatalog
+  <div v-if="emptyKubeconfigs" class="flex flex-col flex-1 gap-4 items-center justify-center">
+    <BsEmojiSurpriseFill class="w-10 h-10 text-gray-600"/>
+    <p class="text-gray-300">oops, it seems like you don't have acces to any clusters</p>
+  </div>
+  <div v-else class="mx-4 flex flex-1 gap-x-4 overflow-y-hidden">
+    <div class="space-y-4 w-1/6 flex flex-col">
+      <SearchBox v-model="searchQuery" placeholder="Search clusters..." />
+      <div class="overflow-y-auto">
+        <KubeconfigCatalog
         :kubeconfigs="filteredKubeconfigs"
+        :index-selected="indexSelected"
         @kubeconfig-selected="updateSelectedKubeconfig"
-      />
-      <KubeconfigDisplay :yaml="selectedKubeconfig" />
+        />
+      </div>
+
     </div>
+    <KubeconfigDisplay class="w-5/6" :kubeconfig="selectedKubeconfig" :catalog-length="filteredKubeconfigs.length" />
   </div>
 </template>
