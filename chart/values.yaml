@@ -67,7 +67,7 @@ server:
   image:
     registry: ""
     repository: brawdunoir/kubebrowser
-    tag: "0.3.0"
+    tag: "0.4.0"
     digest: ""
     ## Specify a pullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
