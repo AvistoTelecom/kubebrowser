@@ -137,14 +137,15 @@ func main() {
 func handleGetKubeconfigs(c *gin.Context) {
 	ec := extractFromContext(c)
 
-	ec.logger.Debug("Getting kubeconfigs")
+	ec.logger.Debug("Getting kubeconfig")
 	kubeconfigs, err := ec.kubeconfigLister.Kubeconfigs(viper.GetString(podNamespaceKey)).List(labels.Everything())
 	if err != nil {
 		ec.logger.Errorf("Error listing kubeconfigs: %s", err)
 		c.String(http.StatusInternalServerError, "Error listing kubeconfigs")
 	}
 
-	k, err := preprareKubeconfigs(c, kubeconfigs)
+	kubeconfigValues := ConvertPointersToValues(kubeconfigs)
+	k, err := preprareKubeconfigs(c, kubeconfigValues)
 	if err != nil {
 		ec.logger.Error(err, "Error preparing kubeconfigs")
 		c.String(http.StatusInternalServerError, "Error preparing kubeconfigs")

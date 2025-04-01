@@ -36,11 +36,10 @@ func randString(nByte int) (string, error) {
 
 // Returns a subset of initial Kubeconfigs depending on the whitelist in each Kubeconfig and the
 // claims (user and groups) in the idToken
-func filterKubeconfig(c *gin.Context, kubeconfigs []*v1.Kubeconfig, idToken *oidc.IDToken) ([]*v1.KubeconfigSpec, error) {
+func filterKubeconfig(c *gin.Context, kubeconfigs []v1.Kubeconfig, idToken *oidc.IDToken) ([]v1.KubeconfigSpec, error) {
 	logger := extractFromContext(c).logger
 
 	logger.Debug("Entering filterKubeconfig")
-
 	// Extract claims from ID token
 	var claims struct {
 		Email  string   `json:"email"`
@@ -52,22 +51,22 @@ func filterKubeconfig(c *gin.Context, kubeconfigs []*v1.Kubeconfig, idToken *oid
 
 	logger.Debugw("Extracted claims from ID token", "claims", claims)
 
-	filtered := make([]*v1.KubeconfigSpec, 0, len(kubeconfigs)) // Preallocate slice
+	filtered := make([]v1.KubeconfigSpec, 0, len(kubeconfigs)) // Preallocate slice
 
 	for _, kubeconfig := range kubeconfigs {
-		logger.Debugw("Processing kubeconfig", "name", kubeconfig.Name)
-
 		whitelist := kubeconfig.Spec.Whitelist
+		logger.Debugw("Processing kubeconfig", "name", kubeconfig.Name, "whitelist", whitelist)
+
 		if whitelist == nil {
 			logger.Debug("Whitelist is empty, adding kubeconfig")
-			filtered = append(filtered, &kubeconfig.Spec)
+			filtered = append(filtered, kubeconfig.Spec)
 			continue
 		}
 
 		// Check if user email is in whitelist
 		if slices.Contains(whitelist.Users, claims.Email) {
 			logger.Debugw("User match found", "name", kubeconfig.Name)
-			filtered = append(filtered, &kubeconfig.Spec)
+			filtered = append(filtered, kubeconfig.Spec)
 			continue
 		}
 
@@ -75,7 +74,7 @@ func filterKubeconfig(c *gin.Context, kubeconfigs []*v1.Kubeconfig, idToken *oid
 		for _, group := range claims.Groups {
 			if slices.Contains(whitelist.Groups, group) {
 				logger.Debugw("Group match found", "name", kubeconfig.Name, "group", group)
-				filtered = append(filtered, &kubeconfig.Spec)
+				filtered = append(filtered, kubeconfig.Spec)
 				break
 			}
 		}
@@ -84,7 +83,7 @@ func filterKubeconfig(c *gin.Context, kubeconfigs []*v1.Kubeconfig, idToken *oid
 	return filtered, nil
 }
 
-func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1.Kubeconfig) ([]*v1.KubeconfigSpec, error) {
+func preprareKubeconfigs(c *gin.Context, kubeconfigs []v1.Kubeconfig) ([]v1.KubeconfigSpec, error) {
 	ec := extractFromContext(c)
 	ec.logger.Debug("Entering prepareKubeconfigs")
 
@@ -111,7 +110,6 @@ func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1.Kubeconfig) ([]*v1.Ku
 	}}
 
 	for _, k := range kubeconfigsSpec {
-		k.Whitelist = nil                                     // Remove whitelist
 		k.Kubeconfig.Users = nil                              // Remove all users
 		k.Kubeconfig.Users = append(k.Kubeconfig.Users, user) // Put user created before
 		k.Kubeconfig.Contexts = k.Kubeconfig.Contexts[:1]     // Keep first context only
@@ -175,4 +173,13 @@ func newLogger() (*zap.Logger, error) {
 		OutputPaths:   []string{"stdout"},
 		EncoderConfig: zap.NewProductionEncoderConfig(),
 	}.Build()
+}
+
+// ConvertPointersToValues converts a slice of pointers to a slice of values.
+func ConvertPointersToValues[T any](input []*T) []T {
+	output := make([]T, len(input))
+	for i, item := range input {
+		output[i] = *item
+	}
+	return output
 }
