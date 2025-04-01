@@ -1,5 +1,15 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import { BxSolidHelpCircle } from '@kalimahapps/vue-icons';
+
+const helpURL = ref('')
+</script>
+
 <template>
-  <header class="flex content-center p-8 border-b border-gray-600">
+  <header class="flex content-center justify-between p-8 border-b border-gray-600">
     <h1 class="font-logo font-bold text-xl">KubeBrowser</h1>
+    <a v-if="helpURL" :href="helpURL" target="_blank" rel="noopener noreferrer">
+      <BxSolidHelpCircle class="w-8 h-8"/>
+    </a>
   </header>
 </template>
