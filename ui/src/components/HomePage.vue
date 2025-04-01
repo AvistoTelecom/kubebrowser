@@ -52,12 +52,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <HelloComponent />
+  <HelloComponent class="mx-8" />
   <div v-if="emptyKubeconfigs" class="flex flex-col flex-1 gap-4 items-center justify-center">
     <BsEmojiSurpriseFill class="w-10 h-10 text-gray-600"/>
     <p class="text-gray-300">oops, it seems like you don't have acces to any clusters</p>
   </div>
-  <div v-else class="mx-4 flex flex-1 gap-x-4 overflow-y-hidden">
+  <div v-else class="mx-8 flex flex-1 gap-x-4 overflow-y-hidden">
     <div class="space-y-4 w-1/6 flex flex-col">
       <SearchBox v-model="searchQuery" placeholder="Search clusters..." />
       <div class="overflow-y-auto">
