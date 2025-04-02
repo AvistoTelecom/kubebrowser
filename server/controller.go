@@ -15,7 +15,7 @@ import (
 
 // Setup the Kubernetes client and the SharedInformerFactory
 // Returns a KubeconfigLister
-func setupKubeconfigLister(ctx context.Context) (kubeconfigLister v1alpha1.KubeconfigLister, err error) {
+func newKubeconfigLister(ctx context.Context) (kubeconfigLister v1alpha1.KubeconfigLister, err error) {
 	// creates the in-cluster config
 	cfg, err := rest.InClusterConfig()
 	if err != nil {

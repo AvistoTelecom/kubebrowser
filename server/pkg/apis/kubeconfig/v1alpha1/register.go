@@ -6,7 +6,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-var SchemeGroupVersion = schema.GroupVersion{Group: "kubebrowser.io", Version: "v1"}
+var SchemeGroupVersion = schema.GroupVersion{Group: "kubebrowser.io", Version: "v1alpha1"}
 
 var (
 	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes)

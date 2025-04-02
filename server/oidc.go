@@ -38,8 +38,8 @@ func setCallbackCookie(c *gin.Context, name, value string) {
 	logger.Debugw("Callback cookie is set", "name", name)
 }
 
-func setupOidc(ctx context.Context, clientID string, clientSecret string) (oauth2.Config, *oidc.IDTokenVerifier, error) {
-	provider, err := oidc.NewProvider(ctx, viper.GetString("oauth2_issuer_url"))
+func newOIDCConfig(ctx context.Context, clientID string, clientSecret string) (oauth2.Config, *oidc.IDTokenVerifier, error) {
+	provider, err := oidc.NewProvider(ctx, viper.GetString(issuerURLKey))
 	if err != nil {
 		return oauth2.Config{}, nil, err
 	}

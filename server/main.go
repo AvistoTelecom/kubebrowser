@@ -60,16 +60,16 @@ func main() {
 	ctx := signals.SetupSignalHandler()
 
 	// Create controller lister for Kubeconfigs CRD
-	kubeconfigLister, err := setupKubeconfigLister(ctx)
+	kubeconfigLister, err := newKubeconfigLister(ctx)
 	if err != nil {
-		logger.Error(err, "Cannot setup kubeconfig lister")
+		logger.Errorf("Cannot setup kubeconfig lister: %s", err)
 		os.Exit(1)
 	}
 
 	// Create OIDC related config and verifier
-	config, verifier, err := setupOidc(ctx, viper.GetString(clientIDKey), viper.GetString(clientSecretKey))
+	config, verifier, err := newOIDCConfig(ctx, viper.GetString(clientIDKey), viper.GetString(clientSecretKey))
 	if err != nil {
-		logger.Error(err, "Failed to setup Oidc")
+		logger.Errorf("Failed to setup OIDC: %s", err)
 		os.Exit(1)
 	}
 
