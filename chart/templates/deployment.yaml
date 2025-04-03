@@ -146,10 +146,21 @@ spec:
           lifecycle: {{- include "common.tplvalues.render" (dict "value" .Values.server.lifecycleHooks "context" $) | nindent 12 }}
           {{- end }}
           volumeMounts:
+            - name: ui-configuration
+              mountPath: /var/run/ko/config/config.js
+              subPath: config.js
             {{- if .Values.server.extraVolumeMounts }}
             {{- include "common.tplvalues.render" (dict "value" .Values.server.extraVolumeMounts "context" $) | nindent 12 }}
             {{- end }}
       volumes:
+        - name: ui-configuration
+          configMap:
+            defaultMode: 420
+        {{- if .Values.server.configuration.ui.existingConfigmap }}
+            name: {{ .Values.server.configuration.ui.existingConfigmap }}
+        {{- else }}
+            name: {{ include "kubebrowser.server.fullname" . }}-ui-config
+        {{- end }}
         {{- if .Values.server.extraVolumes }}
         {{- include "common.tplvalues.render" ( dict "value" .Values.server.extraVolumes "context" $ ) | nindent 8 }}
         {{- end }}

@@ -97,6 +97,9 @@ server:
     clientID: ""
     clientSecret: ""
     issuerURL: ""
+    ui:
+      existingConfigmap: ""
+      helpPage: "https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"
     # authorizationEndpoint: ""
     # tokenEndpoint: ""
     # scopes: []
@@ -104,22 +107,6 @@ server:
     # mountPath: "/app"
     # kubeconfigsPath: "/app/kubeconfigs"
   logLevel: "INFO"
-  ## @param server.overrideConfiguration Configuration to override all server.configuration.* values
-  ## e.g:
-  ## overrideConfiguration: |
-  ## {
-  ## "host": "0.0.0.0",
-  ## "port": 8080,
-  ## "kubectl_username": "oidc",
-  ## "oidc": {
-  ##   "clientId": "<client_id>",
-  ##   "clientSecret": "<client_secret>",
-  ##   "authorizationEndpoint": "https://login.microsoftonline.com/<tenant_id>/oauth2/v2.0/authorize",
-  ##   "tokenEndpoint": "https://login.microsoftonline.com/<tenant_id>/oauth2/v2.0/token",
-  ##   "issuerUrl": "https://login.microsoftonline.com/<tenant_id>/v2.0"
-  ##   }
-  ## }
-  overrideConfiguration: ""
   ## @param server.serviceAccountName Service account to use
   ##
   serviceAccountName: "kubebrowser"

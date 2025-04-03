@@ -1,0 +1,21 @@
+{{- /*
+Author: Yann Lacroix
+*/}}
+
+{{- if not .Values.server.configuration.ui.existingConfigmap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "kubebrowser.server.fullname" . }}-ui-config
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
+    app.kubernetes.io/component: server
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+data:
+  config.js: |
+    window._env_ = {
+      HELP_PAGE: {{ .Values.server.configuration.ui.helpPage | quote }},
+    };
+{{- end }}
