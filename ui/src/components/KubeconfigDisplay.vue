@@ -31,9 +31,9 @@ watch(
     class="border-2 border-gray-600 rounded-md p-4 overflow-auto"
     :class="{ 'flex items-center justify-center': !kubeconfig, 'bg-primary-950': kubeconfig }"
   >
-    <div v-if="kubeconfig" class="relative">
+    <div v-if="kubeconfig">
       <div
-        class="absolute top-1 right-1 inline-flex items-center justify-center gap-1 cursor-pointer p-3 bg-accent min-w-min text-gray-800 rounded-tr-xl rounded-bl-xl"
+        class="absolute top-6 right-6 inline-flex items-center justify-center gap-1 cursor-pointer p-3 bg-accent min-w-min text-gray-800 rounded-tr-md rounded-bl-md"
         @click="handleCopy"
       >
         <AkCopy />
