@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { BxSolidHelpCircle } from '@kalimahapps/vue-icons';
 
-const helpURL = ref('')
+const helpURL = window._env_.HELP_PAGE
 </script>
 
 <template>
