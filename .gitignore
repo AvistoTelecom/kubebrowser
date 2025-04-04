@@ -31,3 +31,6 @@ coverage
 
 .envrc
 kodata
+
+# Vitepress
+cache
