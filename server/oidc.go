@@ -23,6 +23,17 @@ const (
 var oauth2Config *oauth2.Config
 var oauth2Verifier *oidc.IDTokenVerifier
 
+// idToken Claims
+
+type NameOnly struct {
+	Name string
+}
+
+type EmailAndGroups struct {
+	Email  string
+	Groups []string
+}
+
 func setCallbackCookie(c *gin.Context, name, value string) {
 	c.SetSameSite(http.SameSiteLaxMode)
 	c.SetCookie(

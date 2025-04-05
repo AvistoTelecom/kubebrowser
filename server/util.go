@@ -3,14 +3,10 @@ package main
 import (
 	"crypto/rand"
 	"encoding/base64"
-	"fmt"
 	"io"
 	"slices"
 
 	v1alpha1 "github.com/brawdunoir/kubebrowser/pkg/apis/kubeconfig/v1alpha1"
-	"github.com/coreos/go-oidc/v3/oidc"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
 
@@ -24,19 +20,8 @@ func randString(nByte int) (string, error) {
 
 // Returns a subset of initial Kubeconfigs depending on the whitelist in each Kubeconfig and the
 // claims (user and groups) in the idToken
-func filterKubeconfig(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig, idToken *oidc.IDToken) ([]*v1alpha1.Kubeconfig, error) {
+func filterKubeConfigs(kubeconfigs []*v1alpha1.Kubeconfig, claims EmailAndGroups) []*v1alpha1.Kubeconfig {
 	logger.Debug("Entering filterKubeconfig")
-	// Extract claims from ID token
-	var claims struct {
-		Email  string   `json:"email"`
-		Groups []string `json:"groups"`
-	}
-	if err := idToken.Claims(&claims); err != nil {
-		return nil, fmt.Errorf("failed to parse ID token claims: %w", err)
-	}
-
-	logger.Debugw("Extracted claims from ID token", "claims", claims)
-
 	filtered := make([]*v1alpha1.Kubeconfig, 0, len(kubeconfigs))
 	for _, kubeconfig := range kubeconfigs {
 		whitelist := kubeconfig.Spec.Whitelist
@@ -64,26 +49,11 @@ func filterKubeconfig(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig, idToke
 			}
 		}
 	}
-
-	return filtered, nil
+	return filtered
 }
 
-func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig) ([]*v1alpha1.KubeconfigSpec, error) {
-	logger.Debug("Entering prepareKubeconfigs")
-
-	rawIDToken, refreshToken := extractTokens(sessions.Default(c))
-
-	idToken, err := oauth2Verifier.Verify(c.Request.Context(), rawIDToken)
-	if err != nil {
-		return nil, err
-	}
-
-	filteredKubeconfigs, err := filterKubeconfig(c, kubeconfigs, idToken)
-	if err != nil {
-		return nil, err
-	}
-
-	user := v1alpha1.User{Name: "oidc", User: v1alpha1.UserSpec{
+func kubeConfigUser(rawIDToken, refreshToken string) v1alpha1.User {
+	return v1alpha1.User{Name: "oidc", User: v1alpha1.UserSpec{
 		AuthProvider: v1alpha1.AuthProviderSpec{Name: "oidc", Config: v1alpha1.AuthProviderConfig{
 			ClientID:     oauth2Config.ClientID,
 			ClientSecret: oauth2Config.ClientSecret,
@@ -92,7 +62,9 @@ func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig) ([]
 			RefreshToken: refreshToken,
 		}},
 	}}
+}
 
+func toKubeConfigSpecs(filteredKubeconfigs []*v1alpha1.Kubeconfig, user v1alpha1.User) []*v1alpha1.KubeconfigSpec {
 	copiedKubeconfig := make([]*v1alpha1.KubeconfigSpec, 0, len(filteredKubeconfigs))
 	for _, kubeconfig := range filteredKubeconfigs {
 		k := kubeconfig.DeepCopy()
@@ -104,10 +76,5 @@ func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig) ([]
 		ks.Kubeconfig.Contexts[0].Context.User = user.Name      // Put same name as user
 		copiedKubeconfig = append(copiedKubeconfig, &ks)
 	}
-
-	return copiedKubeconfig, nil
-}
-
-func extractTokens(session sessions.Session) (rawIDToken string, refreshToken string) {
-	return session.Get(rawIDTokenKey).(string), session.Get(refreshTokenKey).(string)
+	return copiedKubeconfig
 }

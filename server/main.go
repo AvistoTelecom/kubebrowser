@@ -124,35 +124,55 @@ func main() {
 
 func handleGetKubeconfigs(c *gin.Context) {
 	logger.Debug("Getting kubeconfig")
-	kubeconfigs, err := kubecfg.lister.Kubeconfigs(viper.GetString(podNamespaceKey)).List(labels.Everything())
+
+	session := sessions.Default(c)
+	rawIDToken := session.Get(rawIDTokenKey).(string)
+	refreshToken := session.Get(refreshTokenKey).(string)
+
+	// NOTE: verification has been done in AuthMiddleware already
+	idToken, err := oauth2Verifier.Verify(c.Request.Context(), rawIDToken)
+	if err != nil {
+		logger.Error(err, "Error preparing kubeconfigs")
+		c.String(http.StatusInternalServerError, "Error preparing kubeconfigs")
+		return
+	}
+
+	var claims EmailAndGroups
+	if err := idToken.Claims(&claims); err != nil {
+		logger.Error(err, "Error preparing kubeconfigs")
+		c.String(http.StatusInternalServerError, "Error preparing kubeconfigs")
+		return
+	}
+	logger.Debugw("Extracted claims", "claims", claims)
+
+	logger.Debug("Getting list of all kube configs")
+	configs, err := kubecfg.lister.Kubeconfigs(viper.GetString(podNamespaceKey)).List(labels.Everything())
 	if err != nil {
 		logger.Errorf("Error listing kubeconfigs: %s", err)
 		c.String(http.StatusInternalServerError, "Error listing kubeconfigs")
 	}
 
-	k, err := preprareKubeconfigs(c, kubeconfigs)
-	if err != nil {
-		logger.Error(err, "Error preparing kubeconfigs")
-		c.String(http.StatusInternalServerError, "Error preparing kubeconfigs")
-	}
+	filtered := filterKubeConfigs(configs, claims)
+	user := kubeConfigUser(rawIDToken, refreshToken)
+	specs := toKubeConfigSpecs(filtered, user)
 
-	c.JSON(http.StatusOK, k)
+	c.JSON(http.StatusOK, specs)
 }
 
 func handleGetMe(c *gin.Context) {
 	logger.Debug("Entering handleGetMe")
 
-	rawIDToken, _ := extractTokens(sessions.Default(c))
+	session := sessions.Default(c)
+	rawIDToken := session.Get(rawIDTokenKey).(string)
 
+	// NOTE: verification has been done in AuthMiddleware already
 	idToken, err := oauth2Verifier.Verify(c.Request.Context(), rawIDToken)
 	if err != nil {
 		logger.Errorf("Error verifying ID Token: %s", err)
 		c.String(http.StatusInternalServerError, "Error verifying ID Token")
 	}
-	claims := struct {
-		Name string
-	}{}
 
+	var claims NameOnly
 	if err := idToken.Claims(&claims); err != nil {
 		logger.Errorf("Error extracting claims: %s", err)
 		c.String(http.StatusInternalServerError, "Error extracting claims")
