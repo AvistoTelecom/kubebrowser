@@ -33,7 +33,7 @@ onMounted(async () => {
 <template>
   <AppHello class="mx-8" />
 
-  <div v-if="loading" class="flex flex-1 gap-4 items-center justify-center text-gray-300">Loading kube configs.</div>
+  <div v-if="loading" class="flex flex-1 gap-4 items-center justify-center text-gray-300">Loading Kubeconfigs...</div>
   <div v-else-if="!kubeconfigs.length" class="flex flex-col flex-1 gap-4 items-center justify-center">
     <BsEmojiSurpriseFill class="w-10 h-10 text-gray-600"/>
     <p class="text-gray-300">oops, it seems like you don't have acces to any clusters</p>
