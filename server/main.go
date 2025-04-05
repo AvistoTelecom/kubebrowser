@@ -32,7 +32,6 @@ const (
 	loggerKey           contextKey = "logger"
 	oauth2ConfigKey     contextKey = "oauth2_config"
 	oauth2VerifierKey   contextKey = "oauth2_verifier"
-	kubeconfigListerKey contextKey = "kubeconfig_lister"
 	// Normal const
 	callbackRoute string = "/auth/callback"
 	defaultPort   string = "8080"
@@ -60,8 +59,7 @@ func main() {
 	ctx := signals.SetupSignalHandler()
 
 	// Create controller lister for Kubeconfigs CRD
-	kubeconfigLister, err := newKubeconfigLister(ctx)
-	if err != nil {
+	if err := kubecfg.Init(ctx); err != nil {
 		logger.Errorf("Cannot setup kubeconfig lister: %s", err)
 		os.Exit(1)
 	}
@@ -77,7 +75,6 @@ func main() {
 	ctx = context.WithValue(ctx, loggerKey, logger)
 	ctx = context.WithValue(ctx, oauth2ConfigKey, config)
 	ctx = context.WithValue(ctx, oauth2VerifierKey, verifier)
-	ctx = context.WithValue(ctx, kubeconfigListerKey, kubeconfigLister)
 
 	// Create session store
 	store := memstore.NewStore([]byte(viper.GetString(sessionSecretKey)))
@@ -138,7 +135,7 @@ func handleGetKubeconfigs(c *gin.Context) {
 	ec := extractFromContext(c)
 
 	ec.logger.Debug("Getting kubeconfig")
-	kubeconfigs, err := ec.kubeconfigLister.Kubeconfigs(viper.GetString(podNamespaceKey)).List(labels.Everything())
+	kubeconfigs, err := kubecfg.lister.Kubeconfigs(viper.GetString(podNamespaceKey)).List(labels.Everything())
 	if err != nil {
 		ec.logger.Errorf("Error listing kubeconfigs: %s", err)
 		c.String(http.StatusInternalServerError, "Error listing kubeconfigs")

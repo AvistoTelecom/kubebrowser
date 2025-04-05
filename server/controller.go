@@ -13,18 +13,23 @@ import (
 	"k8s.io/client-go/tools/cache"
 )
 
+var kubecfg *Kubecfg
+
+type Kubecfg struct {
+	lister v1alpha1.KubeconfigLister
+}
+
 // Setup the Kubernetes client and the SharedInformerFactory
 // Returns a KubeconfigLister
-func newKubeconfigLister(ctx context.Context) (kubeconfigLister v1alpha1.KubeconfigLister, err error) {
-	// creates the in-cluster config
+func (k *Kubecfg) Init(ctx context.Context) error {
 	cfg, err := rest.InClusterConfig()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	exampleClient, err := clientset.NewForConfig(cfg)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Create the namespace-scoped informer factory
@@ -34,16 +39,13 @@ func newKubeconfigLister(ctx context.Context) (kubeconfigLister v1alpha1.Kubecon
 		informers.WithNamespace(viper.GetString(podNamespaceKey)),
 	)
 
-	// Get the lister for Kubeconfigs
-	kubeconfigLister = kubeInformerFactory.Kubeconfig().V1alpha1().Kubeconfigs().Lister()
+	k.lister = kubeInformerFactory.Kubeconfig().V1alpha1().Kubeconfigs().Lister()
 
-	// Start the informer factory
 	kubeInformerFactory.Start(ctx.Done())
 
-	// Wait for the caches to sync
 	if !cache.WaitForCacheSync(ctx.Done(), kubeInformerFactory.Kubeconfig().V1alpha1().Kubeconfigs().Informer().HasSynced) {
-		return nil, errors.New("failed to sync caches")
+		return errors.New("failed to sync caches")
 	}
 
-	return kubeconfigLister, nil
+	return nil
 }

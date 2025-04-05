@@ -8,7 +8,6 @@ import (
 	"slices"
 
 	v1alpha1 "github.com/brawdunoir/kubebrowser/pkg/apis/kubeconfig/v1alpha1"
-	v1alpha1client "github.com/brawdunoir/kubebrowser/pkg/client/listers/kubeconfig/v1alpha1"
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -23,7 +22,6 @@ type enhancedContext struct {
 	oauth2Config     oauth2.Config
 	oauth2Verifier   *oidc.IDTokenVerifier
 	session          sessions.Session
-	kubeconfigLister v1alpha1client.KubeconfigLister
 }
 
 func randString(nByte int) (string, error) {
@@ -130,11 +128,6 @@ func extractFromContext(c *gin.Context) enhancedContext {
 		oauth2Verifier: c.Request.Context().Value(oauth2VerifierKey).(*oidc.IDTokenVerifier),
 		session:        sessions.Default(c),
 	}
-	kl := c.Request.Context().Value(kubeconfigListerKey)
-	if kl == nil {
-		return ec
-	}
-	ec.kubeconfigLister = kl.(v1alpha1client.KubeconfigLister)
 	return ec
 }
 
