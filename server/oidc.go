@@ -24,6 +24,7 @@ const (
 )
 
 var oauth2Config *oauth2.Config
+var oauth2Verifier *oidc.IDTokenVerifier
 
 func setCallbackCookie(c *gin.Context, name, value string) {
 	c.SetSameSite(http.SameSiteLaxMode)
@@ -39,15 +40,15 @@ func setCallbackCookie(c *gin.Context, name, value string) {
 	logger.Debugw("Callback cookie is set", "name", name)
 }
 
-func InitOIDC(ctx context.Context, clientID string, clientSecret string) (*oidc.IDTokenVerifier, error) {
+func InitOIDC(ctx context.Context, clientID string, clientSecret string) error {
 	provider, err := oidc.NewProvider(ctx, viper.GetString(issuerURLKey))
 	if err != nil {
-		return nil, err
+		return err
 	}
 	oidcConfig := &oidc.Config{
 		ClientID: clientID,
 	}
-	verifier := provider.Verifier(oidcConfig)
+	oauth2Verifier = provider.Verifier(oidcConfig)
 
 	oauth2Config = &oauth2.Config{
 		ClientID:     clientID,
@@ -56,7 +57,7 @@ func InitOIDC(ctx context.Context, clientID string, clientSecret string) (*oidc.
 		RedirectURL:  viper.GetString(hostnameKey) + callbackRoute,
 		Scopes:       []string{oidc.ScopeOpenID, "profile", "email", oidc.ScopeOfflineAccess},
 	}
-	return verifier, nil
+	return nil
 }
 
 func refreshTokens(ctx context.Context, config *oauth2.Config, refreshToken string) (*oauth2.Token, error) {
@@ -123,7 +124,7 @@ func handleOAuth2Callback(c *gin.Context) {
 		c.String(http.StatusInternalServerError, "No id_token field in oauth2 token")
 		return
 	}
-	idToken, err := ec.oauth2Verifier.Verify(c.Request.Context(), rawIDToken)
+	idToken, err := oauth2Verifier.Verify(c.Request.Context(), rawIDToken)
 	if err != nil {
 		logger.Error(err, "Failed to verify ID Token")
 		c.String(http.StatusInternalServerError, "Failed to verify ID Token: "+err.Error())
@@ -180,7 +181,7 @@ func AuthMiddleware(c *gin.Context) {
 	}
 
 	// Verify ID token
-	idToken, err := ec.oauth2Verifier.Verify(c.Request.Context(), rawIDToken.(string))
+	idToken, err := oauth2Verifier.Verify(c.Request.Context(), rawIDToken.(string))
 	if err != nil || idToken.Expiry.Before(time.Now()) {
 		logger.Info("ID token expired or invalid, attempting to refresh")
 
@@ -201,7 +202,7 @@ func AuthMiddleware(c *gin.Context) {
 		}
 
 		// Verify new ID token
-		_, err = ec.oauth2Verifier.Verify(c.Request.Context(), newToken.Extra("id_token").(string))
+		_, err = oauth2Verifier.Verify(c.Request.Context(), newToken.Extra("id_token").(string))
 		if err != nil {
 			logger.Error(err, "Failed to verify refreshed ID token, redirecting to login")
 			redirectToOIDCLogin(c)

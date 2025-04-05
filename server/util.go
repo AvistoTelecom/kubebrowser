@@ -15,7 +15,6 @@ import (
 )
 
 type enhancedContext struct {
-	oauth2Verifier   *oidc.IDTokenVerifier
 	session          sessions.Session
 }
 
@@ -79,7 +78,7 @@ func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig) ([]
 
 	rawIDToken, refreshToken := extractTokens(ec.session)
 
-	idToken, err := ec.oauth2Verifier.Verify(c.Request.Context(), rawIDToken)
+	idToken, err := oauth2Verifier.Verify(c.Request.Context(), rawIDToken)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +115,6 @@ func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig) ([]
 
 func extractFromContext(c *gin.Context) enhancedContext {
 	ec := enhancedContext{
-		oauth2Verifier: c.Request.Context().Value(oauth2VerifierKey).(*oidc.IDTokenVerifier),
 		session:        sessions.Default(c),
 	}
 	return ec

@@ -17,8 +17,6 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 )
 
-type contextKey string
-
 var static = os.Getenv("KO_DATA_PATH")
 
 const (
@@ -28,8 +26,6 @@ const (
 	sessionSecretKey string = "session_secret"
 	devKey           string = "dev"
 	logLevelKey      string = "log_level"
-	// Context keys
-	oauth2VerifierKey   contextKey = "oauth2_verifier"
 	// Normal const
 	callbackRoute string = "/auth/callback"
 	defaultPort   string = "8080"
@@ -63,14 +59,11 @@ func main() {
 	}
 
 	// Create OIDC related config and verifier
-	verifier, err := InitOIDC(ctx, viper.GetString(clientIDKey), viper.GetString(clientSecretKey))
+	err := InitOIDC(ctx, viper.GetString(clientIDKey), viper.GetString(clientSecretKey))
 	if err != nil {
 		logger.Errorf("Failed to setup OIDC: %s", err)
 		os.Exit(1)
 	}
-
-	// Populate context
-	ctx = context.WithValue(ctx, oauth2VerifierKey, verifier)
 
 	// Create session store
 	store := memstore.NewStore([]byte(viper.GetString(sessionSecretKey)))
@@ -150,7 +143,7 @@ func handleGetMe(c *gin.Context) {
 	logger.Debug("Entering handleGetMe")
 	rawIDToken, _ := extractTokens(ec.session)
 
-	idToken, err := ec.oauth2Verifier.Verify(c.Request.Context(), rawIDToken)
+	idToken, err := oauth2Verifier.Verify(c.Request.Context(), rawIDToken)
 	if err != nil {
 		logger.Errorf("Error verifying ID Token: %s", err)
 		c.String(http.StatusInternalServerError, "Error verifying ID Token")
