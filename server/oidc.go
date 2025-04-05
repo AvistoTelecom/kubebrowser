@@ -161,6 +161,7 @@ func AuthMiddleware(c *gin.Context) {
 	if c.Request.URL.Path == callbackRoute {
 		logger.Debug("Skip auth because user hitting callback route")
 		c.Next()
+		return
 	}
 
 	session := sessions.Default(c)
@@ -170,6 +171,7 @@ func AuthMiddleware(c *gin.Context) {
 	if err != nil {
 		logger.Errorf("Could not save session: %w", err)
 		c.String(http.StatusInternalServerError, "Cannot save session")
+		return
 	}
 
 	// Retrieve ID token from session
@@ -217,6 +219,7 @@ func AuthMiddleware(c *gin.Context) {
 		if err != nil {
 			logger.Errorf("Cannot save session: %w", err)
 			c.String(http.StatusInternalServerError, "Cannot save session")
+			return
 		}
 	}
 
