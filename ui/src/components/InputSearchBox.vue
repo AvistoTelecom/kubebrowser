@@ -11,7 +11,9 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void
+}>()
 
 function updateValue(event: Event) {
   emit('update:modelValue', (event.target as HTMLInputElement).value)
