@@ -22,7 +22,7 @@ function selectKubeconfig(kubeconfig: object, index: number) {
     class="flex-none flex flex-col gap-4 w-full"
   >
     <button
-      v-for="(kubeconfig, index) in kubeconfigs"
+      v-for="(kubeconfig, index) in props.kubeconfigs"
       :key="index"
       class="text-lg py-6 px-12 rounded-md border-2 border-gray-600 cursor-pointer break-words"
       :class="{
