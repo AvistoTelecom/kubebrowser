@@ -12,7 +12,7 @@ import KubeconfigDisplay from '@/components/KubeconfigDisplay.vue'
 
 const kubeconfigs = ref<Kubeconfig[]>([])
 const searchQuery = ref('')
-const selectedKubeconfig = ref<string | null>(null)
+const selectedKubeconfig = ref<Kubeconfig | null>(null)
 const indexSelected = ref<number | null>(null)
 const emptyKubeconfigs = ref(false)
 
@@ -25,7 +25,7 @@ const filteredKubeconfigs = computed(() => {
   return filtered
 })
 
-function updateSelectedKubeconfig(kubeconfig: string, index: number) {
+function updateSelectedKubeconfig(kubeconfig: Kubeconfig, index: number) {
   indexSelected.value = index
   selectedKubeconfig.value = kubeconfig
 }

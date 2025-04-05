@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import YAML from 'yaml'
-
 import type { Kubeconfig } from '@/types/Kubeconfig'
 
 const props = defineProps<{
@@ -9,11 +7,11 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'kubeconfig-selected', kubeconfig: string, index: number): void
+  (e: 'kubeconfig-selected', kubeconfig: Kubeconfig, index: number): void
 }>()
 
-function selectKubeconfig(kubeconfig: object, index: number) {
-  emit('kubeconfig-selected', YAML.stringify(kubeconfig), index)
+function selectKubeconfig(kubeconfig: Kubeconfig, index: number) {
+  emit('kubeconfig-selected', kubeconfig, index)
 }
 </script>
 
@@ -29,7 +27,7 @@ function selectKubeconfig(kubeconfig: object, index: number) {
         'bg-accent text-primary-950': props.indexSelected === index,
         'bg-gray-700': props.indexSelected !== index,
       }"
-      @click="selectKubeconfig(kubeconfig.kubeconfig, index)"
+      @click="selectKubeconfig(kubeconfig, index)"
     >
       {{ kubeconfig.name }}
     </button>
