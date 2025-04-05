@@ -14,10 +14,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-type enhancedContext struct {
-	session          sessions.Session
-}
-
 func randString(nByte int) (string, error) {
 	b := make([]byte, nByte)
 	if _, err := io.ReadFull(rand.Reader, b); err != nil {
@@ -73,10 +69,9 @@ func filterKubeconfig(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig, idToke
 }
 
 func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig) ([]*v1alpha1.KubeconfigSpec, error) {
-	ec := extractFromContext(c)
 	logger.Debug("Entering prepareKubeconfigs")
 
-	rawIDToken, refreshToken := extractTokens(ec.session)
+	rawIDToken, refreshToken := extractTokens(sessions.Default(c))
 
 	idToken, err := oauth2Verifier.Verify(c.Request.Context(), rawIDToken)
 	if err != nil {
@@ -111,13 +106,6 @@ func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig) ([]
 	}
 
 	return copiedKubeconfig, nil
-}
-
-func extractFromContext(c *gin.Context) enhancedContext {
-	ec := enhancedContext{
-		session:        sessions.Default(c),
-	}
-	return ec
 }
 
 func extractTokens(session sessions.Session) (rawIDToken string, refreshToken string) {

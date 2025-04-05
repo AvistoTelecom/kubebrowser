@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/coreos/go-oidc/v3/oidc"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"golang.org/x/oauth2"
@@ -92,8 +93,6 @@ func redirectToOIDCLogin(c *gin.Context) {
 }
 
 func handleOAuth2Callback(c *gin.Context) {
-	ec := extractFromContext(c)
-
 	logger.Debug("Entering handleOAuth2Callback")
 
 	// Retrieve and validate state
@@ -143,19 +142,20 @@ func handleOAuth2Callback(c *gin.Context) {
 		return
 	}
 
-	ec.session.Set(rawIDTokenKey, rawIDToken)
-	ec.session.Set(refreshTokenKey, oauth2Token.RefreshToken)
-	err = ec.session.Save()
+	session := sessions.Default(c)
+
+	session.Set(rawIDTokenKey, rawIDToken)
+	session.Set(refreshTokenKey, oauth2Token.RefreshToken)
+	err = session.Save()
 	if err != nil {
 		logger.Error(err, "Cannot save session")
 		c.String(http.StatusInternalServerError, "Cannot save session")
 	}
-	redirectURI := ec.session.Get(initialRouteKey)
+	redirectURI := session.Get(initialRouteKey)
 	c.Redirect(http.StatusFound, redirectURI.(string))
 }
 
 func AuthMiddleware(c *gin.Context) {
-	ec := extractFromContext(c)
 	logger.Debug("Entering AuthMiddleware")
 
 	// Skip authentication for callback route
@@ -164,15 +164,17 @@ func AuthMiddleware(c *gin.Context) {
 		c.Next()
 	}
 
-	ec.session.Set(initialRouteKey, c.Request.RequestURI)
-	err := ec.session.Save()
+	session := sessions.Default(c)
+
+	session.Set(initialRouteKey, c.Request.RequestURI)
+	err := session.Save()
 	if err != nil {
 		logger.Error(err, "Cannot save session")
 		c.String(http.StatusInternalServerError, "Cannot save session")
 	}
 
 	// Retrieve ID token from session
-	rawIDToken := ec.session.Get(rawIDTokenKey)
+	rawIDToken := session.Get(rawIDTokenKey)
 	if rawIDToken == nil {
 		logger.Debug("ID token missing, redirecting to login")
 		redirectToOIDCLogin(c)
@@ -186,7 +188,7 @@ func AuthMiddleware(c *gin.Context) {
 		logger.Info("ID token expired or invalid, attempting to refresh")
 
 		// Retrieve refresh token
-		refreshToken := ec.session.Get(refreshTokenKey)
+		refreshToken := session.Get(refreshTokenKey)
 		if refreshToken == nil {
 			logger.Info("Refresh token cookie missing, redirecting to login")
 			redirectToOIDCLogin(c)
@@ -210,9 +212,9 @@ func AuthMiddleware(c *gin.Context) {
 		}
 
 		// Update session with new tokens
-		ec.session.Set(rawIDTokenKey, newToken.Extra("id_token").(string))
-		ec.session.Set(refreshTokenKey, newToken.RefreshToken)
-		err = ec.session.Save()
+		session.Set(rawIDTokenKey, newToken.Extra("id_token").(string))
+		session.Set(refreshTokenKey, newToken.RefreshToken)
+		err = session.Save()
 		if err != nil {
 			logger.Error(err, "Cannot save session")
 			c.String(http.StatusInternalServerError, "Cannot save session")

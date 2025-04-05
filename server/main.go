@@ -138,10 +138,9 @@ func handleGetKubeconfigs(c *gin.Context) {
 }
 
 func handleGetMe(c *gin.Context) {
-	ec := extractFromContext(c)
-
 	logger.Debug("Entering handleGetMe")
-	rawIDToken, _ := extractTokens(ec.session)
+
+	rawIDToken, _ := extractTokens(sessions.Default(c))
 
 	idToken, err := oauth2Verifier.Verify(c.Request.Context(), rawIDToken)
 	if err != nil {
