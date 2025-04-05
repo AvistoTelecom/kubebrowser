@@ -1,0 +1,41 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-json
+      - id: check-yaml
+        exclude: chart
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+        args: [--fix, lf]
+      - id: detect-private-key
+      - id: no-commit-to-branch
+        args: [--branch, main]
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v9.24.0
+    hooks:
+      - id: eslint
+        files: \.[jt]s|\.vue # *.js, *.ts and .vue
+        types: [file]
+        args: [--config, ui/eslint.config.ts]
+        additional_dependencies:
+          - eslint
+          - jiti
+  - repo: local
+    hooks:
+      - id: app-prettier
+        name: prettier
+        language: system
+        files: \.[jt]s|\.vue # *.js, *.ts and .vue
+        entry: |
+          bash -c 'pnpm --prefix ui run format' --
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.2
+    hooks:
+      - id: gitleaks
