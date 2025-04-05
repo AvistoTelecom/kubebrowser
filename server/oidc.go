@@ -23,6 +23,8 @@ const (
 	refreshTokenKey = "refresh_token"
 )
 
+var oauth2Config *oauth2.Config
+
 func setCallbackCookie(c *gin.Context, name, value string) {
 	c.SetSameSite(http.SameSiteLaxMode)
 	c.SetCookie(
@@ -37,27 +39,27 @@ func setCallbackCookie(c *gin.Context, name, value string) {
 	logger.Debugw("Callback cookie is set", "name", name)
 }
 
-func newOIDCConfig(ctx context.Context, clientID string, clientSecret string) (oauth2.Config, *oidc.IDTokenVerifier, error) {
+func InitOIDC(ctx context.Context, clientID string, clientSecret string) (*oidc.IDTokenVerifier, error) {
 	provider, err := oidc.NewProvider(ctx, viper.GetString(issuerURLKey))
 	if err != nil {
-		return oauth2.Config{}, nil, err
+		return nil, err
 	}
 	oidcConfig := &oidc.Config{
 		ClientID: clientID,
 	}
 	verifier := provider.Verifier(oidcConfig)
 
-	config := oauth2.Config{
+	oauth2Config = &oauth2.Config{
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
 		Endpoint:     provider.Endpoint(),
 		RedirectURL:  viper.GetString(hostnameKey) + callbackRoute,
 		Scopes:       []string{oidc.ScopeOpenID, "profile", "email", oidc.ScopeOfflineAccess},
 	}
-	return config, verifier, nil
+	return verifier, nil
 }
 
-func refreshTokens(ctx context.Context, config oauth2.Config, refreshToken string) (*oauth2.Token, error) {
+func refreshTokens(ctx context.Context, config *oauth2.Config, refreshToken string) (*oauth2.Token, error) {
 	tokenSource := config.TokenSource(ctx, &oauth2.Token{RefreshToken: refreshToken})
 	newToken, err := tokenSource.Token()
 	if err != nil {
@@ -67,7 +69,6 @@ func refreshTokens(ctx context.Context, config oauth2.Config, refreshToken strin
 }
 
 func redirectToOIDCLogin(c *gin.Context) {
-	ec := extractFromContext(c)
 	logger.Debug("Entering redirectToOIDCLogin")
 
 	state, err := randString(16)
@@ -86,7 +87,7 @@ func redirectToOIDCLogin(c *gin.Context) {
 	setCallbackCookie(c, "nonce", nonce)
 
 	// Redirect to OIDC login
-	c.Redirect(http.StatusFound, ec.oauth2Config.AuthCodeURL(state, oidc.Nonce(nonce)))
+	c.Redirect(http.StatusFound, oauth2Config.AuthCodeURL(state, oidc.Nonce(nonce)))
 }
 
 func handleOAuth2Callback(c *gin.Context) {
@@ -108,7 +109,7 @@ func handleOAuth2Callback(c *gin.Context) {
 	}
 
 	// Exchange code for token
-	oauth2Token, err := ec.oauth2Config.Exchange(c.Request.Context(), c.Query("code"))
+	oauth2Token, err := oauth2Config.Exchange(c.Request.Context(), c.Query("code"))
 	if err != nil {
 		logger.Error(err, "Failed to exchange token")
 		c.String(http.StatusInternalServerError, "Failed to exchange token: "+err.Error())
@@ -192,7 +193,7 @@ func AuthMiddleware(c *gin.Context) {
 		}
 
 		// Refresh tokens
-		newToken, err := refreshTokens(c.Request.Context(), ec.oauth2Config, refreshToken.(string))
+		newToken, err := refreshTokens(c.Request.Context(), oauth2Config, refreshToken.(string))
 		if err != nil {
 			logger.Error(err, "Failed to refresh token, redirecting to login")
 			redirectToOIDCLogin(c)

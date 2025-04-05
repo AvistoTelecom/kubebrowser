@@ -12,11 +12,9 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"golang.org/x/oauth2"
 )
 
 type enhancedContext struct {
-	oauth2Config     oauth2.Config
 	oauth2Verifier   *oidc.IDTokenVerifier
 	session          sessions.Session
 }
@@ -93,8 +91,8 @@ func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig) ([]
 
 	user := v1alpha1.User{Name: "oidc", User: v1alpha1.UserSpec{
 		AuthProvider: v1alpha1.AuthProviderSpec{Name: "oidc", Config: v1alpha1.AuthProviderConfig{
-			ClientID:     ec.oauth2Config.ClientID,
-			ClientSecret: ec.oauth2Config.ClientSecret,
+			ClientID:     oauth2Config.ClientID,
+			ClientSecret: oauth2Config.ClientSecret,
 			IDPIssuerURL: viper.GetString("oauth2_issuer_url"),
 			IDToken:      rawIDToken,
 			RefreshToken: refreshToken,
@@ -118,7 +116,6 @@ func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig) ([]
 
 func extractFromContext(c *gin.Context) enhancedContext {
 	ec := enhancedContext{
-		oauth2Config:   c.Request.Context().Value(oauth2ConfigKey).(oauth2.Config),
 		oauth2Verifier: c.Request.Context().Value(oauth2VerifierKey).(*oidc.IDTokenVerifier),
 		session:        sessions.Default(c),
 	}

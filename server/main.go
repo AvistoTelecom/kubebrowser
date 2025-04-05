@@ -29,7 +29,6 @@ const (
 	devKey           string = "dev"
 	logLevelKey      string = "log_level"
 	// Context keys
-	oauth2ConfigKey     contextKey = "oauth2_config"
 	oauth2VerifierKey   contextKey = "oauth2_verifier"
 	// Normal const
 	callbackRoute string = "/auth/callback"
@@ -64,14 +63,13 @@ func main() {
 	}
 
 	// Create OIDC related config and verifier
-	config, verifier, err := newOIDCConfig(ctx, viper.GetString(clientIDKey), viper.GetString(clientSecretKey))
+	verifier, err := InitOIDC(ctx, viper.GetString(clientIDKey), viper.GetString(clientSecretKey))
 	if err != nil {
 		logger.Errorf("Failed to setup OIDC: %s", err)
 		os.Exit(1)
 	}
 
 	// Populate context
-	ctx = context.WithValue(ctx, oauth2ConfigKey, config)
 	ctx = context.WithValue(ctx, oauth2VerifierKey, verifier)
 
 	// Create session store
