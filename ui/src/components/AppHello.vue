@@ -15,7 +15,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="py-8 font-extrabold text-3xl">
+  <div class="py-8 text-3xl font-extrabold">
     <div v-if="loading" class="text-gray-300">Loading user name...</div>
     <div v-else>✌️ Hello {{ username }} !</div>
   </div>

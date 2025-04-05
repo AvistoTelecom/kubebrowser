@@ -22,13 +22,13 @@ function updateValue(event: Event) {
 
 <template>
   <div class="relative flex items-center">
-    <AnOutlinedSearch class="absolute left-3 text-gray-400 pointer-events-none" />
+    <AnOutlinedSearch class="absolute text-gray-400 pointer-events-none left-3" />
     <input
       :value="props.modelValue"
       @input="updateValue"
       type="search"
       :placeholder="placeholder"
-      class="pl-10 py-2 border border-gray-600 bg-gray-800 rounded-md focus:outline-none focus:border-accent w-full"
+      class="w-full py-2 pl-10 bg-gray-800 border border-gray-600 rounded-md focus:outline-none focus:border-accent"
     />
   </div>
 </template>

@@ -13,7 +13,9 @@ const props = defineProps<{
 
 const copied = ref(false)
 
-const kubeconfigAsYaml = computed(() => props.kubeconfig && YAML.stringify(props.kubeconfig.kubeconfig))
+const kubeconfigAsYaml = computed(
+  () => props.kubeconfig && YAML.stringify(props.kubeconfig.kubeconfig),
+)
 
 const handleCopy = () => {
   if (kubeconfigAsYaml.value) {
@@ -33,12 +35,15 @@ watch(
 
 <template>
   <div
-    class="border-2 border-gray-600 rounded-md p-4 overflow-auto"
-    :class="{ 'flex items-center justify-center': !props.kubeconfig, 'bg-primary-950': props.kubeconfig }"
+    class="p-4 overflow-auto border-2 border-gray-600 rounded-md"
+    :class="{
+      'flex items-center justify-center': !props.kubeconfig,
+      'bg-primary-950': props.kubeconfig,
+    }"
   >
     <div v-if="kubeconfigAsYaml">
       <div
-        class="absolute top-6 right-6 inline-flex items-center justify-center gap-1 cursor-pointer p-3 bg-accent min-w-min text-gray-800 rounded-tr-md rounded-bl-md"
+        class="absolute inline-flex items-center justify-center gap-1 p-3 text-gray-800 cursor-pointer top-6 right-6 bg-accent min-w-min rounded-tr-md rounded-bl-md"
         @click="handleCopy"
       >
         <AkCopy />
@@ -48,10 +53,10 @@ watch(
     </div>
     <div v-else>
       <div v-if="!props.catalogLength">
-        <p class="text-gray-300 text-center">No results</p>
+        <p class="text-center text-gray-300">No results</p>
       </div>
       <div v-else>
-        <p class="text-gray-300 text-center">Select a cluster to display kubeconfig content</p>
+        <p class="text-center text-gray-300">Select a cluster to display kubeconfig content</p>
       </div>
     </div>
   </div>

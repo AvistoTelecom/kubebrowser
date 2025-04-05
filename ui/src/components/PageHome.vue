@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { BsEmojiSurpriseFill } from '@kalimahapps/vue-icons'
 
 import type { Kubeconfig } from '@/types/Kubeconfig'
@@ -17,10 +17,15 @@ const selectedKubeconfig = ref<Kubeconfig | null>(null)
 
 const filteredKubeconfigs = computed(() => {
   if (!searchQuery.value) return kubeconfigs.value
-  selectedKubeconfig.value = null
   const query = searchQuery.value.toLowerCase()
-  const filtered = kubeconfigs.value.filter((kubeconfig) => kubeconfig.name.toLowerCase().includes(query))
+  const filtered = kubeconfigs.value.filter((kubeconfig) =>
+    kubeconfig.name.toLowerCase().includes(query),
+  )
   return filtered
+})
+
+watch(searchQuery, () => {
+  selectedKubeconfig.value = null
 })
 
 onMounted(async () => {
@@ -33,13 +38,18 @@ onMounted(async () => {
 <template>
   <AppHello class="mx-8" />
 
-  <div v-if="loading" class="flex flex-1 gap-4 items-center justify-center text-gray-300">Loading Kubeconfigs...</div>
-  <div v-else-if="!kubeconfigs.length" class="flex flex-col flex-1 gap-4 items-center justify-center">
-    <BsEmojiSurpriseFill class="w-10 h-10 text-gray-600"/>
+  <div v-if="loading" class="flex items-center justify-center flex-1 gap-4 text-gray-300">
+    Loading Kubeconfigs...
+  </div>
+  <div
+    v-else-if="!kubeconfigs.length"
+    class="flex flex-col items-center justify-center flex-1 gap-4"
+  >
+    <BsEmojiSurpriseFill class="w-10 h-10 text-gray-600" />
     <p class="text-gray-300">oops, it seems like you don't have acces to any clusters</p>
   </div>
-  <div v-else class="relative mx-8 flex flex-1 gap-x-4 overflow-y-hidden">
-    <div class="space-y-4 w-1/6 flex flex-col">
+  <div v-else class="relative flex flex-1 mx-8 overflow-y-hidden gap-x-4">
+    <div class="flex flex-col w-1/6 space-y-4">
       <InputSearchBox v-model="searchQuery" placeholder="Search clusters..." />
       <div class="overflow-y-auto">
         <KubeconfigCatalog
@@ -49,6 +59,10 @@ onMounted(async () => {
       </div>
     </div>
 
-    <KubeconfigDisplay class="w-5/6" :kubeconfig="selectedKubeconfig" :catalog-length="filteredKubeconfigs.length" />
+    <KubeconfigDisplay
+      class="w-5/6"
+      :kubeconfig="selectedKubeconfig"
+      :catalog-length="filteredKubeconfigs.length"
+    />
   </div>
 </template>
