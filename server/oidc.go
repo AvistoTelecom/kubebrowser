@@ -24,7 +24,6 @@ const (
 )
 
 func setCallbackCookie(c *gin.Context, name, value string) {
-	logger := extractFromContext(c).logger
 	c.SetSameSite(http.SameSiteLaxMode)
 	c.SetCookie(
 		name,
@@ -69,7 +68,7 @@ func refreshTokens(ctx context.Context, config oauth2.Config, refreshToken strin
 
 func redirectToOIDCLogin(c *gin.Context) {
 	ec := extractFromContext(c)
-	ec.logger.Debug("Entering redirectToOIDCLogin")
+	logger.Debug("Entering redirectToOIDCLogin")
 
 	state, err := randString(16)
 	if err != nil {
@@ -93,17 +92,17 @@ func redirectToOIDCLogin(c *gin.Context) {
 func handleOAuth2Callback(c *gin.Context) {
 	ec := extractFromContext(c)
 
-	ec.logger.Debug("Entering handleOAuth2Callback")
+	logger.Debug("Entering handleOAuth2Callback")
 
 	// Retrieve and validate state
 	state, err := c.Cookie("state")
 	if err != nil {
-		ec.logger.Error(err, "State cookie not found")
+		logger.Error(err, "State cookie not found")
 		c.String(http.StatusBadRequest, "State not found")
 		return
 	}
 	if c.Query("state") != state {
-		ec.logger.Error(nil, "State mismatch", "expected", state, "got", c.Query("state"))
+		logger.Error(nil, "State mismatch", "expected", state, "got", c.Query("state"))
 		c.String(http.StatusBadRequest, "State did not match")
 		return
 	}
@@ -111,7 +110,7 @@ func handleOAuth2Callback(c *gin.Context) {
 	// Exchange code for token
 	oauth2Token, err := ec.oauth2Config.Exchange(c.Request.Context(), c.Query("code"))
 	if err != nil {
-		ec.logger.Error(err, "Failed to exchange token")
+		logger.Error(err, "Failed to exchange token")
 		c.String(http.StatusInternalServerError, "Failed to exchange token: "+err.Error())
 		return
 	}
@@ -119,25 +118,25 @@ func handleOAuth2Callback(c *gin.Context) {
 	// Retrieve and validate nonce
 	rawIDToken, ok := oauth2Token.Extra("id_token").(string)
 	if !ok {
-		ec.logger.Error(nil, "No id_token field in oauth2 token")
+		logger.Error(nil, "No id_token field in oauth2 token")
 		c.String(http.StatusInternalServerError, "No id_token field in oauth2 token")
 		return
 	}
 	idToken, err := ec.oauth2Verifier.Verify(c.Request.Context(), rawIDToken)
 	if err != nil {
-		ec.logger.Error(err, "Failed to verify ID Token")
+		logger.Error(err, "Failed to verify ID Token")
 		c.String(http.StatusInternalServerError, "Failed to verify ID Token: "+err.Error())
 		return
 	}
 
 	nonce, err := c.Cookie("nonce")
 	if err != nil {
-		ec.logger.Error(err, "Nonce cookie not found")
+		logger.Error(err, "Nonce cookie not found")
 		c.String(http.StatusBadRequest, "Nonce not found")
 		return
 	}
 	if idToken.Nonce != nonce {
-		ec.logger.Error(nil, "Nonce mismatch", "expected", nonce, "got", idToken.Nonce)
+		logger.Error(nil, "Nonce mismatch", "expected", nonce, "got", idToken.Nonce)
 		c.String(http.StatusBadRequest, "Nonce did not match")
 		return
 	}
@@ -146,7 +145,7 @@ func handleOAuth2Callback(c *gin.Context) {
 	ec.session.Set(refreshTokenKey, oauth2Token.RefreshToken)
 	err = ec.session.Save()
 	if err != nil {
-		ec.logger.Error(err, "Cannot save session")
+		logger.Error(err, "Cannot save session")
 		c.String(http.StatusInternalServerError, "Cannot save session")
 	}
 	redirectURI := ec.session.Get(initialRouteKey)
@@ -155,25 +154,25 @@ func handleOAuth2Callback(c *gin.Context) {
 
 func AuthMiddleware(c *gin.Context) {
 	ec := extractFromContext(c)
-	ec.logger.Debug("Entering AuthMiddleware")
+	logger.Debug("Entering AuthMiddleware")
 
 	// Skip authentication for callback route
 	if c.Request.URL.Path == callbackRoute {
-		ec.logger.Debug("Skip auth because user hitting callback route")
+		logger.Debug("Skip auth because user hitting callback route")
 		c.Next()
 	}
 
 	ec.session.Set(initialRouteKey, c.Request.RequestURI)
 	err := ec.session.Save()
 	if err != nil {
-		ec.logger.Error(err, "Cannot save session")
+		logger.Error(err, "Cannot save session")
 		c.String(http.StatusInternalServerError, "Cannot save session")
 	}
 
 	// Retrieve ID token from session
 	rawIDToken := ec.session.Get(rawIDTokenKey)
 	if rawIDToken == nil {
-		ec.logger.Debug("ID token missing, redirecting to login")
+		logger.Debug("ID token missing, redirecting to login")
 		redirectToOIDCLogin(c)
 		c.Abort()
 		return
@@ -182,12 +181,12 @@ func AuthMiddleware(c *gin.Context) {
 	// Verify ID token
 	idToken, err := ec.oauth2Verifier.Verify(c.Request.Context(), rawIDToken.(string))
 	if err != nil || idToken.Expiry.Before(time.Now()) {
-		ec.logger.Info("ID token expired or invalid, attempting to refresh")
+		logger.Info("ID token expired or invalid, attempting to refresh")
 
 		// Retrieve refresh token
 		refreshToken := ec.session.Get(refreshTokenKey)
 		if refreshToken == nil {
-			ec.logger.Info("Refresh token cookie missing, redirecting to login")
+			logger.Info("Refresh token cookie missing, redirecting to login")
 			redirectToOIDCLogin(c)
 			return
 		}
@@ -195,7 +194,7 @@ func AuthMiddleware(c *gin.Context) {
 		// Refresh tokens
 		newToken, err := refreshTokens(c.Request.Context(), ec.oauth2Config, refreshToken.(string))
 		if err != nil {
-			ec.logger.Error(err, "Failed to refresh token, redirecting to login")
+			logger.Error(err, "Failed to refresh token, redirecting to login")
 			redirectToOIDCLogin(c)
 			return
 		}
@@ -203,7 +202,7 @@ func AuthMiddleware(c *gin.Context) {
 		// Verify new ID token
 		_, err = ec.oauth2Verifier.Verify(c.Request.Context(), newToken.Extra("id_token").(string))
 		if err != nil {
-			ec.logger.Error(err, "Failed to verify refreshed ID token, redirecting to login")
+			logger.Error(err, "Failed to verify refreshed ID token, redirecting to login")
 			redirectToOIDCLogin(c)
 			return
 		}
@@ -213,12 +212,12 @@ func AuthMiddleware(c *gin.Context) {
 		ec.session.Set(refreshTokenKey, newToken.RefreshToken)
 		err = ec.session.Save()
 		if err != nil {
-			ec.logger.Error(err, "Cannot save session")
+			logger.Error(err, "Cannot save session")
 			c.String(http.StatusInternalServerError, "Cannot save session")
 		}
 	}
 
 	// Token is valid, proceed with the request
-	ec.logger.Debug("Token is valid, proceed with the request")
+	logger.Debug("Token is valid, proceed with the request")
 	c.Next()
 }

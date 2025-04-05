@@ -12,13 +12,10 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	"golang.org/x/oauth2"
 )
 
 type enhancedContext struct {
-	logger           *zap.SugaredLogger
 	oauth2Config     oauth2.Config
 	oauth2Verifier   *oidc.IDTokenVerifier
 	session          sessions.Session
@@ -35,8 +32,6 @@ func randString(nByte int) (string, error) {
 // Returns a subset of initial Kubeconfigs depending on the whitelist in each Kubeconfig and the
 // claims (user and groups) in the idToken
 func filterKubeconfig(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig, idToken *oidc.IDToken) ([]*v1alpha1.Kubeconfig, error) {
-	logger := extractFromContext(c).logger
-
 	logger.Debug("Entering filterKubeconfig")
 	// Extract claims from ID token
 	var claims struct {
@@ -82,7 +77,7 @@ func filterKubeconfig(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig, idToke
 
 func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig) ([]*v1alpha1.KubeconfigSpec, error) {
 	ec := extractFromContext(c)
-	ec.logger.Debug("Entering prepareKubeconfigs")
+	logger.Debug("Entering prepareKubeconfigs")
 
 	rawIDToken, refreshToken := extractTokens(ec.session)
 
@@ -123,7 +118,6 @@ func preprareKubeconfigs(c *gin.Context, kubeconfigs []*v1alpha1.Kubeconfig) ([]
 
 func extractFromContext(c *gin.Context) enhancedContext {
 	ec := enhancedContext{
-		logger:         c.Request.Context().Value(loggerKey).(*zap.SugaredLogger),
 		oauth2Config:   c.Request.Context().Value(oauth2ConfigKey).(oauth2.Config),
 		oauth2Verifier: c.Request.Context().Value(oauth2VerifierKey).(*oidc.IDTokenVerifier),
 		session:        sessions.Default(c),
@@ -133,41 +127,4 @@ func extractFromContext(c *gin.Context) enhancedContext {
 
 func extractTokens(session sessions.Session) (rawIDToken string, refreshToken string) {
 	return session.Get(rawIDTokenKey).(string), session.Get(refreshTokenKey).(string)
-}
-
-func newLogger() (*zap.Logger, error) {
-	isDev := viper.GetBool(devKey)
-	logLevel := viper.GetString(logLevelKey)
-
-	var level zapcore.Level
-	switch logLevel {
-	case "DEBUG":
-		level = zapcore.DebugLevel
-	case "INFO":
-		level = zapcore.InfoLevel
-	case "WARN":
-		level = zapcore.WarnLevel
-	case "ERROR":
-		level = zapcore.ErrorLevel
-	default:
-		level = zapcore.InfoLevel // Default to INFO if logLevel is not set or invalid
-		fmt.Println("Log level is invalid, defaults to INFO")
-	}
-
-	if isDev {
-		return zap.Config{
-			Level:         zap.NewAtomicLevelAt(level),
-			Encoding:      "console",
-			OutputPaths:   []string{"stdout"},
-			Development:   true,
-			EncoderConfig: zap.NewDevelopmentEncoderConfig(),
-		}.Build()
-	}
-
-	return zap.Config{
-		Level:         zap.NewAtomicLevelAt(level),
-		Encoding:      "json",
-		OutputPaths:   []string{"stdout"},
-		EncoderConfig: zap.NewProductionEncoderConfig(),
-	}.Build()
 }

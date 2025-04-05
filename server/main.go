@@ -29,7 +29,6 @@ const (
 	devKey           string = "dev"
 	logLevelKey      string = "log_level"
 	// Context keys
-	loggerKey           contextKey = "logger"
 	oauth2ConfigKey     contextKey = "oauth2_config"
 	oauth2VerifierKey   contextKey = "oauth2_verifier"
 	// Normal const
@@ -47,13 +46,13 @@ func init() {
 }
 
 func main() {
-	// Set up logger
-	l, err := newLogger()
-	if err != nil {
+	isDev := viper.GetBool(devKey)
+	logLevel := viper.GetString(logLevelKey)
+
+	if err := InitLogger(logLevel, isDev); err != nil {
 		panic(err)
 	}
-	defer l.Sync()
-	logger := l.Sugar()
+	defer logger.Sync()
 
 	// Set up signals so we handle the shutdown signal gracefully
 	ctx := signals.SetupSignalHandler()
@@ -72,7 +71,6 @@ func main() {
 	}
 
 	// Populate context
-	ctx = context.WithValue(ctx, loggerKey, logger)
 	ctx = context.WithValue(ctx, oauth2ConfigKey, config)
 	ctx = context.WithValue(ctx, oauth2VerifierKey, verifier)
 
@@ -132,18 +130,16 @@ func main() {
 }
 
 func handleGetKubeconfigs(c *gin.Context) {
-	ec := extractFromContext(c)
-
-	ec.logger.Debug("Getting kubeconfig")
+	logger.Debug("Getting kubeconfig")
 	kubeconfigs, err := kubecfg.lister.Kubeconfigs(viper.GetString(podNamespaceKey)).List(labels.Everything())
 	if err != nil {
-		ec.logger.Errorf("Error listing kubeconfigs: %s", err)
+		logger.Errorf("Error listing kubeconfigs: %s", err)
 		c.String(http.StatusInternalServerError, "Error listing kubeconfigs")
 	}
 
 	k, err := preprareKubeconfigs(c, kubeconfigs)
 	if err != nil {
-		ec.logger.Error(err, "Error preparing kubeconfigs")
+		logger.Error(err, "Error preparing kubeconfigs")
 		c.String(http.StatusInternalServerError, "Error preparing kubeconfigs")
 	}
 
@@ -153,12 +149,12 @@ func handleGetKubeconfigs(c *gin.Context) {
 func handleGetMe(c *gin.Context) {
 	ec := extractFromContext(c)
 
-	ec.logger.Debug("Entering handleGetMe")
+	logger.Debug("Entering handleGetMe")
 	rawIDToken, _ := extractTokens(ec.session)
 
 	idToken, err := ec.oauth2Verifier.Verify(c.Request.Context(), rawIDToken)
 	if err != nil {
-		ec.logger.Errorf("Error verifying ID Token: %s", err)
+		logger.Errorf("Error verifying ID Token: %s", err)
 		c.String(http.StatusInternalServerError, "Error verifying ID Token")
 	}
 	claims := struct {
@@ -166,7 +162,7 @@ func handleGetMe(c *gin.Context) {
 	}{}
 
 	if err := idToken.Claims(&claims); err != nil {
-		ec.logger.Errorf("Error extracting claims: %s", err)
+		logger.Errorf("Error extracting claims: %s", err)
 		c.String(http.StatusInternalServerError, "Error extracting claims")
 	}
 
