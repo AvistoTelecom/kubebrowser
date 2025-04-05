@@ -21,19 +21,19 @@ var static = os.Getenv("KO_DATA_PATH")
 
 // Viper keys
 const (
-	hostnameKey      string = "hostname"
-	podNamespaceKey  string = "pod_namespace"
-	sessionSecretKey string = "session_secret"
-	devKey           string = "dev"
-	logLevelKey      string = "log_level"
-	clientIDKey      string = "oauth2_client_id"
-	clientSecretKey  string = "oauth2_client_secret"
-	issuerURLKey     string = "oauth2_issuer_url"
+	hostnameKey      = "hostname"
+	podNamespaceKey  = "pod_namespace"
+	sessionSecretKey = "session_secret"
+	devKey           = "dev"
+	logLevelKey      = "log_level"
+	clientIDKey      = "oauth2_client_id"
+	clientSecretKey  = "oauth2_client_secret"
+	issuerURLKey     = "oauth2_issuer_url"
 )
 
 const (
-	callbackRoute string = "/auth/callback"
-	defaultPort   string = "8080"
+	callbackRoute = "/auth/callback"
+	defaultPort   = "8080"
 )
 
 func init() {
