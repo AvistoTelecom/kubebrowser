@@ -13,7 +13,6 @@ import KubeconfigDisplay from '@/components/KubeconfigDisplay.vue'
 const kubeconfigs = ref<Kubeconfig[]>([])
 const searchQuery = ref('')
 const selectedKubeconfig = ref<Kubeconfig | null>(null)
-const emptyKubeconfigs = ref(false)
 
 const filteredKubeconfigs = computed(() => {
   if (!searchQuery.value) return kubeconfigs.value
@@ -38,9 +37,6 @@ onMounted(async () => {
     ]
   } else {
     const response = await axios.get<Kubeconfig[]>('/api/kubeconfigs')
-    if (!response.data.length) {
-      emptyKubeconfigs.value = true
-    }
     kubeconfigs.value = response.data
   }
 })
@@ -48,7 +44,7 @@ onMounted(async () => {
 
 <template>
   <AppHello class="mx-8" />
-  <div v-if="emptyKubeconfigs" class="flex flex-col flex-1 gap-4 items-center justify-center">
+  <div v-if="!kubeconfigs.length" class="flex flex-col flex-1 gap-4 items-center justify-center">
     <BsEmojiSurpriseFill class="w-10 h-10 text-gray-600"/>
     <p class="text-gray-300">oops, it seems like you don't have acces to any clusters</p>
   </div>
