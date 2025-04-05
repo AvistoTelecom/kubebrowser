@@ -12,6 +12,7 @@ import KubeconfigDisplay from '@/components/KubeconfigDisplay.vue'
 
 const kubeconfigs = ref<Kubeconfig[]>([])
 const searchQuery = ref('')
+const loading = ref(false)
 const selectedKubeconfig = ref<Kubeconfig | null>(null)
 
 const filteredKubeconfigs = computed(() => {
@@ -23,13 +24,17 @@ const filteredKubeconfigs = computed(() => {
 })
 
 onMounted(async () => {
+  loading.value = true
   kubeconfigs.value = await api.getConfigs()
+  loading.value = false
 })
 </script>
 
 <template>
   <AppHello class="mx-8" />
-  <div v-if="!kubeconfigs.length" class="flex flex-col flex-1 gap-4 items-center justify-center">
+
+  <div v-if="loading" class="flex flex-1 gap-4 items-center justify-center text-gray-300">Loading kube configs.</div>
+  <div v-else-if="!kubeconfigs.length" class="flex flex-col flex-1 gap-4 items-center justify-center">
     <BsEmojiSurpriseFill class="w-10 h-10 text-gray-600"/>
     <p class="text-gray-300">oops, it seems like you don't have acces to any clusters</p>
   </div>
@@ -42,8 +47,8 @@ onMounted(async () => {
           v-model:selected="selectedKubeconfig"
         />
       </div>
-
     </div>
+
     <KubeconfigDisplay class="w-5/6" :kubeconfig="selectedKubeconfig" :catalog-length="filteredKubeconfigs.length" />
   </div>
 </template>

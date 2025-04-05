@@ -4,6 +4,7 @@ import type { Kubeconfig } from '@/types/Kubeconfig'
 
 export async function getMe(): Promise<string> {
   if (import.meta.env.DEV) {
+    // await new Promise((resolve) => setTimeout(resolve, 3000))
     // Mock response for development
     return 'Firstname Lastname'
   } else {
@@ -17,6 +18,7 @@ export async function getMe(): Promise<string> {
 
 export async function getConfigs(): Promise<Kubeconfig[]> {
   if (import.meta.env.DEV) {
+    // await new Promise((resolve) => setTimeout(resolve, 4000))
     // Mock response for development
     return [
       { name: 'Cluster number 1', kubeconfig: { apiVersion: 'v1', kind: 'Config' } },
