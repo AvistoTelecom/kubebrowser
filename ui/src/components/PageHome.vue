@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import axios from 'axios'
 import { BsEmojiSurpriseFill } from '@kalimahapps/vue-icons'
 
 import type { Kubeconfig } from '@/types/Kubeconfig'
+import * as api from '@/api/requests'
 
 import AppHello from '@/components/AppHello.vue'
 import InputSearchBox from '@/components/InputSearchBox.vue'
@@ -23,22 +23,7 @@ const filteredKubeconfigs = computed(() => {
 })
 
 onMounted(async () => {
-  if (import.meta.env.DEV) {
-    // Mock response for development
-    kubeconfigs.value = [
-      { name: 'Cluster number 1', kubeconfig: { apiVersion: 'v1', kind: 'Config' } },
-      { name: 'Cluster number 2', kubeconfig: { apiVersion: 'v1', kind: 'Config2' } },
-      { name: 'Cluster number 3', kubeconfig: { apiVersion: 'v1', kind: 'Config2' } },
-      { name: 'Cluster number 4', kubeconfig: { apiVersion: 'v1', kind: 'Config2' } },
-      { name: 'Cluster number 5', kubeconfig: { apiVersion: 'v1', kind: 'Config2' } },
-      { name: 'Cluster number 6', kubeconfig: { apiVersion: 'v1', kind: 'Config2' } },
-      { name: 'Cluster number 7', kubeconfig: { apiVersion: 'v1', kind: 'Config2' } },
-      { name: 'Another cluster', kubeconfig: { apiVersion: 'v1', kind: 'Another' } },
-    ]
-  } else {
-    const response = await axios.get<Kubeconfig[]>('/api/kubeconfigs')
-    kubeconfigs.value = response.data
-  }
+  kubeconfigs.value = await api.getConfigs()
 })
 </script>
 
