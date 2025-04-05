@@ -3,16 +3,12 @@ import type { Kubeconfig } from '@/types/Kubeconfig'
 
 const props = defineProps<{
   kubeconfigs: Kubeconfig[]
-  indexSelected: number | null
+  selected: Kubeconfig | null
 }>()
 
 const emit = defineEmits<{
-  (e: 'kubeconfig-selected', kubeconfig: Kubeconfig, index: number): void
+  (e: 'update:selected', value: Kubeconfig): void
 }>()
-
-function selectKubeconfig(kubeconfig: Kubeconfig, index: number) {
-  emit('kubeconfig-selected', kubeconfig, index)
-}
 </script>
 
 <template>
@@ -20,14 +16,11 @@ function selectKubeconfig(kubeconfig: Kubeconfig, index: number) {
     class="flex-none flex flex-col gap-4 w-full"
   >
     <button
-      v-for="(kubeconfig, index) in props.kubeconfigs"
-      :key="index"
+      v-for="kubeconfig in props.kubeconfigs"
+      :key="kubeconfig.name"
       class="text-lg py-6 px-12 rounded-md border-2 border-gray-600 cursor-pointer break-words"
-      :class="{
-        'bg-accent text-primary-950': props.indexSelected === index,
-        'bg-gray-700': props.indexSelected !== index,
-      }"
-      @click="selectKubeconfig(kubeconfig, index)"
+      :class="props.selected && props.selected.name === kubeconfig.name ? 'bg-accent text-primary-950' : 'bg-gray-700'"
+      @click="emit('update:selected', kubeconfig)"
     >
       {{ kubeconfig.name }}
     </button>

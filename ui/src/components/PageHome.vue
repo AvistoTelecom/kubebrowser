@@ -13,22 +13,15 @@ import KubeconfigDisplay from '@/components/KubeconfigDisplay.vue'
 const kubeconfigs = ref<Kubeconfig[]>([])
 const searchQuery = ref('')
 const selectedKubeconfig = ref<Kubeconfig | null>(null)
-const indexSelected = ref<number | null>(null)
 const emptyKubeconfigs = ref(false)
 
 const filteredKubeconfigs = computed(() => {
   if (!searchQuery.value) return kubeconfigs.value
   selectedKubeconfig.value = null
-  indexSelected.value = null
   const query = searchQuery.value.toLowerCase()
   const filtered = kubeconfigs.value.filter((kubeconfig) => kubeconfig.name.toLowerCase().includes(query))
   return filtered
 })
-
-function updateSelectedKubeconfig(kubeconfig: Kubeconfig, index: number) {
-  indexSelected.value = index
-  selectedKubeconfig.value = kubeconfig
-}
 
 onMounted(async () => {
   if (import.meta.env.DEV) {
@@ -64,9 +57,8 @@ onMounted(async () => {
       <InputSearchBox v-model="searchQuery" placeholder="Search clusters..." />
       <div class="overflow-y-auto">
         <KubeconfigCatalog
-        :kubeconfigs="filteredKubeconfigs"
-        :index-selected="indexSelected"
-        @kubeconfig-selected="updateSelectedKubeconfig"
+          :kubeconfigs="filteredKubeconfigs"
+          v-model:selected="selectedKubeconfig"
         />
       </div>
 
