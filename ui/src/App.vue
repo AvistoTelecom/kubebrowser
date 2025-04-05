@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import PageHome from './components/PageHome.vue'
-import AppHeader from './components/AppHeader.vue'
-import AppFooter from './components/AppFooter.vue'
+import AppHeader from '@/components/AppHeader.vue'
+import AppFooter from '@/components/AppFooter.vue'
+import PageHome from '@/components/PageHome.vue'
 </script>
 
 <template>

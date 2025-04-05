@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BxSolidHelpCircle } from '@kalimahapps/vue-icons';
+import { BxSolidHelpCircle } from '@kalimahapps/vue-icons'
 
 const helpURL = window._env_.HELP_PAGE
 </script>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { copyToClipboard } from '@/utils/clipboard'
 import { AkCopy } from '@kalimahapps/vue-icons'
+
+import { copyToClipboard } from '@/utils/clipboard'
 
 const props = defineProps<{
   kubeconfig: string | null

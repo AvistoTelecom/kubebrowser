@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
-import type { Kubeconfig } from '../types/Kubeconfig'
-import KubeconfigCatalog from './KubeconfigCatalog.vue'
-import KubeconfigDisplay from './KubeconfigDisplay.vue'
-import AppHello from './AppHello.vue'
-import InputSearchBox from './InputSearchBox.vue'
-import { BsEmojiSurpriseFill } from '@kalimahapps/vue-icons';
+import { BsEmojiSurpriseFill } from '@kalimahapps/vue-icons'
+
+import type { Kubeconfig } from '@/types/Kubeconfig'
+
+import AppHello from '@/components/AppHello.vue'
+import InputSearchBox from '@/components/InputSearchBox.vue'
+import KubeconfigCatalog from '@/components/KubeconfigCatalog.vue'
+import KubeconfigDisplay from '@/components/KubeconfigDisplay.vue'
 
 const kubeconfigs = ref<Kubeconfig[]>([])
 const searchQuery = ref('')

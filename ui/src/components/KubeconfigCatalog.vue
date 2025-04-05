@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import YAML from 'yaml'
-import type { Kubeconfig } from '../types/Kubeconfig'
+
+import type { Kubeconfig } from '@/types/Kubeconfig'
 
 const props = defineProps<{
   kubeconfigs: Kubeconfig[]
