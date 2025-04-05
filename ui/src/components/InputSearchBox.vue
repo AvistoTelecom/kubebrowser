@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { withDefaults, defineProps, defineEmits } from 'vue'
 import { AnOutlinedSearch } from '@kalimahapps/vue-icons'
 
 withDefaults(
   defineProps<{
     modelValue: string
-    placeholder?: string
+    placeholder: string
   }>(),
   {
     placeholder: 'Search...',
