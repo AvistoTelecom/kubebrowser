@@ -14,10 +14,6 @@ import (
 )
 
 const (
-	// Viper keys
-	clientIDKey     = "oauth2_client_id"
-	clientSecretKey = "oauth2_client_secret"
-	issuerURLKey    = "oauth2_issuer_url"
 	// Session keys
 	initialRouteKey = "initial_route"
 	rawIDTokenKey   = "id_token"
@@ -41,11 +37,14 @@ func setCallbackCookie(c *gin.Context, name, value string) {
 	logger.Debugw("Callback cookie is set", "name", name)
 }
 
-func InitOIDC(ctx context.Context, clientID string, clientSecret string) error {
-	provider, err := oidc.NewProvider(ctx, viper.GetString(issuerURLKey))
+func InitOIDC(ctx context.Context) error {
+	issuerURL := viper.GetString(issuerURLKey)
+	provider, err := oidc.NewProvider(ctx, issuerURL)
 	if err != nil {
 		return err
 	}
+	clientID := viper.GetString(clientIDKey)
+	clientSecret := viper.GetString(clientSecretKey)
 	oidcConfig := &oidc.Config{
 		ClientID: clientID,
 	}

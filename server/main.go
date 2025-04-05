@@ -19,14 +19,19 @@ import (
 
 var static = os.Getenv("KO_DATA_PATH")
 
+// Viper keys
 const (
-	// Viper const
 	hostnameKey      string = "hostname"
 	podNamespaceKey  string = "pod_namespace"
 	sessionSecretKey string = "session_secret"
 	devKey           string = "dev"
 	logLevelKey      string = "log_level"
-	// Normal const
+	clientIDKey      string = "oauth2_client_id"
+	clientSecretKey  string = "oauth2_client_secret"
+	issuerURLKey     string = "oauth2_issuer_url"
+)
+
+const (
 	callbackRoute string = "/auth/callback"
 	defaultPort   string = "8080"
 )
@@ -41,10 +46,7 @@ func init() {
 }
 
 func main() {
-	isDev := viper.GetBool(devKey)
-	logLevel := viper.GetString(logLevelKey)
-
-	if err := InitLogger(logLevel, isDev); err != nil {
+	if err := InitLogger(); err != nil {
 		panic(err)
 	}
 	defer logger.Sync()
@@ -59,7 +61,7 @@ func main() {
 	}
 
 	// Create OIDC related config and verifier
-	err := InitOIDC(ctx, viper.GetString(clientIDKey), viper.GetString(clientSecretKey))
+	err := InitOIDC(ctx)
 	if err != nil {
 		logger.Errorf("Failed to setup OIDC: %s", err)
 		os.Exit(1)

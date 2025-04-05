@@ -3,13 +3,17 @@ package main
 import (
 	"fmt"
 
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
 var logger *zap.SugaredLogger
 
-func InitLogger(logLevel string, isDev bool) error {
+func InitLogger() error {
+	isDev := viper.GetBool(devKey)
+	logLevel := viper.GetString(logLevelKey)
+
 	zapLogger, err := newLogger(logLevel, isDev)
 	if err != nil {
 		return err
