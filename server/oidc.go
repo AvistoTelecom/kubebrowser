@@ -108,7 +108,7 @@ func handleOAuth2Callback(c *gin.Context) {
 	// Retrieve and validate state
 	state, err := c.Cookie("state")
 	if err != nil {
-		logger.Errorf("State cookie not found: %w", err)
+		logger.Errorf("State cookie not found: %s", err)
 		c.String(http.StatusBadRequest, "State not found")
 		return
 	}
@@ -121,7 +121,7 @@ func handleOAuth2Callback(c *gin.Context) {
 	// Exchange code for token
 	oauth2Token, err := oauth2Config.Exchange(c.Request.Context(), c.Query("code"))
 	if err != nil {
-		logger.Errorf("Failed to exchange token: %w", err)
+		logger.Errorf("Failed to exchange token: %s", err)
 		c.String(http.StatusInternalServerError, "Failed to exchange token: "+err.Error())
 		return
 	}
@@ -135,14 +135,14 @@ func handleOAuth2Callback(c *gin.Context) {
 	}
 	idToken, err := oauth2Verifier.Verify(c.Request.Context(), rawIDToken)
 	if err != nil {
-		logger.Errorf("Failed to verify ID Token: %w", err)
+		logger.Errorf("Failed to verify ID Token: %s", err)
 		c.String(http.StatusInternalServerError, "Failed to verify ID Token: "+err.Error())
 		return
 	}
 
 	nonce, err := c.Cookie("nonce")
 	if err != nil {
-		logger.Errorf("Nonce cookie not found: %w", err)
+		logger.Errorf("Nonce cookie not found: %s", err)
 		c.String(http.StatusBadRequest, "Nonce not found")
 		return
 	}
@@ -158,7 +158,7 @@ func handleOAuth2Callback(c *gin.Context) {
 	session.Set(refreshTokenKey, oauth2Token.RefreshToken)
 	err = session.Save()
 	if err != nil {
-		logger.Errorf("Cannot save session: %w", err)
+		logger.Errorf("Cannot save session: %s", err)
 		c.String(http.StatusInternalServerError, "Cannot save session")
 	}
 	redirectURI := session.Get(initialRouteKey)
@@ -180,7 +180,7 @@ func AuthMiddleware(c *gin.Context) {
 	session.Set(initialRouteKey, c.Request.RequestURI)
 	err := session.Save()
 	if err != nil {
-		logger.Errorf("Could not save session: %w", err)
+		logger.Errorf("Could not save session: %s", err)
 		c.String(http.StatusInternalServerError, "Cannot save session")
 		return
 	}
@@ -210,7 +210,7 @@ func AuthMiddleware(c *gin.Context) {
 		// Refresh tokens
 		newToken, err := refreshTokens(c.Request.Context(), oauth2Config, refreshToken.(string))
 		if err != nil {
-			logger.Errorf("Failed to refresh token, redirecting to login: %w", err)
+			logger.Errorf("Failed to refresh token, redirecting to login: %s", err)
 			redirectToOIDCLogin(c)
 			return
 		}
@@ -218,7 +218,7 @@ func AuthMiddleware(c *gin.Context) {
 		// Verify new ID token
 		_, err = oauth2Verifier.Verify(c.Request.Context(), newToken.Extra("id_token").(string))
 		if err != nil {
-			logger.Errorf("Failed to verify refreshed ID token, redirecting to login: %w", err)
+			logger.Errorf("Failed to verify refreshed ID token, redirecting to login: %s", err)
 			redirectToOIDCLogin(c)
 			return
 		}
@@ -228,7 +228,7 @@ func AuthMiddleware(c *gin.Context) {
 		session.Set(refreshTokenKey, newToken.RefreshToken)
 		err = session.Save()
 		if err != nil {
-			logger.Errorf("Cannot save session: %w", err)
+			logger.Errorf("Cannot save session: %s", err)
 			c.String(http.StatusInternalServerError, "Cannot save session")
 			return
 		}
