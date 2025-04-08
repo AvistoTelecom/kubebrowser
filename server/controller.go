@@ -13,7 +13,7 @@ import (
 	"k8s.io/client-go/tools/cache"
 )
 
-var kubecfg *Kubecfg
+var kubecfg = &Kubecfg{}
 
 type Kubecfg struct {
 	lister v1alpha1.KubeconfigLister
