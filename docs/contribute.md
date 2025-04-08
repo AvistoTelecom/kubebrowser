@@ -19,7 +19,7 @@
 
 ### Prerequisites
 
-You’ll need:
+You'll need:
 
 - A local Kubernetes cluster running, we recommend [minikube](https://minikube.sigs.k8s.io/docs/).
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/) and [helm](https://helm.sh/docs/intro/install/) CLI.
@@ -34,9 +34,10 @@ You’ll need:
 ### Run Kubebrowser locally
 
 Set up your environment
-1. Create a new OIDC application following your provider’s documentation (you can set the redirect address to `http://localhost:8080`).
+1. Create a new OIDC application following your provider's documentation (you can set the redirect address to `http://localhost:8080`).
 1. Copy the `.envrc_example` to a new file named `.envrc`.
 1. Update `client_id`, `client_secret` and `issuer_url` in your `.envrc` (from your OIDC application in step 1).
 1. Run `source .envrc` or run `direnv allow` if you have installed [direnv](https://direnv.net/).
+1. Make sure your cluster is running and your context is correct. Run `minikube start` if you're using minikube.
 1. Run `skaffold dev`.
 1. Access http://localhost:8080.
