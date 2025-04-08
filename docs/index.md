@@ -8,7 +8,7 @@ outline: deep
 
 - Kubectl.
 - Helm version 3 or higher.
-- Kubernetes cluster, we recommend (minikube)[https://minikube.sigs.k8s.io/docs/] for development or test purposes.
+- Kubernetes cluster, we recommend [minikube](https://minikube.sigs.k8s.io/docs/) for development or test purposes.
   - API server configured to accept OpenID Connect Authentification. For minikube [visit the docs](https://minikube.sigs.k8s.io/docs/tutorials/openid_connect_auth/).
 - OpenID Connect provider, such as Microsoft, Google or Keycloak.
 

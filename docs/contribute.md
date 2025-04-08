@@ -36,7 +36,7 @@ You’ll need:
 Set up your environment
 1. Create a new OIDC application following your provider’s documentation (you can set the redirect address to `http://localhost:8080`).
 1. Copy the `.envrc_example` to a new file named `.envrc`.
-1. Load your `client_id`, `client_secret` and `issuer_url` from your OIDC application within your `.envrc`.
-1. Source your `.envrc` or run `direnv allow` if you have installed direnv.
+1. Update `client_id`, `client_secret` and `issuer_url` in your `.envrc` (from your OIDC application in step 1).
+1. Run `source .envrc` or run `direnv allow` if you have installed [direnv](https://direnv.net/).
 1. Run `skaffold dev`.
 1. Access http://localhost:8080.
