@@ -14,7 +14,7 @@ const helpURL = window._env_.HELP_PAGE
       rel="noopener noreferrer"
       title="Open documentation"
     >
-      <BxSolidHelpCircle class="w-8 h-8" />
+      <BxSolidHelpCircle class="w-8 h-8 text-gray-300" />
     </a>
   </header>
 </template>
