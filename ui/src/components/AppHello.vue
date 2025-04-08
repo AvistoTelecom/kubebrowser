@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 import * as api from '@/api/requests'
 
 const username = ref('')
 
 const loading = ref(false)
+loadGetMe()
 
-onMounted(async () => {
+async function loadGetMe() {
   loading.value = true
   username.value = await api.getMe()
   loading.value = false
-})
+}
 </script>
 
 <template>
