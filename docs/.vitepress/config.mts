@@ -5,6 +5,9 @@ export default defineConfig({
   title: "Kubebrowser",
   description: "Your Kubernetes catalog with OIDC",
   base: "/temp-kubebrowser/",
+  ignoreDeadLinks: [
+    /^https?:\/\/localhost/,
+  ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
