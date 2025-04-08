@@ -34,7 +34,7 @@ export async function getConfigs(): Promise<Kubeconfig[]> {
     // TODO: handle errors?
     return axios
       .get<Kubeconfig[]>('/api/kubeconfigs')
-      .then((res) => res.data)
+      .then((res) => res.data.sort((a, b) => a.name.localeCompare(b.name)))
       .catch(() => [])
   }
 }
