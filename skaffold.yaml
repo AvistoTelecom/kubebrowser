@@ -3,25 +3,27 @@ kind: Config
 metadata:
   name: kubebrowser
 build:
+  tagPolicy:
+    inputDigest: {}
   artifacts:
     - image: kubebrowser
-      context: server
-      ko: {}
-      # context: .
-      # hooks:
-      #   before:
-      #     - command: ["sh", "-c", "./hook.sh"]
-      #       os: [darwin, linux]
-      # ko:
-      #   dependencies:
-      #     paths:
-      #       - ui/src
-      #       - server
-      #       - k8s
-      #     ignore:
-      #       - dist
-      #       - kodata
-      #   dir: server
+      # context: server
+      # ko: {}
+      context: .
+      hooks:
+        before:
+          - command: ["sh", "-c", "./scripts/buildFrontForBack.sh"]
+            os: [darwin, linux]
+      ko:
+        dependencies:
+          paths:
+            - ui/src
+            - server
+            - k8s
+          ignore:
+            - dist
+            - kodata
+        dir: server
   # local:
   #   push: true
 manifests:
