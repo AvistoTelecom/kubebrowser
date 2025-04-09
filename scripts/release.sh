@@ -51,9 +51,9 @@ check_dependencies() {
   done
 }
 
-check_version_in_registry() {
+check_existing_version_in_registry() {
   local image="$IMAGE_REGISTRY/$APP_NAME:$version"
-  if docker inspect "$image" &>/dev/null; then
+  if ! docker inspect "$image" &>/dev/null; then
     print_red "Error: Version $version already exists in the Docker registry ($image)."
     exit 1
   fi
@@ -63,6 +63,14 @@ validate_version_in_footer() {
   local footer_file="$SCRIPT_ROOT/ui/src/components/AppFooter.vue"
   if ! grep -q "$version" "$footer_file"; then
     print_red "Error: Version $version not changed in $footer_file."
+    exit 1
+  fi
+}
+
+validate_version_in_values() {
+  local values_file="$SCRIPT_ROOT/chart/values.yaml"
+  if ! grep -q "tag: \"$version\"" "$values_file"; then
+    print_red "Error: Version $version not found in $values_file."
     exit 1
   fi
 }
@@ -99,7 +107,8 @@ version=$(yq -r '.version' "$SCRIPT_ROOT/chart/Chart.yaml")
 check_dependencies
 validate_variables
 validate_version_in_footer
-check_version_in_registry
+validate_version_in_values
+check_existing_version_in_registry
 
 run_command "skaffold build -t $version -d $IMAGE_REGISTRY --cache-artifacts=false"
 run_command "helm package chart"
