@@ -88,7 +88,7 @@ spec:
               value: "release"
             {{- if .Values.ingress.enabled }}
             - name: KUBEBROWSER_HOSTNAME
-              value: {{ printf "%s://%s" (ternary "https" "http" .Values.ingress.tls) .Values.ingress.hostname }}
+              value: {{ printf "%s://%s" (ternary "https" "http" (or .Values.ingress.tls (gt (len .Values.ingress.extraTls) 0))) .Values.ingress.hostname }}
             {{- end }}
             - name: KUBEBROWSER_OAUTH2_CLIENT_ID
               valueFrom:

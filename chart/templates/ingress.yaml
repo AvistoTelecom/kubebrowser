@@ -35,14 +35,14 @@ spec:
     - host: {{ .name | quote }}
       http:
         paths:
-          {{- if .Values.ingress.extraPaths }}
-          {{- toYaml .Values.ingress.extraPaths | nindent 10 }}
+          {{- if $.Values.ingress.extraPaths }}
+          {{- toYaml $.Values.ingress.extraPaths | nindent 10 }}
           {{- end }}
-          - path: {{ .Values.ingress.path }}
+          - path: {{ .path }}
             {{- if eq "true" (include "common.ingress.supportsPathType" $) }}
-            pathType: {{ .Values.ingress.pathType }}
+            pathType: {{ .pathType }}
             {{- end }}
-            backend: {{- include "common.ingress.backend" (dict "serviceName" (include "kubebrowser.server.fullname" .) "servicePort" "http" "context" $)  | nindent 14 }}
+            backend: {{- include "common.ingress.backend" (dict "serviceName" (include "kubebrowser.server.fullname" $) "servicePort" "http" "context" $)  | nindent 14 }}
     {{- end }}
     {{- if .Values.ingress.extraRules }}
     {{- include "common.tplvalues.render" (dict "value" .Values.ingress.extraRules "context" $) | nindent 4 }}
