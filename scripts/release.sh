@@ -6,20 +6,22 @@ set -o pipefail
 
 SCRIPT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.."
 
-# Example usage: ./release.sh
+# Example usage: ./release.sh [--chart-only]
 version=""
 IMAGE_REGISTRY="brawdunoir"
 HELM_REPO="oci://rgy.k8s.devops-svc-ag.com/avisto/helm"
 APP_NAME="kubebrowser"
 CHART_PACKAGE=""
+CHART_ONLY=false
 
 LIGHT_GREEN="\033[1;32m"
 RED="\033[1;31m"
 RESET="\033[0m"
 
 usage() {
-  echo "Usage: $0"
+  echo "Usage: $0 [--chart-only]"
   echo "This script automatically parses the version from chart/Chart.yaml."
+  echo "  --chart-only   Release only the chart (helm package and push)."
   exit 1
 }
 
@@ -97,21 +99,37 @@ cleanup() {
 
 trap cleanup EXIT
 
-# Handle --help
-if [[ $# -gt 0 && $1 == "--help" ]]; then
-  usage
+# Parse CLI arguments
+if [[ $# -gt 0 ]]; then
+  if [[ $1 == "--help" ]]; then
+    usage
+  elif [[ $1 == "--chart-only" ]]; then
+    CHART_ONLY=true
+  else
+    print_red "Unknown argument: $1"
+    usage
+  fi
 fi
 
 version=$(yq -r '.version' "$SCRIPT_ROOT/chart/Chart.yaml")
 
 check_dependencies
 validate_variables
-validate_version_in_footer
-validate_version_in_values
-check_existing_version_in_registry
 
-run_command "skaffold build -t $version -d $IMAGE_REGISTRY --cache-artifacts=false"
-run_command "helm package chart"
+if [[ "$CHART_ONLY" == true ]]; then
+  if [[ ! "$version" =~ -.*$ ]]; then
+    print_red "Error: --chart-only requires the version to end with '-*'."
+    usage
+    exit 1
+  fi
+else
+  validate_version_in_footer
+  validate_version_in_values
+  check_existing_version_in_registry
+  run_command "skaffold build -t $version -d $IMAGE_REGISTRY --cache-artifacts=false"
+fi
+
+run_command "helm package $SCRIPT_ROOT/chart"
 run_command "helm push $CHART_PACKAGE $HELM_REPO"
 
 print_green "Release process completed successfully."
