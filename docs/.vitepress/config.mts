@@ -16,7 +16,8 @@ export default defineConfig({
     sidebar: [
       {
         items: [
-          { text: 'Getting started', link: '/' },
+          { text: 'What is Kubebrowser ?', link: '/' },
+          { text: 'Getting started', link: '/getting-started' },
           { text: 'Contribute', link: '/contribute' }
         ]
       }

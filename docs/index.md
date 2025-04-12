@@ -1,164 +1,19 @@
----
-outline: deep
----
+#  What is Kubebrowser ?
 
-# Getting started
-## Installation
-### Prerequisites
+Kubebrowser simplifies Kubernetes access management by providing a centralized catalog where users can easily generate their own Kubeconfigs using OpenID Connect (OIDC). Designed for organizations using multiple cloud providers and/or self-managed Kubernetes clusters, Kubebrowser reduces the complexity of Kubeconfig distribution.
 
-- Kubectl.
-- Helm version 3 or higher.
-- Kubernetes cluster, we recommend [minikube](https://minikube.sigs.k8s.io/docs/) for development or test purposes.
-  - API server configured to accept OpenID Connect Authentification. For minikube [visit the docs](https://minikube.sigs.k8s.io/docs/tutorials/openid_connect_auth/).
-- OpenID Connect provider, such as Microsoft, Google or Keycloak.
+<div class="tip custom-block" style="padding-top: 8px">
 
-### Prepare your OpenID application
+Just want to try it out? Skip to the [Quickstart](./getting-started).
 
-Follow the documentation of your OpenID Connect provider in order to register an application. You should retrieve/generate:
+</div>
 
-- Client ID
-- Client Secret
-- Issuer URL
+## Use case
 
-These values are mandatory in order to be able to install Kubebrowser in your cluster.
+Whenever you have *self-hosted* or *managed* Kubernetes clusters on cloud provider with weak IAM (e.g. [OVH](https://www.ovh.com/)) it becomes hard to control who has access to what.
 
-You should also authorize a redirect URI, for test purposes, you can set `http://localhost:8080`.
+Kubebrowser let you leverage the [Kubernetes API server OIDC configuration](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#openid-connect-tokens) and solves the *how* to give people (developers, testers, admins, etc.) individual Kubeconfig.
 
-### Install Kubebrowser in your cluster
+Using Kubebrowser, administrators manage a list of clusters and, if needed, a whitelist of *who* should have access to such cluster. Note that Kubebrowser only offers a way to **distribute** Kubeconfigs (used to *authenticate* to clusters). *Authorization* still relies on native Kubernetes RBAC.
 
-First, create a `values.yaml` file.
-
-```yaml
-server:
-  configuration:
-    clientID: "xxx"
-    clientSecret: "xxx"
-    issuerURL: "xxx"
-```
-Second, run the command:
-
-```sh
-helm install kubebrowser oci://rgy.k8s.devops-svc-ag.com/avisto/helm/kubebrowser --version 0.5.0 -f values.yaml
-```
-
-::: info
-This chart will install a CRD (CustomResourceDefinition) named `Kubeconfig`.
-:::
-
-## Add a Kubeconfig
-
-Because Kubebrowser declares a new resource of kind `Kubeconfig`, adding a cluster to your catalog is as easy as creating a new ressource using `kubectl`.
-
-First, grab your current Kubeconfig using.
-
-```sh
-kubectl config view --minify --raw > kubeconfig.yaml
-```
-
-Open `kubeconfig.yaml` and delete `preferences` and `users` objects.
-
-```yaml
-apiVersion: v1
-kind: Config
-clusters:
-- cluster:
-    certificate-authority-data: <base64-encoded>
-    server: https://127.0.0.1:32771
-  name: cluster
-contexts:
-- context:
-    cluster: cluster
-    user: placeholder
-  name: context
-current-context: context
-preferences: {} # [!code --]
-users: []       # [!code --]
-```
-
-Then embed everything in the Kubeconfig CRD.
-
-```yaml
-apiVersion: kubebrowser.io/v1alpha1 # [!code ++]
-kind: Kubeconfig                    # [!code ++]
-metadata:                           # [!code ++]
-  name: cluster-name                # [!code ++]
-spec:                               # [!code ++]
-  name: "Friendly name"             # [!code ++]
-  kubeconfig:                       # [!code ++]
-    apiVersion: v1
-    kind: Config
-    clusters:
-    - cluster:
-        certificate-authority-data: <base64-encoded>
-        server: https://127.0.0.1:32771
-      name: cluster
-    contexts:
-    - context:
-        cluster: cluster
-        user: placeholder
-      name: context
-    current-context: context
-```
-
-Finally, create your Kubeconfig in your cluster.
-
-```sh
-kubectl apply -f kubeconfig.yaml
-```
-
-## Grab your personnal Kubeconfig
-
-Port forward the application.
-
-```sh
-kubectl port-forward services/kubebrowser-server 8080
-```
-
-Access your Kubebrowser: http://localhost:8080.
-
-You should be able to copy your personal Kubeconfig and save it locally, or paste it in any tool like FreeLens or Headlamp.
-
-For the rest of the Getting Started, paste the content in a file named `config`.
-
-## Use your fresh Kubeconfig
-
-::: warning
-By default, you are authenticated but have no authorization to query any information from the Kubernetes API Server. In the following we'll create some basic permissions to complete the Getting Started.
-
-If you want to know more, read [this documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac) about RBAC on Kubernetes.
-:::
-
-As before, create the following resources in order to grant a permission to your user.
-```sh
-kubectl apply -f cr.yaml
-```
-```yaml
-# cr.yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: get-namespaces-binding
-subjects:
-- kind: User
-  name: your-username    # Replace with your actual username [!code highlight]
-  apiGroup: rbac.authorization.k8s.io
-roleRef:
-  kind: ClusterRole
-  name: get-namespaces
-  apiGroup: rbac.authorization.k8s.io
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: get-namespaces
-rules:
-- apiGroups: [""]
-  resources: ["namespaces"]
-  verbs: ["get"]
-```
-
-Finally, use the Kubeconfig fetched in the [previous section](#grab-your-personnal-kubeconfig) !
-
-```sh
-kubectl get namespaces --kubeconfig config
-```
+Other ways to manage such *authentication* could be to install [permission manager](https://github.com/sighupio/permission-manager) or [pinniped](https://pinniped.dev/), however, for mid-size businesses, the first one can be limiting, and the latter could be challenging to operate.
