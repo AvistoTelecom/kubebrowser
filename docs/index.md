@@ -1,6 +1,6 @@
 #  What is Kubebrowser ?
 
-Kubebrowser simplifies Kubernetes access management by providing a centralized catalog where users can easily generate their own Kubeconfigs using OpenID Connect (OIDC). Designed for organizations using multiple cloud providers and/or self-managed Kubernetes clusters, Kubebrowser reduces the complexity of Kubeconfig distribution.
+Kubebrowser simplifies Kubernetes access management by providing a centralized catalog where users can easily generate their own Kubeconfigs using OpenID Connect (OIDC). Designed for organizations using multiple cloud providers and/or self-managed Kubernetes clusters, Kubebrowser reduces the complexity of Kubeconfig supply to your end users.
 
 <div class="tip custom-block" style="padding-top: 8px">
 
