@@ -2,7 +2,7 @@
 Author: Yann Lacroix
 */}}
 
-{{- if not .Values.server.configuration.ui.existingConfigmap }}
+{{- if not .Values.server.ui.existingConfigmap }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -16,6 +16,6 @@ metadata:
 data:
   config.js: |
     window._env_ = {
-      HELP_PAGE: {{ .Values.server.configuration.ui.helpPage | quote }},
+      HELP_PAGE: {{ .Values.server.ui.helpPage | quote }},
     };
 {{- end }}

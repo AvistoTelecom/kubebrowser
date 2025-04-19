@@ -39,3 +39,10 @@ repos:
     rev: v8.24.2
     hooks:
       - id: gitleaks
+  - repo: https://github.com/bitnami/readme-generator-for-helm
+    rev: 2f5377f
+    hooks:
+      - id: helm-readme-generator
+        pass_filenames: false
+        always_run: true
+        args: [--readme=chart/README.md, --values=chart/values.yaml]

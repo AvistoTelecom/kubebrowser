@@ -43,9 +43,9 @@ deploy:
           server.image.registry: "{{.IMAGE_DOMAIN_kubebrowser}}"
           server.image.repository: "{{.IMAGE_REPO_NO_DOMAIN_kubebrowser}}"
           server.image.tag: "{{.IMAGE_TAG_kubebrowser}}@{{.IMAGE_DIGEST_kubebrowser}}"
-          server.configuration.clientID: "{{.KUBEBROWSER_OAUTH2_CLIENT_ID}}"
-          server.configuration.clientSecret: "{{.KUBEBROWSER_OAUTH2_CLIENT_SECRET}}"
-          server.configuration.issuerURL: "{{.KUBEBROWSER_OAUTH2_ISSUER_URL}}"
+          server.oidc.clientID: "{{.KUBEBROWSER_OAUTH2_CLIENT_ID}}"
+          server.oidc.clientSecret: "{{.KUBEBROWSER_OAUTH2_CLIENT_SECRET}}"
+          server.oidc.issuerURL: "{{.KUBEBROWSER_OAUTH2_ISSUER_URL}}"
           server.logLevel: "{{.KUBEBROWSER_LOG_LEVEL}}"
           server.extraEnvVars: |
             - name: "KUBEBROWSER_DEV"

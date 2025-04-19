@@ -82,30 +82,20 @@ server:
     ##   - myRegistryKeySecretName
     ##
     pullSecrets: []
-  ## @param server.configuration.defaultUsername Default username on the kubectl set-credentials subcommand
-  ## @param server.configuration.clientId Client ID of your application
-  ## @param server.configuration.clientSecret Client secret of your application
-  ## @param server.configuration.authorizationEndpoint Authorization endpoint of your OIDC provider (e.g. https://login.microsoftonline.com/<tenant_id>/oauth2/v2.0/authorize)
-  ## @param server.configuration.tokenEndpoint Token endpoint of your OIDC provider (e.g. https://login.microsoftonline.com/<tenant_id>/oauth2/v2.0/token)
-  ## @param server.configuration.issuerURL Issuer URL of your OIDC provider (e.g. https://login.microsoftonline.com/<tenant_id>/v2.0)
-  ## @param server.configuration.logLevel Log level of the server
-  ## @param server.configuration.mountPath Mount path of the configuration file
-  ## @param server.configuration.kubeconfigsPath Path to the kubeconfigs directory
+  ## @param server.oidc.clientID Client ID of your application
+  ## @param server.oidc.clientSecret Client secret of your application
+  ## @param server.oidc.issuerURL Issuer URL of your OIDC provider (e.g. https://login.microsoftonline.com/<tenant_id>/v2.0)
   ##
-  configuration:
-    # defaultUsername: "oidc-user"
+  oidc:
     clientID: ""
     clientSecret: ""
     issuerURL: ""
-    ui:
-      existingConfigmap: ""
-      helpPage: "https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"
-    # authorizationEndpoint: ""
-    # tokenEndpoint: ""
-    # scopes: []
-    # logLevel: "INFO"
-    # mountPath: "/app"
-    # kubeconfigsPath: "/app/kubeconfigs"
+  ## @param server.ui.existingConfigmap Override generated config.js for the UI.
+  ## @param server.ui.helpPage Upper right link on the UI to help users to use a Kubeconfig
+  ui:
+    existingConfigmap: ""
+    helpPage: "https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"
+  ## @param server.logLevel Log level of the server
   logLevel: "INFO"
   ## @param server.serviceAccountName Service account to use
   ##
@@ -143,7 +133,6 @@ server:
     periodSeconds: 5
     timeoutSeconds: 1
     failureThreshold: 3
-
   ## @param server.readinessProbe.enabled Enable readinessProbe on kubebrowser server containers
   ## @param server.readinessProbe.initialDelaySeconds Initial delay seconds for readinessProbe
   ## @param server.readinessProbe.periodSeconds Period seconds for readinessProbe

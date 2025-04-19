@@ -156,8 +156,8 @@ spec:
         - name: ui-configuration
           configMap:
             defaultMode: 420
-        {{- if .Values.server.configuration.ui.existingConfigmap }}
-            name: {{ .Values.server.configuration.ui.existingConfigmap }}
+        {{- if .Values.server.ui.existingConfigmap }}
+            name: {{ .Values.server.ui.existingConfigmap }}
         {{- else }}
             name: {{ include "kubebrowser.server.fullname" . }}-ui-config
         {{- end }}
