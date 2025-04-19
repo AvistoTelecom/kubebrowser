@@ -28,5 +28,9 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/AvistoTelecom/kubebrowser' }
     ]
-  }
+  },
+    sitemap: {
+      hostname: 'https://avistotelecom.github.io/kubebrowser'
+  },
+  lastUpdated: true
 })
