@@ -6,7 +6,7 @@ import (
 	"io"
 	"slices"
 
-	v1alpha1 "github.com/brawdunoir/kubebrowser/pkg/apis/kubeconfig/v1alpha1"
+	v1alpha1 "github.com/AvistoTelecom/kubebrowser/pkg/apis/kubeconfig/v1alpha1"
 	"github.com/spf13/viper"
 )
 

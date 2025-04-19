@@ -19,7 +19,7 @@ limitations under the License.
 package v1alpha1
 
 import (
-	kubeconfigv1alpha1 "github.com/brawdunoir/kubebrowser/pkg/apis/kubeconfig/v1alpha1"
+	kubeconfigv1alpha1 "github.com/AvistoTelecom/kubebrowser/pkg/apis/kubeconfig/v1alpha1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	listers "k8s.io/client-go/listers"
 	cache "k8s.io/client-go/tools/cache"

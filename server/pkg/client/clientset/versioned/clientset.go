@@ -22,7 +22,7 @@ import (
 	fmt "fmt"
 	http "net/http"
 
-	kubeconfigv1alpha1 "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned/typed/kubeconfig/v1alpha1"
+	kubeconfigv1alpha1 "github.com/AvistoTelecom/kubebrowser/pkg/client/clientset/versioned/typed/kubeconfig/v1alpha1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"

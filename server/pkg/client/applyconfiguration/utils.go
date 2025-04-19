@@ -19,9 +19,9 @@ limitations under the License.
 package applyconfiguration
 
 import (
-	v1alpha1 "github.com/brawdunoir/kubebrowser/pkg/apis/kubeconfig/v1alpha1"
-	internal "github.com/brawdunoir/kubebrowser/pkg/client/applyconfiguration/internal"
-	kubeconfigv1alpha1 "github.com/brawdunoir/kubebrowser/pkg/client/applyconfiguration/kubeconfig/v1alpha1"
+	v1alpha1 "github.com/AvistoTelecom/kubebrowser/pkg/apis/kubeconfig/v1alpha1"
+	internal "github.com/AvistoTelecom/kubebrowser/pkg/client/applyconfiguration/internal"
+	kubeconfigv1alpha1 "github.com/AvistoTelecom/kubebrowser/pkg/client/applyconfiguration/kubeconfig/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	testing "k8s.io/client-go/testing"

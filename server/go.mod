@@ -1,4 +1,4 @@
-module github.com/brawdunoir/kubebrowser
+module github.com/AvistoTelecom/kubebrowser
 
 go 1.24.1
 

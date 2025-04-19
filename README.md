@@ -15,14 +15,5 @@ Managing access across multiple Kubernetes clusters can be challenging, especial
 ✅ Whitelist Management: Allow administrators to set a whitelist on each Kubeconfig.
 
 ## Getting started
-To deploy Kubebrowser and start using it:
 
-1. **Configure OIDC authentication** with your identity provider.
-1. **Install Kubebrowser** using Helm or Kubernetes manifests.
-1. **Add Kubernetes clusters** to the catalog.
-1. **Grant appropriate permissions** to teams and users.
-
-
-## How to contribute
-
-WIP 🚧
+Check our [Documentation](https://avistotelecom.github.io/kubebrowser/).

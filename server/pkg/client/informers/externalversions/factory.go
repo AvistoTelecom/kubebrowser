@@ -23,9 +23,9 @@ import (
 	sync "sync"
 	time "time"
 
-	versioned "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned"
-	internalinterfaces "github.com/brawdunoir/kubebrowser/pkg/client/informers/externalversions/internalinterfaces"
-	kubeconfig "github.com/brawdunoir/kubebrowser/pkg/client/informers/externalversions/kubeconfig"
+	versioned "github.com/AvistoTelecom/kubebrowser/pkg/client/clientset/versioned"
+	internalinterfaces "github.com/AvistoTelecom/kubebrowser/pkg/client/informers/externalversions/internalinterfaces"
+	kubeconfig "github.com/AvistoTelecom/kubebrowser/pkg/client/informers/externalversions/kubeconfig"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"

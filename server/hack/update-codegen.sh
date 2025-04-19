@@ -22,7 +22,7 @@ SCRIPT_ROOT=$(dirname "${BASH_SOURCE[0]}")/..
 
 source "${HOME}/go/pkg/mod/k8s.io/code-generator@v0.32.3/kube_codegen.sh"
 
-THIS_PKG="github.com/brawdunoir/kubebrowser"
+THIS_PKG="github.com/AvistoTelecom/kubebrowser"
 
 kube::codegen::gen_helpers \
     --boilerplate "${SCRIPT_ROOT}/hack/boilerplate.go.txt" \

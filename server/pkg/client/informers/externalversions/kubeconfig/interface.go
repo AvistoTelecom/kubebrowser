@@ -19,8 +19,8 @@ limitations under the License.
 package kubeconfig
 
 import (
-	internalinterfaces "github.com/brawdunoir/kubebrowser/pkg/client/informers/externalversions/internalinterfaces"
-	v1alpha1 "github.com/brawdunoir/kubebrowser/pkg/client/informers/externalversions/kubeconfig/v1alpha1"
+	internalinterfaces "github.com/AvistoTelecom/kubebrowser/pkg/client/informers/externalversions/internalinterfaces"
+	v1alpha1 "github.com/AvistoTelecom/kubebrowser/pkg/client/informers/externalversions/kubeconfig/v1alpha1"
 )
 
 // Interface provides access to each of this group's versions.

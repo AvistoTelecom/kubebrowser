@@ -19,10 +19,10 @@ limitations under the License.
 package fake
 
 import (
-	applyconfiguration "github.com/brawdunoir/kubebrowser/pkg/client/applyconfiguration"
-	clientset "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned"
-	kubeconfigv1alpha1 "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned/typed/kubeconfig/v1alpha1"
-	fakekubeconfigv1alpha1 "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned/typed/kubeconfig/v1alpha1/fake"
+	applyconfiguration "github.com/AvistoTelecom/kubebrowser/pkg/client/applyconfiguration"
+	clientset "github.com/AvistoTelecom/kubebrowser/pkg/client/clientset/versioned"
+	kubeconfigv1alpha1 "github.com/AvistoTelecom/kubebrowser/pkg/client/clientset/versioned/typed/kubeconfig/v1alpha1"
+	fakekubeconfigv1alpha1 "github.com/AvistoTelecom/kubebrowser/pkg/client/clientset/versioned/typed/kubeconfig/v1alpha1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"

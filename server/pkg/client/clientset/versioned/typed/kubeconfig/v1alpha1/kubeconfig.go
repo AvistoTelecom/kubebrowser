@@ -21,9 +21,9 @@ package v1alpha1
 import (
 	context "context"
 
-	kubeconfigv1alpha1 "github.com/brawdunoir/kubebrowser/pkg/apis/kubeconfig/v1alpha1"
-	applyconfigurationkubeconfigv1alpha1 "github.com/brawdunoir/kubebrowser/pkg/client/applyconfiguration/kubeconfig/v1alpha1"
-	scheme "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned/scheme"
+	kubeconfigv1alpha1 "github.com/AvistoTelecom/kubebrowser/pkg/apis/kubeconfig/v1alpha1"
+	applyconfigurationkubeconfigv1alpha1 "github.com/AvistoTelecom/kubebrowser/pkg/client/applyconfiguration/kubeconfig/v1alpha1"
+	scheme "github.com/AvistoTelecom/kubebrowser/pkg/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"

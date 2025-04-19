@@ -5,9 +5,9 @@ import (
 	"errors"
 	"time"
 
-	clientset "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned"
-	informers "github.com/brawdunoir/kubebrowser/pkg/client/informers/externalversions"
-	v1alpha1 "github.com/brawdunoir/kubebrowser/pkg/client/listers/kubeconfig/v1alpha1"
+	clientset "github.com/AvistoTelecom/kubebrowser/pkg/client/clientset/versioned"
+	informers "github.com/AvistoTelecom/kubebrowser/pkg/client/informers/externalversions"
+	v1alpha1 "github.com/AvistoTelecom/kubebrowser/pkg/client/listers/kubeconfig/v1alpha1"
 	"github.com/spf13/viper"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"

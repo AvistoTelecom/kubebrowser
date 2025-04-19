@@ -8,7 +8,7 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/brawdunoir/kubebrowser/pkg/signals"
+	"github.com/AvistoTelecom/kubebrowser/pkg/signals"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/memstore"
 	ginzap "github.com/gin-contrib/zap"

@@ -21,8 +21,8 @@ package v1alpha1
 import (
 	http "net/http"
 
-	kubeconfigv1alpha1 "github.com/brawdunoir/kubebrowser/pkg/apis/kubeconfig/v1alpha1"
-	scheme "github.com/brawdunoir/kubebrowser/pkg/client/clientset/versioned/scheme"
+	kubeconfigv1alpha1 "github.com/AvistoTelecom/kubebrowser/pkg/apis/kubeconfig/v1alpha1"
+	scheme "github.com/AvistoTelecom/kubebrowser/pkg/client/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 

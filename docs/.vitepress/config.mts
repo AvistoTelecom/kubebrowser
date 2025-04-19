@@ -4,7 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "Kubebrowser",
   description: "Your Kubernetes catalog with OIDC",
-  base: "/temp-kubebrowser/",
+  base: "/kubebrowser/",
   ignoreDeadLinks: [
     /^https?:\/\/localhost/,
   ],
@@ -16,7 +16,7 @@ export default defineConfig({
     sidebar: [
       {
         items: [
-          { text: 'What is Kubebrowser ?', link: '/' },
+          { text: 'What is Kubebrowser ?', link: '/' },
           { text: 'Getting started', link: '/getting-started' },
           { text: 'Contribute', link: '/contribute' }
         ]
@@ -26,7 +26,7 @@ export default defineConfig({
       provider: 'local'
     },
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/AvistoTelecom/kubebrowser' }
     ]
   }
 })
