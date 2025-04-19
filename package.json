@@ -1,10 +1,20 @@
 {
-  "devDependencies": {
-    "vitepress": "^1.6.3"
-  },
+  "name": "kubebrowser",
+  "private": true,
   "scripts": {
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "dev:ui": "pnpm --filter ui dev",
+    "dev:docs": "pnpm --filter docs dev",
+    "build:docs": "pnpm --filter docs build",
+    "build:ui": "pnpm --filter ui build",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "@esbuild/linux-x64"
+    ],
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

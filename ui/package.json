@@ -1,5 +1,5 @@
 {
-  "name": "ui",
+  "name": "@kubebrowser/ui",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -44,13 +44,5 @@
     "vitest": "^3.0.8",
     "vue-tsc": "^2.2.8"
   },
-  "packageManager": "pnpm@10.6.4+sha512.da3d715bfd22a9a105e6e8088cfc7826699332ded60c423b14ec613a185f1602206702ff0fe4c438cb15c979081ce4cb02568e364b15174503a63c7a8e2a5f6c",
-  "pnpm": {
-    "ignoredBuiltDependencies": [
-      "esbuild"
-    ],
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
-  }
+  "packageManager": "pnpm@10.6.4+sha512.da3d715bfd22a9a105e6e8088cfc7826699332ded60c423b14ec613a185f1602206702ff0fe4c438cb15c979081ce4cb02568e364b15174503a63c7a8e2a5f6c"
 }
