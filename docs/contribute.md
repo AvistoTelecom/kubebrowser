@@ -11,7 +11,7 @@
 ├── chart           # Where lies the Helm chart
 ├── docs            # This is what you are reading
 ├── k8s             # Raw manifests for dev purposes
-├── server          # API and Kubeconfig Controller of the Kubebrowser
+├── server          # API and Kubeconfig controller
 └── ui              # The UI
 ```
 

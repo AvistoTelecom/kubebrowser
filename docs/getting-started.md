@@ -30,7 +30,7 @@ First, create a `values.yaml` file.
 
 ```yaml
 server:
-  configuration:
+  oidc:
     clientID: "xxx"
     clientSecret: "xxx"
     issuerURL: "xxx"
@@ -38,7 +38,7 @@ server:
 Second, run the command:
 
 ```sh
-helm install kubebrowser oci://rgy.k8s.devops-svc-ag.com/avisto/helm/kubebrowser --version 0.5.0 -f values.yaml
+helm install kubebrowser oci://rgy.k8s.devops-svc-ag.com/avisto/helm/kubebrowser --version 0.5.1 -f values.yaml
 ```
 
 ::: info
@@ -47,9 +47,9 @@ This chart will install a CRD (CustomResourceDefinition) named `Kubeconfig`.
 
 ## Add a Kubeconfig
 
-Because Kubebrowser declares a new resource of kind `Kubeconfig`, adding a cluster to your catalog is as easy as creating a new ressource using `kubectl`.
+Because Kubebrowser declares a new resource of kind `Kubeconfig`, adding a cluster to your catalog is as easy as creating a new `Kubeconfig` ressource using `kubectl`.
 
-First, grab your current Kubeconfig using.
+First, grab your current Kubeconfig.
 
 ```sh
 kubectl config view --minify --raw > kubeconfig.yaml
@@ -75,7 +75,7 @@ preferences: {} # [!code --]
 users: []       # [!code --]
 ```
 
-Then embed everything in the Kubeconfig CRD.
+Then embed everything in the `Kubeconfig` CRD.
 
 ```yaml
 apiVersion: kubebrowser.io/v1alpha1 # [!code ++]
