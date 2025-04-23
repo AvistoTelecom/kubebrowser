@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Kubebrowser",
+  title: "KubeBrowser",
   description: "Your Kubernetes catalog with OIDC",
   base: "/kubebrowser/",
   ignoreDeadLinks: [
@@ -10,9 +10,10 @@ export default defineConfig({
   ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
-    nav: [
-      { text: 'Docs', link: '/' },
-    ],
+    logo: {
+      dark: '/logo_light.svg',
+      light: '/logo_dark.svg'
+    },
     sidebar: [
       {
         items: [
@@ -22,6 +23,10 @@ export default defineConfig({
         ]
       }
     ],
+    editLink: {
+      pattern: 'https://github.com/AvistoTelecom/kubebrowser/edit/main/docs/:path',
+      text: 'Edit this page on GitHub'
+    },
     search: {
       provider: 'local'
     },
