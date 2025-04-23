@@ -5,6 +5,7 @@ export default defineConfig({
   title: "KubeBrowser",
   description: "Your Kubernetes catalog with OIDC",
   base: "/kubebrowser/",
+  head: [['link', { rel: 'icon', href: '/kubebrowser/favicon.ico' }]],
   ignoreDeadLinks: [
     /^https?:\/\/localhost/,
   ],
