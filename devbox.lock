@@ -52,6 +52,54 @@
         }
       }
     },
+    "ko@0.15.4": {
+      "last_modified": "2025-03-11T17:52:14Z",
+      "resolved": "github:NixOS/nixpkgs/0d534853a55b5d02a4ababa1d71921ce8f0aee4c#ko",
+      "source": "devbox-search",
+      "version": "0.15.4",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/8hdcyizhzcz7wwzck6xpqk5r4cjwsvlc-ko-0.15.4",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/8hdcyizhzcz7wwzck6xpqk5r4cjwsvlc-ko-0.15.4"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/p9j9967p5mc9l2y26pk1iv2xjcv4603w-ko-0.15.4",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/p9j9967p5mc9l2y26pk1iv2xjcv4603w-ko-0.15.4"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/4r7pa0ys5bgpckq5rmd4y22hwv1gwbgh-ko-0.15.4",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/4r7pa0ys5bgpckq5rmd4y22hwv1gwbgh-ko-0.15.4"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/qnfz3c3zq9an62aaai0zz890pyd0yf6v-ko-0.15.4",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/qnfz3c3zq9an62aaai0zz890pyd0yf6v-ko-0.15.4"
+        }
+      }
+    },
     "nodejs@22.14.0": {
       "last_modified": "2025-03-23T05:31:05Z",
       "plugin_version": "0.0.2",
@@ -226,54 +274,6 @@
             }
           ],
           "store_path": "/nix/store/kb01yi27frzjk7hhxmlihihmzk1q3vgx-pre-commit-4.0.1"
-        }
-      }
-    },
-    "skaffold@2.14.2": {
-      "last_modified": "2025-03-21T08:42:37Z",
-      "resolved": "github:NixOS/nixpkgs/bfa9810ff7104a17555ab68ebdeafb6705f129b1#skaffold",
-      "source": "devbox-search",
-      "version": "2.14.2",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/mvgi49zcqqyc0w5dhdnzmy621msj79sy-skaffold-2.14.2",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/mvgi49zcqqyc0w5dhdnzmy621msj79sy-skaffold-2.14.2"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/4dhf9psbbjmmnbwww6gqc8281hy6pi3j-skaffold-2.14.2",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/4dhf9psbbjmmnbwww6gqc8281hy6pi3j-skaffold-2.14.2"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/jk1hp5ayzbxhpl99153g3kz219wrql8q-skaffold-2.14.2",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/jk1hp5ayzbxhpl99153g3kz219wrql8q-skaffold-2.14.2"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/8n9fyggx5ljfyyh7blpwa3md225qzs9z-skaffold-2.14.2",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/8n9fyggx5ljfyyh7blpwa3md225qzs9z-skaffold-2.14.2"
         }
       }
     }
