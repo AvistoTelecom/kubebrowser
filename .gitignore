@@ -30,7 +30,6 @@ coverage
 *.tsbuildinfo
 
 dev/values.yaml
-.envrc
 kodata
 
 # Vitepress
