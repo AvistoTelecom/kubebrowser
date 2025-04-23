@@ -276,6 +276,54 @@
           "store_path": "/nix/store/kb01yi27frzjk7hhxmlihihmzk1q3vgx-pre-commit-4.0.1"
         }
       }
+    },
+    "tilt@0.33.21": {
+      "last_modified": "2025-04-09T17:27:46Z",
+      "resolved": "github:NixOS/nixpkgs/67d2b8200c828903b36a6dd0fb952fe424aa0606#tilt",
+      "source": "devbox-search",
+      "version": "0.33.21",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/fb1vxi16lg9grjsqc7rpk1pa26g977ji-tilt-0.33.21",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/fb1vxi16lg9grjsqc7rpk1pa26g977ji-tilt-0.33.21"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/qg7d2cha5m4yz0s1w5aa4im1lk6wxmg1-tilt-0.33.21",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/qg7d2cha5m4yz0s1w5aa4im1lk6wxmg1-tilt-0.33.21"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/5mhjj3jf3m0k41x654caf00yzi699zjg-tilt-0.33.21",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/5mhjj3jf3m0k41x654caf00yzi699zjg-tilt-0.33.21"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/h40qj7daiic536kghjvjzyw0blnspibi-tilt-0.33.21",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/h40qj7daiic536kghjvjzyw0blnspibi-tilt-0.33.21"
+        }
+      }
     }
   }
 }
