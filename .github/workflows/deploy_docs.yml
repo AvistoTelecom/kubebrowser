@@ -7,6 +7,8 @@ on:
   # using the `master` branch as the default branch.
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -49,6 +51,8 @@ jobs:
         run: pnpm build:docs # or pnpm docs:build / yarn docs:build / bun run docs:build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+        # Only upload artifact when pushing to main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           path: docs/.vitepress/dist
 
@@ -59,6 +63,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     needs: build
     runs-on: ubuntu-latest
+    # Only deploy when pushing to main
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     name: Deploy
     steps:
       - name: Deploy to GitHub Pages

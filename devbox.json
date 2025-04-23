@@ -3,9 +3,10 @@
   "packages": [
     "nodejs@22.14.0",
     "go@1.24.1",
-    "skaffold@2.14.2",
     "pre-commit@4.0.1",
-    "pnpm@10.7.0"
+    "pnpm@10.7.0",
+    "ko@0.15.4",
+    "tilt@0.33.21"
   ],
   "shell": {
     "scripts": {

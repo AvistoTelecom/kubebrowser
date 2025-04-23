@@ -1,0 +1,9 @@
+server:
+  oidc:
+    clientID: <your-client-id>
+    clientSecret: <your-client-secret>
+    issuerURL: <your-issuer-url>
+  logLevel: DEBUG # Or INFO, WARN, ERROR
+  extraEnvVars:
+    - name: "KUBEBROWSER_DEV"
+      value: "true"
