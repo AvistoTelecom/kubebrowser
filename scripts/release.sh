@@ -55,7 +55,7 @@ check_dependencies() {
 
 check_existing_version_in_registry() {
   local image="$IMAGE_REGISTRY/$APP_NAME:$version"
-  if ! docker inspect "$image" &>/dev/null; then
+  if docker buildx imagetools inspect "$image" &>/dev/null; then
     print_red "Error: Version $version already exists in the Docker registry ($image)."
     exit 1
   fi
