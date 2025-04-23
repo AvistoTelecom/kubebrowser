@@ -38,7 +38,7 @@ server:
 Second, run the command:
 
 ```sh
-helm install kubebrowser oci://rgy.k8s.devops-svc-ag.com/avisto/helm/kubebrowser --version 0.5.1 -f values.yaml
+helm install kubebrowser oci://rgy.k8s.devops-svc-ag.com/avisto/helm/kubebrowser --version 0.6.0 -f values.yaml
 ```
 
 ::: info
