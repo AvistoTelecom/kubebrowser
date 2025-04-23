@@ -17,6 +17,32 @@ const kubeconfigAsYaml = computed(
   () => props.kubeconfig && YAML.stringify(props.kubeconfig.kubeconfig),
 )
 
+// Helper to deeply redact sensitive fields in the kubeconfig
+function redactKubeconfig(k: Kubeconfig['kubeconfig']) {
+  if (!k?.users) return k
+  const clone = JSON.parse(JSON.stringify(k))
+  clone.users.forEach(
+    (u: {
+      user?: {
+        'auth-provider'?: {
+          config?: Record<string, unknown>
+        }
+      }
+    }) => {
+      const cfg = u?.user?.['auth-provider']?.config
+      if (cfg)
+        (['client-secret', 'id-token', 'refresh-token'] as const).forEach((key) => {
+          if (key in cfg) (cfg as Record<typeof key, unknown>)[key] = 'REDACTED'
+        })
+    },
+  )
+  return clone
+}
+
+const redactedKubeconfigAsYaml = computed(() =>
+  props.kubeconfig ? YAML.stringify(redactKubeconfig(props.kubeconfig.kubeconfig)) : null,
+)
+
 const handleCopy = () => {
   if (kubeconfigAsYaml.value) {
     copyToClipboard(kubeconfigAsYaml.value)
@@ -41,7 +67,7 @@ watch(
       'bg-primary-950': props.kubeconfig,
     }"
   >
-    <div v-if="kubeconfigAsYaml">
+    <div v-if="redactedKubeconfigAsYaml">
       <div
         class="absolute inline-flex items-center justify-center gap-1 p-3 text-gray-800 cursor-pointer top-6 right-6 bg-accent min-w-min rounded-tr-md rounded-bl-md"
         @click="handleCopy"
@@ -49,7 +75,7 @@ watch(
         <AkCopy />
         <span> {{ copied ? 'Copied' : 'Copy' }}</span>
       </div>
-      <pre>{{ kubeconfigAsYaml }}</pre>
+      <pre>{{ redactedKubeconfigAsYaml }}</pre>
     </div>
     <div v-else>
       <div v-if="!props.catalogLength">
