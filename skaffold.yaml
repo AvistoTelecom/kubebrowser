@@ -3,50 +3,14 @@ kind: Config
 metadata:
   name: kubebrowser
 build:
-  tagPolicy:
-    inputDigest: {}
   artifacts:
     - image: kubebrowser
-      # context: server
-      # ko: {}
       context: .
       hooks:
         before:
           - command: ["sh", "-c", "./scripts/buildFrontForBack.sh"]
             os: [darwin, linux]
       ko:
-        dependencies:
-          paths:
-            - ui/src
-            - server
-            - k8s
-          ignore:
-            - dist
-            - kodata
         dir: server
-  # local:
-  #   push: true
-manifests:
-  rawYaml:
-    - k8s/*yaml
-portForward:
-  - resourceType: deployment
-    resourceName: kubebrowser-server
-    namespace: default
-    port: 8080
-deploy:
-  helm:
-    releases:
-      - name: kubebrowser
-        chartPath: chart
-        setValueTemplates:
-          server.image.registry: "{{.IMAGE_DOMAIN_kubebrowser}}"
-          server.image.repository: "{{.IMAGE_REPO_NO_DOMAIN_kubebrowser}}"
-          server.image.tag: "{{.IMAGE_TAG_kubebrowser}}@{{.IMAGE_DIGEST_kubebrowser}}"
-          server.oidc.clientID: "{{.KUBEBROWSER_OAUTH2_CLIENT_ID}}"
-          server.oidc.clientSecret: "{{.KUBEBROWSER_OAUTH2_CLIENT_SECRET}}"
-          server.oidc.issuerURL: "{{.KUBEBROWSER_OAUTH2_ISSUER_URL}}"
-          server.logLevel: "{{.KUBEBROWSER_LOG_LEVEL}}"
-          server.extraEnvVars: |
-            - name: "KUBEBROWSER_DEV"
-              value: "{{.KUBEBROWSER_DEV}}"
+  local:
+    push: true
