@@ -1,0 +1,5 @@
+server:
+  oidc:
+    clientID: <your-client-id>
+    clientSecret: <your-client-secret>
+    issuerURL: <your-issuer-url>
