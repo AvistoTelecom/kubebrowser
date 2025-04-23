@@ -1,14 +1,6 @@
 @import 'tailwindcss';
 
 @font-face {
-  font-family: 'Maven Pro';
-  src: url('@/assets/fonts/MavenPro.ttf') format('truetype');
-  font-optical-sizing: auto;
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
   font-family: 'Outfit';
   src: url('@/assets/fonts/Outfit.ttf') format('truetype');
   font-optical-sizing: auto;
@@ -18,7 +10,6 @@
 
 @theme {
   --font-display: 'Outfit', 'sans-serif';
-  --font-logo: 'Maven Pro', 'Outfit', 'sans-serif';
 
   --color-primary-900: #192454;
   --color-primary-950: #020930;
