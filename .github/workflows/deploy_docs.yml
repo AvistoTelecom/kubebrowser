@@ -1,6 +1,4 @@
-# Sample workflow for building and deploying a VitePress site to GitHub Pages
-#
-name: Deploy VitePress site to Pages
+name: Build docs
 
 on:
   # Runs on pushes targeting the `main` branch. Change this to `master` if you're
@@ -28,6 +26,7 @@ concurrency:
 jobs:
   # Build job
   build:
+    name: Build docs
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -65,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     # Only deploy when pushing to main
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    name: Deploy
+    name: Deploy docs to GitHub Pages
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
