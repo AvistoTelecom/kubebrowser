@@ -15,8 +15,8 @@ jobs:
         with:
           node-version: "22.x"
           cache: "pnpm"
-      - run: pnpm install
-      - run: pnpm build:ui
+      - run: npm ci
+      - run: npm run build:ui
       - name: Move UI build into server/kodata
         run: "mv ui/dist server/kodata"
       - uses: actions/setup-go@v5
