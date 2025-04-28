@@ -1,0 +1,38 @@
+name: Build
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 10.7.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+      - run: pnpm install
+      - run: pnpm build:ui
+      - name: Move UI build into server/kodata
+        run: "mv ui/dist server/kodata"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.1"
+      - uses: ko-build/setup-ko@v0.9
+      - name: Build and push on release
+        run: |
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            echo "Building and pushing for release..."
+            ko build ./server
+          else
+            echo "Building without pushing (non-release event)..."
+            ko build ./server --push=false
+          fi
