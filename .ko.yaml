@@ -1,3 +1,6 @@
 builds:
   - id: server
     dir: ./server
+    defaultPlatforms:
+      - linux/arm64
+      - linux/amd64
