@@ -34,7 +34,7 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "release" ]]; then
             echo "Building and pushing for release..."
-            ko build ./server
+            ko build ./server --tags ${{ github.event.release.tag_name }},latest --tag-only
           else
             echo "Building without pushing (non-release event)..."
             ko build ./server --push=false
