@@ -7,7 +7,7 @@ export default defineConfig({
     config: (md) => {
       configureDiagramsPlugin(md, {
         diagramsDir: "public/diagrams",
-        publicPath: "/kubebrowser/public/diagrams",
+        publicPath: "/kubebrowser/diagrams",
       });
     },
   },
@@ -29,6 +29,7 @@ export default defineConfig({
         items: [
           { text: 'What is Kubebrowser ?', link: '/' },
           { text: 'Getting started', link: '/getting-started' },
+          { text: 'How it works', link: '/how-it-works' },
           { text: 'Contribute', link: '/contribute' }
         ]
       }
