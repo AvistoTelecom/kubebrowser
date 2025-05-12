@@ -1,7 +1,16 @@
 import { defineConfig } from 'vitepress'
+import { configureDiagramsPlugin } from "vitepress-plugin-diagrams";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  markdown: {
+    config: (md) => {
+      configureDiagramsPlugin(md, {
+        diagramsDir: "public/diagrams",
+        publicPath: "/kubebrowser/diagrams",
+      });
+    },
+  },
   title: "KubeBrowser",
   description: "Your Kubernetes catalog with OIDC",
   base: "/kubebrowser/",
@@ -20,6 +29,7 @@ export default defineConfig({
         items: [
           { text: 'What is Kubebrowser ?', link: '/' },
           { text: 'Getting started', link: '/getting-started' },
+          { text: 'How it works', link: '/how-it-works' },
           { text: 'Contribute', link: '/contribute' }
         ]
       }

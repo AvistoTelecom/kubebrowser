@@ -4,7 +4,7 @@
 
 # Contribute
 
-## Project architecture
+## Repository architecture
 
 ```
 .
