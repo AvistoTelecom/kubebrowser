@@ -19,7 +19,6 @@ Currently, KubeBrowser uses a unique OIDC configuration for all the Kubeconfig
 vars: {
   d2-config: {
     theme-id: 105
-    layout-engine: tala
   }
 }
 
