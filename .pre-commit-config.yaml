@@ -18,7 +18,7 @@ repos:
       - id: no-commit-to-branch
         args: [--branch, main]
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.24.0
+    rev: v9.27.0
     hooks:
       - id: eslint
         files: \.[jt]s|\.vue # *.js, *.ts and .vue
@@ -36,13 +36,20 @@ repos:
         entry: |
           bash -c 'pnpm --prefix ui run format' --
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.24.2
+    rev: v8.26.0
     hooks:
       - id: gitleaks
   - repo: https://github.com/bitnami/readme-generator-for-helm
-    rev: 2f5377f
+    rev: 2.7.0
     hooks:
       - id: helm-readme-generator
         pass_filenames: false
         always_run: true
         args: [--readme=chart/README.md, --values=chart/values.yaml]
+  - repo: https://github.com/Brawdunoir/vitepress-plugin-diagrams
+    rev: "f4c430b"
+    files: ^docs/
+    types: [svg, md]
+    hooks:
+      - id: check-missing-diagrams
+      - id: clean-diagrams
