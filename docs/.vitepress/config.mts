@@ -14,6 +14,7 @@ export default defineConfig({
   title: "KubeBrowser",
   description: "Your Kubernetes catalog with OIDC",
   base: "/kubebrowser/docs/",
+  outDir: '.vitepress/docs',
   head: [['link', { rel: 'icon', href: '/kubebrowser/docs/favicon.ico' }]],
   ignoreDeadLinks: [
     /^https?:\/\/localhost/,
