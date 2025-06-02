@@ -12,6 +12,7 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss(),
   ],
+  assetsInclude: ['**/*.lottie'],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
