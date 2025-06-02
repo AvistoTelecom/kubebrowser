@@ -15,8 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    name: Build
+  documentation:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -37,7 +36,9 @@ jobs:
         run: pnpm build:docs
       - name: Move dist
         run: |
-          mv docs/.vitepress/dist docs
+          mv docs/.vitepress/dist docs-tmp
+          rm -r docs
+          mv docs-tmp docs
       - name: Commit and push docs
         uses: actions-js/push@v1.5
         # Only push docs when workflow triggerred from main
@@ -47,3 +48,4 @@ jobs:
           message: "docs: autopublish ${date}"
           branch: gh-pages
           directory: docs
+          rebase: true
