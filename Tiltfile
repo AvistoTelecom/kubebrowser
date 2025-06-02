@@ -19,9 +19,9 @@ local_resource('frontend build', cmd='./scripts/buildFrontForBack.sh', deps="./u
 
 helm_resource(
   'server',
-  './chart',
+  'avisto/kubebrowser',
   namespace='default',
-  deps=['./chart', './dev/values.yaml'],
+  deps=['./dev/values.yaml'],
   image_deps=['server'],
   port_forwards=[8080],
   image_keys=[('server.image.registry', 'server.image.repository', 'server.image.tag')],
