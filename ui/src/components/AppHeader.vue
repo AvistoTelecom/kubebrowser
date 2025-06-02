@@ -7,7 +7,9 @@ const helpURL = window._env_.HELP_PAGE
 </script>
 
 <template>
-  <header class="flex items-center content-center justify-between p-8 border-b border-gray-600">
+  <header
+    class="flex items-center content-center justify-between px-8 py-4 border-b border-gray-600"
+  >
     <AppLogoFull class="w-48" />
     <a
       v-if="helpURL"
