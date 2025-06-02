@@ -7,13 +7,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
-
 jobs:
   build:
     name: Build
@@ -47,6 +40,11 @@ jobs:
   publish:
     name: Publish
     needs: build
+    permissions:
+      contents: write
+    concurrency:
+      group: documentation
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     # Only deploy when pushing to main
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -71,4 +69,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           message: "docs: autopublish ${date}"
+          branch: gh-pages
           directory: docs
