@@ -22,6 +22,9 @@ importers:
       '@kalimahapps/vue-icons':
         specifier: ^1.7.1
         version: 1.7.1(vue@3.5.13(typescript@5.8.3))
+      '@lottiefiles/dotlottie-vue':
+        specifier: ^0.6.3
+        version: 0.6.3(vue@3.5.13(typescript@5.8.3))
       '@tailwindcss/vite':
         specifier: ^4.0.15
         version: 4.1.4(vite@6.3.2(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.2)(yaml@2.7.1))
@@ -752,6 +755,14 @@ packages:
     engines: {node: '>=14.16'}
     peerDependencies:
       vue: ^3.0.0
+
+  '@lottiefiles/dotlottie-vue@0.6.3':
+    resolution: {integrity: sha512-t8uGmuue8Rv/xWOmbG2HkgYWt0KX6m34baOzlPit6cbfrHFXYJcr+BLp06y6tGMJtrtv/y3tK5nqwi4s9WHrkg==}
+    peerDependencies:
+      vue: ^3.3.4
+
+  '@lottiefiles/dotlottie-web@0.44.0':
+    resolution: {integrity: sha512-IUWKVciDJI/BMWDWnh7j0Ngd0N8q9ySRAwm84aDqIE07qpmdZ7x1rkIpBaU1yHSNqNYHeh1Rxsl+LC3CY4f0KA==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -3454,6 +3465,13 @@ snapshots:
     dependencies:
       svg-parser: 2.0.4
       vue: 3.5.13(typescript@5.8.3)
+
+  '@lottiefiles/dotlottie-vue@0.6.3(vue@3.5.13(typescript@5.8.3))':
+    dependencies:
+      '@lottiefiles/dotlottie-web': 0.44.0
+      vue: 3.5.13(typescript@5.8.3)
+
+  '@lottiefiles/dotlottie-web@0.44.0': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
