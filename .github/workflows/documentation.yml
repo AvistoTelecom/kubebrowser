@@ -56,12 +56,19 @@ jobs:
         with:
           fetch-depth: 0 # Needed to commit and push
           ref: gh-pages
+      - name: Clean existing docs
+        run: |
+          if [ -d docs ]; then
+            rm -rf docs
+          fi
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: docs
+          path: docs
       - name: Commit and push docs
         uses: actions-js/push@v1.5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           message: "docs: autopublish ${date}"
+          directory: docs
