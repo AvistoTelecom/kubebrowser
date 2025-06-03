@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { DotLottieVue } from '@lottiefiles/dotlottie-vue'
 import heartAnimation from '@/assets/heart.lottie'
+
+const version = import.meta.env.VITE_VERSION
 </script>
 
 <template>
@@ -11,7 +13,7 @@ import heartAnimation from '@/assets/heart.lottie'
       Telecom</span
     >
     <p class="transition duration-700 ease-in-out -translate-y-4 group-hover:translate-y-2">
-      Version: 0.6.0
+      Version: {{ version }}
     </p>
   </div>
 </template>
