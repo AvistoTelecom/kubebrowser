@@ -7,14 +7,14 @@ export default defineConfig({
     config: (md) => {
       configureDiagramsPlugin(md, {
         diagramsDir: "public/diagrams",
-        publicPath: "/kubebrowser/docs/diagrams",
+        publicPath: "/kubebrowser/diagrams",
       });
     },
   },
   title: "KubeBrowser",
   description: "Your Kubernetes catalog with OIDC",
-  base: "/kubebrowser/docs/",
-  head: [['link', { rel: 'icon', href: '/kubebrowser/docs/favicon.ico' }]],
+  base: "/kubebrowser/",
+  head: [['link', { rel: 'icon', href: '/kubebrowser/favicon.ico' }]],
   ignoreDeadLinks: [
     /^https?:\/\/localhost/,
   ],
