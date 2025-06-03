@@ -16,4 +16,4 @@ Managing access across multiple Kubernetes clusters can be challenging, especial
 
 ## Getting started
 
-Check our [documentation](https://avistotelecom.github.io/kubebrowser/docs/getting-started.html).
+Check our [documentation](https://avistotelecom.github.io/kubebrowser/getting-started.html).
