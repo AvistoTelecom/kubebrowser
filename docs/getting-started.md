@@ -38,7 +38,8 @@ server:
 Second, run the command:
 
 ```sh
-helm install kubebrowser oci://rgy.k8s.devops-svc-ag.com/avisto/helm/kubebrowser --version 0.6.0 -f values.yaml
+helm repo add avisto https://avistotelecom.github.io/charts/
+helm install kubebrowser avisto/kubebrowser -f values.yaml
 ```
 
 ::: info

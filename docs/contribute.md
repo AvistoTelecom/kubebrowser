@@ -8,7 +8,6 @@
 
 ```
 .
-├── chart                     # Helm chart
 ├── dev                       # 🧑‍💻 Raw manifests and values for dev purposes
 ├── docs                      # This is what you are reading
 ├── scripts                   # 🧑‍💻 Useful scripts
@@ -75,6 +74,7 @@ Set up your environment
 1. Copy the `./dev/values.example.yaml` to a new file named `./dev/values.yaml`.
 1. Update `client_id`, `client_secret` and `issuer_url` in the newly created `./dev/values.yaml` (from your OIDC application in step 1).
 1. Make sure your cluster is running and your context is correct. Run `minikube start` if you're using minikube.
+1. Add Helm repository, it should be named "avisto" for Tilt to work correctly `helm repo add avisto https://avistotelecom.github.io/charts/`.
 1. Run `tilt up`.
 1. Access http://localhost:8080 🎉
 

@@ -3,6 +3,8 @@ server:
     clientID: <your-client-id>
     clientSecret: <your-client-secret>
     issuerURL: <your-issuer-url>
+  image:
+    registry: "docker.io" # Default of chart is Github but Tilt needs docker.io
   logLevel: DEBUG # Or INFO, WARN, ERROR
   extraEnvVars:
     - name: "KUBEBROWSER_DEV"

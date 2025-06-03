@@ -4,7 +4,6 @@ repos:
     hooks:
       - id: check-json
       - id: check-yaml
-        exclude: chart
       - id: end-of-file-fixer
       - id: trailing-whitespace
       - id: check-added-large-files
@@ -39,17 +38,6 @@ repos:
     rev: v8.26.0
     hooks:
       - id: gitleaks
-  - repo: https://github.com/bitnami/readme-generator-for-helm
-    rev: 2.7.0
-    hooks:
-      - id: helm-readme-generator
-        pass_filenames: false
-        always_run: true
-        args:
-          [
-            --readme=charts/kubebrowser/README.md,
-            --values=charts/kubebrowser/values.yaml,
-          ]
   - repo: https://github.com/Brawdunoir/vitepress-plugin-diagrams
     rev: "72c104fcfc7d42808056656f1b31535be5cd6c0a"
     hooks:
