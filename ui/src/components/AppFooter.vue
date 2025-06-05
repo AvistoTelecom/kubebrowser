@@ -2,7 +2,7 @@
 import { DotLottieVue } from '@lottiefiles/dotlottie-vue'
 import heartAnimation from '@/assets/heart.lottie'
 
-const version = import.meta.env.VITE_VERSION
+const version = import.meta.env.VITE_VERSION || 'dev'
 </script>
 
 <template>
