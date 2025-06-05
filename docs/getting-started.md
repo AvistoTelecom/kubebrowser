@@ -31,9 +31,9 @@ First, create a `values.yaml` file.
 ```yaml
 server:
   oidc:
-    clientID: "xxx"
-    clientSecret: "xxx"
-    issuerURL: "xxx"
+    clientID: <your-client-id>
+    clientSecret: <your-client-secret>
+    issuerURL: <your-issuer-url>
 ```
 Second, run the command:
 
@@ -43,7 +43,7 @@ helm install kubebrowser avisto/kubebrowser -f values.yaml
 ```
 
 ::: info
-This chart will install a CRD (CustomResourceDefinition) named `Kubeconfig`.
+The chart will install a CRD (CustomResourceDefinition) named `Kubeconfig`.
 :::
 
 ## Add a Kubeconfig
@@ -56,7 +56,7 @@ First, grab your current Kubeconfig.
 kubectl config view --minify --raw > kubeconfig.yaml
 ```
 
-Open `kubeconfig.yaml` and delete `preferences` and `users` objects.
+Open `kubeconfig.yaml` and delete `preferences` and `users`.
 
 ```yaml
 apiVersion: v1
