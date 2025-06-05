@@ -13,7 +13,7 @@ spec:
     users: # User is fetched from the claim `email` of the OIDC ID Token.
     - alan.turing@example.com
     - ada.lovelace@example.com
-  kubeconfig: # Content of a regular kubeconfig (usually given at cluster creation). You should remove `users` and `preferences`. 
+  kubeconfig: # Content of a regular kubeconfig (usually given at cluster creation). You should remove `users` and `preferences`.
     apiVersion: v1
     kind: Config
     clusters:
