@@ -37,13 +37,13 @@ server:
 
 Add repository
 
-```
+```sh
 helm repo add avisto https://avistotelecom.github.io/charts/
 ```
 
 Install chart
 
-```
+```sh
 helm install my-kubebrowser avisto/kubebrowser -f values.yaml
 ```
 
