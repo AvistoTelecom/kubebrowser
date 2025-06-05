@@ -2,7 +2,11 @@
 
 ## KubeBrowser is an Operator
 
-KubeBrowser is an [Operator](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/), hence it has been designed to be hosted on Kubernetes. KubeBrowser watches its CustomResourceDefinition and always renders an up-to-date view on the UI.
+KubeBrowser is an [Operator](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/), hence it has been designed to be hosted on Kubernetes. KubeBrowser watches its CustomResourceDefinition (CRD) and always renders an up-to-date view on the UI.
+
+### Kubeconfig CRD
+
+Kubeconfig is the main component of Kubebrowser. You can create as many Kubeconfig as you want. Each Kubeconfig roughly represents a cluster, and is automatically displayed on Kubebrowser UI. See [kubeconfig reference](/reference/kubeconfig) for details on the resource.
 
 ## OpenID Connect
 

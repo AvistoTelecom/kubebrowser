@@ -29,9 +29,17 @@ export default defineConfig({
         items: [
           { text: 'What is Kubebrowser ?', link: '/' },
           { text: 'Getting started', link: '/getting-started' },
+          { text: 'Expose Kubebrowser', link: '/expose' },
           { text: 'How it works', link: '/how-it-works' },
           { text: 'Contribute', link: '/contribute' }
-        ]
+        ],
+      },
+      {
+        text: 'Reference',
+        items: [
+          {text: 'Kubeconfig', link: '/reference/kubeconfig'}
+        ],
+        collapsed: true
       }
     ],
     editLink: {
