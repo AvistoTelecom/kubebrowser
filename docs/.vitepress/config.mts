@@ -32,7 +32,14 @@ export default defineConfig({
           { text: 'Expose Kubebrowser', link: '/expose' },
           { text: 'How it works', link: '/how-it-works' },
           { text: 'Contribute', link: '/contribute' }
-        ]
+        ],
+      },
+      {
+        text: 'Reference',
+        items: [
+          {text: 'Kubeconfig', link: '/reference/kubeconfig'}
+        ],
+        collapsed: true
       }
     ],
     editLink: {

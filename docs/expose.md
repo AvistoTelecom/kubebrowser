@@ -10,8 +10,7 @@ For the TLS to work, something (e.g. cert-manager) should handle the certificate
 
 ```yaml
 server:
-  oidc:
-    ...
+  ...
 ingress:
   enabled: true
   hostname: kubebrowser.example.com
@@ -23,8 +22,7 @@ You can also directly provide your own certificate using a Secret.
 
 ```yaml
 server:
-  oidc:
-    ...
+  ...
 ingress:
   enabled: true
   hostname: &hostname kubebrowser.example.com
