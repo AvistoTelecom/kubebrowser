@@ -61,21 +61,31 @@ watch(
 
 <template>
   <div
-    class="p-4 overflow-auto border-2 border-gray-600 rounded-md"
+    class="p-4 overflow-auto transition-colors duration-500 ease-in-out border-2 border-gray-600 rounded-md group"
     :class="{
       'flex items-center justify-center': !props.kubeconfig,
-      'bg-primary-950': props.kubeconfig,
+      'bg-primary-950 hover:bg-primary-1000': props.kubeconfig,
     }"
   >
     <div v-if="redactedKubeconfigAsYaml">
       <div
-        class="absolute inline-flex items-center justify-center gap-1 p-3 text-gray-800 cursor-pointer top-6 right-6 bg-accent min-w-min rounded-tr-md rounded-bl-md"
+        class="absolute z-10 inline-flex items-center justify-center gap-1 p-3 text-gray-800 cursor-pointer top-6 right-6 bg-accent min-w-min rounded-tr-md rounded-bl-md"
         @click="handleCopy"
       >
         <AkCopy />
         <span> {{ copied ? 'Copied' : 'Copy' }}</span>
       </div>
-      <pre>{{ redactedKubeconfigAsYaml }}</pre>
+      <pre
+        class="overflow-x-hidden transition-opacity duration-500 ease-in-out select-none group-hover:opacity-5"
+        >{{ redactedKubeconfigAsYaml }}</pre
+      >
+      <div
+        class="sticky w-full transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100 bottom-1/2"
+      >
+        <p class="justify-center text-center text-gray-300">
+          Click the top-right button to copy your Kubeconfig
+        </p>
+      </div>
     </div>
     <div v-else>
       <div v-if="!props.catalogLength">
