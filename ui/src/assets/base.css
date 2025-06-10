@@ -10,9 +10,9 @@
 
 @theme {
   --font-display: 'Outfit', 'sans-serif';
+
   --color-primary-900: #192454;
   --color-primary-950: #020930;
-  --color-primary-1000: #01051a;
   --color-accent: #ffad0e;
   --color-gray-800: #1c224d;
   --color-gray-700: #333a66;
