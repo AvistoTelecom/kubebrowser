@@ -1,21 +1,33 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { AkCopy } from '@kalimahapps/vue-icons'
+import { DotLottieVue } from '@lottiefiles/dotlottie-vue'
 import YAML from 'yaml'
 
 import type { Kubeconfig } from '@/types/Kubeconfig'
 import { copyToClipboard } from '@/utils/clipboard'
+import copyAnimation from '@/assets/copy.lottie'
 
 const props = defineProps<{
   kubeconfig: Kubeconfig | null
   catalogLength: number
 }>()
 
+const copyAnimationRef = ref()
+const timeout = ref<ReturnType<typeof setTimeout> | null>(null)
 const copied = ref(false)
 
 const kubeconfigAsYaml = computed(
   () => props.kubeconfig && YAML.stringify(props.kubeconfig.kubeconfig),
 )
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function resetCopied(lottie: any) {
+  if (lottie) {
+    lottie.setSegment(1, 101)
+    lottie.play()
+  }
+  copied.value = false
+}
 
 // Helper to deeply redact sensitive fields in the kubeconfig
 function redactKubeconfig(k: Kubeconfig['kubeconfig']) {
@@ -47,6 +59,13 @@ const handleCopy = () => {
   if (kubeconfigAsYaml.value) {
     copyToClipboard(kubeconfigAsYaml.value)
     copied.value = true
+    // Access the underlying Lottie player instance and call play()
+    const lottieInstance = copyAnimationRef.value?.getDotLottieInstance?.()
+    lottieInstance?.setSegment(1, 59)
+    lottieInstance?.play()
+    // Reset after 2 seconds
+    if (timeout.value) clearTimeout(timeout.value)
+    timeout.value = setTimeout(() => resetCopied(lottieInstance), 2000)
   }
 }
 
@@ -55,37 +74,39 @@ watch(
   () => props.kubeconfig,
   () => {
     copied.value = false
+    copyAnimationRef.value?.getDotLottieInstance?.().stop()
+    copyAnimationRef.value?.getDotLottieInstance?.().setFrame(1)
+    if (timeout.value) clearTimeout(timeout.value)
+    timeout.value = null
   },
 )
 </script>
 
 <template>
   <div
-    class="p-4 overflow-auto transition-colors duration-500 ease-in-out border-2 border-gray-600 rounded-md group"
+    class="p-4 overflow-auto border-2 border-gray-600 rounded-md"
     :class="{
       'flex items-center justify-center': !props.kubeconfig,
-      'bg-primary-950 hover:bg-primary-1000': props.kubeconfig,
+      'bg-primary-950': props.kubeconfig,
     }"
   >
     <div v-if="redactedKubeconfigAsYaml">
       <div
-        class="absolute z-10 inline-flex items-center justify-center gap-1 p-3 text-gray-800 cursor-pointer top-6 right-6 bg-accent min-w-min rounded-tr-md rounded-bl-md"
+        class="absolute z-10 inline-flex items-center justify-center w-24 p-3 text-gray-800 duration-500 cursor-pointer transition-width top-6 right-6 bg-accent rounded-tr-md rounded-bl-md"
+        :class="{
+          'w-27': copied,
+        }"
         @click="handleCopy"
       >
-        <AkCopy />
+        <DotLottieVue
+          class="-m-4 -mr-2 shrink-0 w-14"
+          ref="copyAnimationRef"
+          alt="Copy"
+          :src="copyAnimation"
+        />
         <span> {{ copied ? 'Copied' : 'Copy' }}</span>
       </div>
-      <pre
-        class="overflow-x-hidden transition-opacity duration-500 ease-in-out select-none group-hover:opacity-5"
-        >{{ redactedKubeconfigAsYaml }}</pre
-      >
-      <div
-        class="sticky w-full transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100 bottom-1/2"
-      >
-        <p class="justify-center text-center text-gray-300">
-          Click the top-right button to copy your Kubeconfig
-        </p>
-      </div>
+      <pre class="overflow-x-hidden select-none">{{ redactedKubeconfigAsYaml }}</pre>
     </div>
     <div v-else>
       <div v-if="!props.catalogLength">
