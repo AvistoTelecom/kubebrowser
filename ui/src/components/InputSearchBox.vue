@@ -28,7 +28,7 @@ function updateValue(event: Event) {
       @input="updateValue"
       type="search"
       :placeholder="placeholder"
-      class="w-full py-2 pl-10 bg-gray-800 border border-gray-600 rounded-md focus:outline-none focus:border-accent"
+      class="w-full py-2 pl-10 bg-gray-800 border border-gray-600 rounded-md focus:outline-hidden focus:border-accent"
     />
   </div>
 </template>

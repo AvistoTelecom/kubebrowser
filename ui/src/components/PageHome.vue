@@ -48,7 +48,7 @@ onMounted(async () => {
     <p class="text-gray-300">oops, it seems like you don't have acces to any clusters</p>
   </div>
   <div v-else class="relative flex flex-1 mx-8 overflow-y-hidden gap-x-4">
-    <div class="flex flex-col w-1/6 space-y-4">
+    <div class="flex flex-col w-1/6 gap-y-4">
       <InputSearchBox v-model="searchQuery" placeholder="Search clusters..." />
       <div class="overflow-y-auto">
         <KubeconfigCatalog
