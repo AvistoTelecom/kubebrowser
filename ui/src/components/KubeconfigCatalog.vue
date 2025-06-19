@@ -12,7 +12,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="flex flex-col flex-none w-full gap-4">
+  <div class="flex flex-col flex-none w-full gap-4 pr-2">
     <button
       v-for="kubeconfig in props.kubeconfigs"
       :key="kubeconfig.name"
