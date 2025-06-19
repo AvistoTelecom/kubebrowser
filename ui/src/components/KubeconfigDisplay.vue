@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { DotLottieVue } from '@lottiefiles/dotlottie-vue'
+import { DotLottieVue, type DotLottie, type DotLottieVueInstance } from '@lottiefiles/dotlottie-vue'
 import YAML from 'yaml'
 
 import type { Kubeconfig } from '@/types/Kubeconfig'
@@ -12,7 +12,7 @@ const props = defineProps<{
   catalogLength: number
 }>()
 
-const copyAnimationRef = ref()
+const copyAnimationRef = ref<DotLottieVueInstance | null>(null)
 const timeout = ref<ReturnType<typeof setTimeout> | null>(null)
 const copied = ref(false)
 
@@ -20,8 +20,7 @@ const kubeconfigAsYaml = computed(
   () => props.kubeconfig && YAML.stringify(props.kubeconfig.kubeconfig),
 )
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function resetCopied(lottie: any) {
+function resetCopied(lottie: DotLottie | null | undefined) {
   if (lottie) {
     lottie.setSegment(1, 101)
     lottie.play()
@@ -74,8 +73,8 @@ watch(
   () => props.kubeconfig,
   () => {
     copied.value = false
-    copyAnimationRef.value?.getDotLottieInstance?.().stop()
-    copyAnimationRef.value?.getDotLottieInstance?.().setFrame(1)
+    copyAnimationRef.value?.getDotLottieInstance?.()?.stop()
+    copyAnimationRef.value?.getDotLottieInstance?.()?.setFrame(1)
     if (timeout.value) clearTimeout(timeout.value)
     timeout.value = null
   },
