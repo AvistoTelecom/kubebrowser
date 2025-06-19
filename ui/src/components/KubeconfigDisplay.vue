@@ -5,7 +5,6 @@ import YAML from 'yaml'
 
 import type { Kubeconfig } from '@/types/Kubeconfig'
 import { copyToClipboard } from '@/utils/clipboard'
-import copyAnimation from '@/assets/copy.lottie'
 
 const props = defineProps<{
   kubeconfig: Kubeconfig | null
@@ -101,7 +100,7 @@ watch(
           class="-m-4 -mr-2 shrink-0 w-14"
           ref="copyAnimationRef"
           alt="Copy"
-          :src="copyAnimation"
+          src="/lottie/copy.lottie"
         />
         <span> {{ copied ? 'Copied' : 'Copy' }}</span>
       </div>
