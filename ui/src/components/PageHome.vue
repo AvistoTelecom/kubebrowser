@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { BsEmojiSurpriseFill } from '@kalimahapps/vue-icons'
 
 import type { Kubeconfig } from '@/types/Kubeconfig'
@@ -12,9 +12,8 @@ import KubeconfigDisplay from '@/components/KubeconfigDisplay.vue'
 
 const kubeconfigs = ref<Kubeconfig[]>([])
 const searchQuery = ref('')
-const loading = ref(false)
+const loading = ref(true)
 const selectedKubeconfig = ref<Kubeconfig | null>(null)
-loadConfigs()
 
 const filteredKubeconfigs = computed(() => {
   if (!searchQuery.value) return kubeconfigs.value
@@ -26,10 +25,13 @@ const filteredKubeconfigs = computed(() => {
 })
 
 async function loadConfigs() {
-  loading.value = true
   kubeconfigs.value = await api.getConfigs()
   loading.value = false
 }
+
+onMounted(async () => {
+  await loadConfigs()
+})
 </script>
 
 <template>
@@ -39,7 +41,7 @@ async function loadConfigs() {
     Loading Kubeconfigs...
   </div>
   <div
-    v-else-if="!kubeconfigs.length"
+    v-else-if="!loading && !kubeconfigs.length"
     class="flex flex-col items-center justify-center flex-1 gap-4"
   >
     <BsEmojiSurpriseFill class="w-10 h-10 text-gray-600" />
