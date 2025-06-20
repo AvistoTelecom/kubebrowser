@@ -14,3 +14,8 @@ interface ImportMetaEnv {
    */
   readonly HELP_PAGE: string
 }
+
+declare module '*.lottie' {
+  const src: string
+  export default src
+}

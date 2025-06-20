@@ -49,7 +49,7 @@ onMounted(async () => {
   </div>
   <div v-else class="relative flex flex-1 mx-8 overflow-y-hidden gap-x-4">
     <div class="flex flex-col w-1/5 2xl:w-1/6 gap-y-4">
-      <InputSearchBox v-model="searchQuery" placeholder="Search clusters..." />
+      <InputSearchBox v-model="searchQuery" placeholder="Search clusters..." class="pr-2" />
       <div class="overflow-y-auto">
         <KubeconfigCatalog :kubeconfigs="filteredKubeconfigs" v-model="selectedKubeconfig" />
       </div>
