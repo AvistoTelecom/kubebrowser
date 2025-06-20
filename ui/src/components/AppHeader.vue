@@ -9,10 +9,10 @@ const helpURL = window._env_.HELP_PAGE
 
 <template>
   <header
-    class="flex items-center content-center justify-between px-8 py-4 border-b border-gray-600"
+    class="flex items-center content-center justify-between px-4 py-4 border-b border-gray-600 md:px-8"
   >
     <RouterLink :to="{ name: RouteName.Home }">
-      <AppLogoFull class="w-48" />
+      <AppLogoFull class="w-40 md:w-48" />
     </RouterLink>
     <a
       v-if="helpURL"
@@ -21,7 +21,7 @@ const helpURL = window._env_.HELP_PAGE
       rel="noopener noreferrer"
       title="Open documentation"
     >
-      <BxSolidHelpCircle class="w-8 h-8 text-gray-300" />
+      <BxSolidHelpCircle class="w-6 h-6 text-gray-300 md:w-8 md:h-8" />
     </a>
   </header>
 </template>
