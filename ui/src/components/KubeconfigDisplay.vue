@@ -3,6 +3,9 @@ import { computed, ref, watch } from 'vue'
 import { DotLottieVue, type DotLottie, type DotLottieVueInstance } from '@lottiefiles/dotlottie-vue'
 import YAML from 'yaml'
 
+import Prism from 'prismjs'
+import 'prismjs/components/prism-yaml'
+
 import type { Kubeconfig } from '@/types/Kubeconfig'
 import { copyToClipboard } from '@/utils/clipboard'
 
@@ -49,11 +52,19 @@ function redactKubeconfig(k: Kubeconfig['kubeconfig']) {
   return clone
 }
 
+const highlightedYaml = computed(() =>
+  redactedKubeconfigAsYaml.value
+    ? Prism.highlight(redactedKubeconfigAsYaml.value, Prism.languages.yaml, 'yaml')
+    : '',
+)
+
 const redactedKubeconfigAsYaml = computed(() =>
   props.kubeconfig ? YAML.stringify(redactKubeconfig(props.kubeconfig.kubeconfig)) : null,
 )
 
 const handleCopy = () => {
+  console.log(highlightedYaml.value)
+
   if (kubeconfigAsYaml.value) {
     copyToClipboard(kubeconfigAsYaml.value)
     copied.value = true
@@ -104,7 +115,7 @@ watch(
         />
         <span> {{ copied ? 'Copied' : 'Copy' }}</span>
       </div>
-      <pre class="overflow-x-hidden select-none">{{ redactedKubeconfigAsYaml }}</pre>
+      <pre class="select-none language-yaml" v-html="highlightedYaml" />
     </div>
     <div v-else>
       <div v-if="!props.catalogLength">

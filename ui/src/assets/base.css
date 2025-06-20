@@ -19,3 +19,76 @@
   --color-gray-600: #4d557d;
   --color-gray-300: #abb1c2;
 }
+
+/* prism-theme.css (for dark mode + Tailwind palette) */
+pre[class*='language-'] {
+  color: var(--color-gray-300);
+  font-family: 'Fira Code', monospace;
+}
+
+/* Generic token styles */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--color-gray-600);
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: var(--color-gray-300);
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: var(--color-accent);
+}
+
+.token.boolean,
+.token.number {
+  color: #f285ff; /* accent violet */
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #6ce9ff; /* cyan for strings/attrs */
+}
+
+.token.operator,
+.token.entity,
+.token.url {
+  color: #abb1c2;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #ffc861; /* orange-yellow highlight for keywords */
+}
+
+.token.function,
+.token.class-name {
+  color: var(--color-accent);
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #ff7373;
+}
+
+/* Emphasis */
+.token.important {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
