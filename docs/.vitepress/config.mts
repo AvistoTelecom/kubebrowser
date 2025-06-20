@@ -1,8 +1,8 @@
-import { defineConfig } from 'vitepress'
+import defineVersionedConfig from 'vitepress-versioning-plugin'
 import { configureDiagramsPlugin } from "vitepress-plugin-diagrams";
 
 // https://vitepress.dev/reference/site-config
-export default defineConfig({
+export default defineVersionedConfig({
   markdown: {
     config: (md) => {
       configureDiagramsPlugin(md, {
@@ -19,29 +19,20 @@ export default defineConfig({
     /^https?:\/\/localhost/,
   ],
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
     logo: {
       dark: '/logo_light.svg',
       light: '/logo_dark.svg'
     },
-    sidebar: [
-      {
-        items: [
-          { text: 'What is Kubebrowser ?', link: '/' },
-          { text: 'Getting started', link: '/getting-started' },
-          { text: 'Expose Kubebrowser', link: '/expose' },
-          { text: 'How it works', link: '/how-it-works' },
-          { text: 'Contribute', link: '/contribute' }
-        ],
-      },
-      {
-        text: 'Reference',
-        items: [
-          {text: 'Kubeconfig', link: '/reference/kubeconfig'}
-        ],
-        collapsed: true
-      }
-    ],
+    sidebar: {
+      "/": [
+        { text: 'What is Kubebrowser ?', link: '/' },
+        { text: 'Getting started', link: '/getting-started' },
+        { text: 'Expose Kubebrowser', link: '/expose' },
+        { text: 'How it works', link: '/how-it-works' },
+        { text: 'Contribute', link: '/contribute' },
+        { text: 'Kubeconfig CRD', link: '/reference/kubeconfig'}
+      ]
+    },
     editLink: {
       pattern: 'https://github.com/AvistoTelecom/kubebrowser/edit/main/docs/:path',
       text: 'Edit this page on GitHub'
@@ -53,8 +44,11 @@ export default defineConfig({
       { icon: 'github', link: 'https://github.com/AvistoTelecom/kubebrowser' }
     ]
   },
-    sitemap: {
-      hostname: 'https://avistotelecom.github.io/kubebrowser'
+  sitemap: {
+    hostname: 'https://avistotelecom.github.io/kubebrowser'
   },
-  lastUpdated: true
-})
+  lastUpdated: true,
+  versioning: {
+    latestVersion: '0.8'
+  }
+}, __dirname)
