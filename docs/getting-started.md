@@ -110,7 +110,7 @@ kubectl apply -f kubeconfig.yaml
 ## Grab your personnal Kubeconfig
 
 :::info
-Head to [Expose Kubebrowser](/expose) to learn more about ways to expose Kubebrowser without port-forwarding.
+Head to [Expose Kubebrowser](./expose.md) to learn more about ways to expose Kubebrowser without port-forwarding.
 :::
 
 Port forward the application.
