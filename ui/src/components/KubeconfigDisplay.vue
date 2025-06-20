@@ -63,8 +63,6 @@ const redactedKubeconfigAsYaml = computed(() =>
 )
 
 const handleCopy = () => {
-  console.log(highlightedYaml.value)
-
   if (kubeconfigAsYaml.value) {
     copyToClipboard(kubeconfigAsYaml.value)
     copied.value = true
