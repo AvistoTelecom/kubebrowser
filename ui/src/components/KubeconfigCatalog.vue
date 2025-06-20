@@ -3,12 +3,9 @@ import type { Kubeconfig } from '@/types/Kubeconfig'
 
 const props = defineProps<{
   kubeconfigs: Kubeconfig[]
-  selected: Kubeconfig | null
 }>()
 
-const emit = defineEmits<{
-  (e: 'update:selected', value: Kubeconfig): void
-}>()
+const model = defineModel<Kubeconfig | null>()
 </script>
 
 <template>
@@ -18,11 +15,9 @@ const emit = defineEmits<{
       :key="kubeconfig.name"
       class="px-4 py-6 text-lg break-words border-2 border-gray-600 rounded-md cursor-pointer"
       :class="
-        props.selected && props.selected.name === kubeconfig.name
-          ? 'bg-accent text-primary-950'
-          : 'bg-gray-700'
+        model && model.name === kubeconfig.name ? 'bg-accent text-primary-950' : 'bg-gray-700'
       "
-      @click="emit('update:selected', kubeconfig)"
+      @click="model = kubeconfig"
     >
       {{ kubeconfig.name }}
     </button>
