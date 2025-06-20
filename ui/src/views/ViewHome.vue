@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { BsEmojiSurpriseFill } from '@kalimahapps/vue-icons'
 
 import type { Kubeconfig } from '@/types/Kubeconfig'
@@ -12,9 +12,8 @@ import KubeconfigDisplay from '@/components/KubeconfigDisplay.vue'
 
 const kubeconfigs = ref<Kubeconfig[]>([])
 const searchQuery = ref('')
-const loading = ref(false)
+const loading = ref(true)
 const selectedKubeconfig = ref<Kubeconfig | null>(null)
-loadConfigs()
 
 const filteredKubeconfigs = computed(() => {
   if (!searchQuery.value) return kubeconfigs.value
@@ -26,10 +25,13 @@ const filteredKubeconfigs = computed(() => {
 })
 
 async function loadConfigs() {
-  loading.value = true
   kubeconfigs.value = await api.getConfigs()
   loading.value = false
 }
+
+onMounted(async () => {
+  await loadConfigs()
+})
 </script>
 
 <template>
@@ -39,25 +41,22 @@ async function loadConfigs() {
     Loading Kubeconfigs...
   </div>
   <div
-    v-else-if="!kubeconfigs.length"
+    v-else-if="!loading && !kubeconfigs.length"
     class="flex flex-col items-center justify-center flex-1 gap-4"
   >
     <BsEmojiSurpriseFill class="w-10 h-10 text-gray-600" />
     <p class="text-gray-300">oops, it seems like you don't have acces to any clusters</p>
   </div>
   <div v-else class="relative flex flex-1 mx-8 overflow-y-hidden gap-x-4">
-    <div class="flex flex-col w-1/6 space-y-4">
+    <div class="flex flex-col w-1/5 2xl:w-1/6 gap-y-4">
       <InputSearchBox v-model="searchQuery" placeholder="Search clusters..." />
       <div class="overflow-y-auto">
-        <KubeconfigCatalog
-          :kubeconfigs="filteredKubeconfigs"
-          v-model:selected="selectedKubeconfig"
-        />
+        <KubeconfigCatalog :kubeconfigs="filteredKubeconfigs" v-model="selectedKubeconfig" />
       </div>
     </div>
 
     <KubeconfigDisplay
-      class="w-5/6"
+      class="w-4/5 2xl:w-5/6"
       :kubeconfig="selectedKubeconfig"
       :catalog-length="filteredKubeconfigs.length"
     />

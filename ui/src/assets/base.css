@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'Outfit';
-  src: url('@/assets/fonts/Outfit.ttf') format('truetype');
+  src: url(/fonts/Outfit.ttf) format('truetype');
   font-optical-sizing: auto;
   font-weight: normal;
   font-style: normal;
