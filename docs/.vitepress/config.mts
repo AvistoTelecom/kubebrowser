@@ -24,24 +24,50 @@ export default defineConfig({
       dark: '/logo_light.svg',
       light: '/logo_dark.svg'
     },
-    sidebar: [
+    nav: [
       {
+        text: 'Versions',
         items: [
-          { text: 'What is Kubebrowser ?', link: '/' },
-          { text: 'Getting started', link: '/getting-started' },
-          { text: 'Expose Kubebrowser', link: '/expose' },
-          { text: 'How it works', link: '/how-it-works' },
-          { text: 'Contribute', link: '/contribute' }
-        ],
-      },
-      {
-        text: 'Reference',
-        items: [
-          {text: 'Kubeconfig', link: '/reference/kubeconfig'}
-        ],
-        collapsed: true
+          {
+            text: '0.8 (latest)',
+            link: '/'
+          },
+          {
+            text: '0.7',
+            link: '/0.7'
+          }
+        ]
       }
     ],
+    sidebar: {
+      '/': [
+        {
+          text: 'Version 0.8 (latest)',
+          items: [
+            { text: 'What is Kubebrowser ?', link: '/' },
+            { text: 'Getting started', link: '/getting-started' },
+            { text: 'Expose Kubebrowser', link: '/expose' },
+            { text: 'How it works', link: '/how-it-works' },
+            { text: 'Contribute', link: '/contribute' }
+          ],
+        },
+        {
+          text: 'Reference',
+          items: [
+            {text: 'Kubeconfig CRD', link: '/reference/kubeconfig'}
+          ],
+          collapsed: true
+        }
+      ],
+      '/0.7/': [
+        {
+          text: 'Version 0.7',
+          items: [
+            { text: 'What is Kubebrowser ?', link: '/' },
+          ],
+        }
+      ]
+    },
     editLink: {
       pattern: 'https://github.com/AvistoTelecom/kubebrowser/edit/main/docs/:path',
       text: 'Edit this page on GitHub'
