@@ -2,13 +2,7 @@
 
 Kubebrowser is a self-service platform that enables users to obtain their own Kubeconfig credentials using OIDC authentication.
 
-![Kubebrowser UI](./public/kubebrowser-ui.webp)
-
-<div class="tip custom-block" style="padding-top: 8px">
-
-Just want to try it out? Skip to the [Quickstart](./getting-started).
-
-</div>
+![Kubebrowser UI](/kubebrowser-ui.webp)
 
 ## Use case
 
