@@ -18,6 +18,6 @@ Kubebrowser let you leverage the [Kubernetes API server OIDC configuration](http
 
 Using Kubebrowser, administrators manage a list of clusters and, if needed, a whitelist of *who* should have access to such cluster. Note that Kubebrowser only offers a way to **distribute** Kubeconfigs (used to *authenticate* to clusters). *Authorization* still relies on native Kubernetes RBAC.
 
-Another alternative is the (kubelogin)[https://github.com/int128/kubelogin] plugin which enables OIDC authentication directly via `kubectl`. However, using `kubelogin` requires each user to install and configure the plugin on their local machine. In contrast, Kubebrowser does not require any additional plugins for users and simplifies Kubeconfig distribution, supporting access control through easy-to-manage whitelists.
+Another alternative is the [kubelogin](https://github.com/int128/kubelogin) plugin which enables OIDC authentication directly via `kubectl`. However, using `kubelogin` requires each user to install and configure the plugin on their local machine. In contrast, Kubebrowser does not require any additional plugins for users and simplifies Kubeconfig distribution, supporting access control through easy-to-manage whitelists.
 
 Other ways to manage such *authentication* could be to install [permission manager](https://github.com/sighupio/permission-manager) or [pinniped](https://pinniped.dev/), however, for mid-size businesses, the first one can be limiting, and the latter could be challenging to operate.
