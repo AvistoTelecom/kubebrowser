@@ -3,7 +3,6 @@ import { configureDiagramsPlugin } from "vitepress-plugin-diagrams";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  appearance: false,
   transformHead({ assets }) {
     const themeFont = assets.find((file) => /Outfit\.[\w-]+\.ttf/.test(file));
     if (themeFont) {
@@ -30,7 +29,7 @@ export default defineConfig({
     },
     theme: {
       name: "custom-theme",
-      type: "dark",
+      type: "light",
       settings: [
         {
           scope: [
@@ -95,7 +94,7 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     logo: {
       dark: "/logo_light.svg",
-      light: "/logo_light.svg",
+      light: "/logo_dark.svg",
     },
     nav: [
       {
