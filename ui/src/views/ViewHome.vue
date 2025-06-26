@@ -35,7 +35,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <AppHello class="mx-8" />
+  <AppHello class="mx-4 md:mx-8" />
 
   <div v-if="loading" class="flex items-center justify-center flex-1 gap-4 text-gray-300">
     Loading Kubeconfigs...
@@ -47,16 +47,16 @@ onMounted(async () => {
     <BsEmojiSurpriseFill class="w-10 h-10 text-gray-600" />
     <p class="text-gray-300">oops, it seems like you don't have acces to any clusters</p>
   </div>
-  <div v-else class="relative flex flex-1 mx-8 overflow-y-hidden gap-x-4">
-    <div class="flex flex-col w-1/5 2xl:w-1/6 gap-y-4">
-      <InputSearchBox v-model="searchQuery" placeholder="Search clusters..." class="pr-2" />
+  <div v-else class="relative flex flex-1 gap-4 mx-4 overflow-y-hidden md:mx-8">
+    <div class="flex flex-col w-full gap-4 md:w-1/3 xl:w-1/5 2xl:w-1/6">
+      <InputSearchBox v-model="searchQuery" placeholder="Search clusters..." class="md:pr-2" />
       <div class="overflow-y-auto">
         <KubeconfigCatalog :kubeconfigs="filteredKubeconfigs" v-model="selectedKubeconfig" />
       </div>
     </div>
 
     <KubeconfigDisplay
-      class="w-4/5 2xl:w-5/6"
+      class="w-full md:w-2/3 xl:w-4/5 2xl:w-5/6"
       :kubeconfig="selectedKubeconfig"
       :catalog-length="filteredKubeconfigs.length"
     />
