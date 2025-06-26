@@ -9,7 +9,6 @@
 :root {
   /* Font family override */
   --vp-font-family-base: "Outfit";
-  --vp-font-family-mono: "Outfit";
 
   /* Theme colors override */
   --color-primary-900: #0a1a61;
