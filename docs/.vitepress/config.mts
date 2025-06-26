@@ -57,7 +57,7 @@ export default defineConfig({
             "constant.language.null",
           ],
           settings: {
-            foreground: "#abb1c2",
+            foreground: "#e6eced",
           },
         },
 
@@ -72,14 +72,14 @@ export default defineConfig({
             "punctuation.definition.comment",
           ],
           settings: {
-            foreground: "#4d557d",
+            foreground: "#677b85",
             fontStyle: "italic",
           },
         },
 
         {
           settings: {
-            foreground: "#abb1c2",
+            foreground: "#e6eced",
           },
         },
       ],

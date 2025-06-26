@@ -12,15 +12,17 @@
   --vp-font-family-mono: "Outfit";
 
   /* Theme colors override */
-  --color-primary-900: #192454;
+  --color-primary-900: #0a1a61;
   --color-primary-950: #020930;
   --color-accent: #ffad0e;
-  --color-accent-300: #ffc861;
-  --color-gray-800: #1c224d;
-  --color-gray-700: #333a66;
-  --color-gray-600: #4d557d;
-  --color-gray-300: #abb1c2;
+  --color-accent-300: #ffe89e;
+  --color-gray-800: #1e2d3b;
+  --color-gray-700: #36454f;
+  --color-gray-600: #677b85;
+  --color-gray-300: #e6eced;
   --color-white: #ffffff;
+  --color-error-500: #ef4444;
+  --color-success-500: #10b981;
 
   --vp-c-brand-1: var(--color-accent);
   --vp-c-brand-2: var(--color-accent-300);
@@ -39,16 +41,22 @@
 
   --vp-c-bg-alt: var(--color-white);
   --vp-c-bg-elv: var(--color-white);
-  --vp-custom-block-warning-bg: #ff6467;
+  --vp-custom-block-info-bg: #3b82f6;
+  --vp-custom-block-warning-bg: #f59e0b;
   --vp-code-lang-color: var(--color-gray-300);
   --vp-code-bg: var(--color-primary-950);
-  --vp-custom-block-info-bg: var(--color-primary-950);
-  --vp-code-copy-code-border-color: var(--color-gray-300);
+  --vp-code-copy-code-border-color: var(--color-accent);
   --vp-code-copy-code-active-text: var(--color-gray-300);
   --vp-code-copy-code-bg: var(--color-primary-950);
+  --vp-custom-block-info-code-bg: var(--color-primary-950);
   --vp-code-copy-code-hover-bg: var(--color-primary-900);
   --vp-c-warning-1: var(--color-primary-950);
   --vp-c-warning-2: var(--color-accent-300);
+  --vp-code-line-diff-remove-color: rgba(248, 113, 113, 0.6);
+  --vp-code-line-diff-remove-symbol-color: var(--color-error-500);
+  --vp-code-line-diff-add-color: rgba(52, 211, 153, 0.6);
+  --vp-code-line-diff-add-symbol-color: var(--color-success-500);
+  --vp-code-line-highlight-color: var(--color-gray-700);
 }
 
 .dark {
@@ -57,12 +65,16 @@
   --vp-custom-block-tip-bg: var(--color-primary-950);
   --vp-c-text-1: var(--color-white);
   --vp-c-gutter: var(--color-primary-900);
-  --vp-c-text-2: var(--color-gray-300);
+  --vp-c-text-2: var(--color-primary-300);
   --vp-c-border: var(--color-gray-300);
   --vp-sidebar-bg-color: var(--color-primary-950);
   --vp-custom-block-info-text: var(--color-white);
   --vp-c-bg-elv: var(--color-primary-950);
   --vp-c-divider: var(--color-gray-300);
+}
+
+.dark [class*="DocSearch"] {
+  color: var(--color-primary-950) !important;
 }
 
 button.copy {
