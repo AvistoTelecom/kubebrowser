@@ -6,76 +6,129 @@
   font-style: normal;
 }
 
+/**
+ * Advans Group colors
+ * -------------------------------------------------------------------------- */
 :root {
-  /* Font family override */
-  --vp-font-family-base: "Outfit";
-
   /* Theme colors override */
-  --color-primary-900: #0a1a61;
-  --color-primary-950: #020930;
+  --color-primary-800: #0f1640;
+  --color-primary-900: #020930;
   --color-accent: #ffad0e;
-  --color-accent-300: #ffe89e;
-  --color-gray-800: #1e2d3b;
-  --color-gray-700: #36454f;
+  --color-gray-50: #f2f6f7;
   --color-gray-600: #677b85;
-  --color-gray-300: #e6eced;
-  --color-white: #ffffff;
-  --color-error-500: #ef4444;
-  --color-success-500: #10b981;
+  --color-white-20: rgba(255, 255, 255, 0.2);
+}
 
-  --vp-c-brand-1: var(--color-accent);
-  --vp-c-brand-2: var(--color-accent-300);
-  --vp-c-tip-2: var(--color-accent-300);
+/**
+ * Typography
+ * -------------------------------------------------------------------------- */
+:root {
+  --vp-font-family-base: "Outfit";
+}
 
-  --vp-c-bg: var(--color-white);
-  --vp-c-bg-soft: var(--color-white);
-  --vp-c-text-1: var(--color-primary-900);
-  --vp-c-gutter: var(--color-white);
+/**
+ * Colors: Text
+ *
+ * - `text-1`: Used for primary text.
+ *
+ * - `text-2`: Used for muted texts, such as "inactive menu" or "info texts".
+ *
+ * - `text-3`: Used for subtle texts, such as "placeholders" or "caret icon".
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-c-text-1: var(--color-primary-800);
   --vp-c-text-2: var(--color-gray-600);
-  --vp-c-border: var(--color-white);
-  --vp-custom-block-warning-text: var(--color-white);
-  --vp-sidebar-bg-color: var(--color-white);
-  --vp-custom-block-info-text: var(--color-white);
-  --vp-code-block-bg: var(--color-primary-950);
-
-  --vp-c-bg-alt: var(--color-white);
-  --vp-c-bg-elv: var(--color-white);
-  --vp-custom-block-info-bg: #3b82f6;
-  --vp-custom-block-warning-bg: #f59e0b;
-  --vp-code-lang-color: var(--color-gray-300);
-  --vp-code-bg: var(--color-primary-950);
-  --vp-code-copy-code-border-color: var(--color-accent);
-  --vp-code-copy-code-active-text: var(--color-gray-300);
-  --vp-code-copy-code-bg: var(--color-primary-950);
-  --vp-custom-block-info-code-bg: var(--color-primary-950);
-  --vp-code-copy-code-hover-bg: var(--color-primary-900);
-  --vp-c-warning-1: var(--color-primary-950);
-  --vp-c-warning-2: var(--color-accent-300);
-  --vp-code-line-diff-remove-color: rgba(248, 113, 113, 0.6);
-  --vp-code-line-diff-remove-symbol-color: var(--color-error-500);
-  --vp-code-line-diff-add-color: rgba(52, 211, 153, 0.6);
-  --vp-code-line-diff-add-symbol-color: var(--color-success-500);
-  --vp-code-line-highlight-color: var(--color-gray-700);
 }
 
 .dark {
-  --vp-c-bg: var(--color-primary-900);
-  --vp-c-bg-soft: var(--color-primary-950);
-  --vp-custom-block-tip-bg: var(--color-primary-950);
-  --vp-c-text-1: var(--color-white);
-  --vp-c-gutter: var(--color-primary-900);
+  --vp-c-text-1: var(--vp-c-white);
   --vp-c-text-2: var(--color-primary-300);
-  --vp-c-border: var(--color-gray-300);
-  --vp-sidebar-bg-color: var(--color-primary-900);
-  --vp-custom-block-info-text: var(--color-white);
-  --vp-c-bg-elv: var(--color-primary-950);
-  --vp-c-divider: var(--color-gray-300);
 }
 
-.dark [class*="DocSearch"] {
-  color: var(--color-primary-950) !important;
+/**
+ * Colors: Background
+ *
+ * - `bg`: The bg color used for main screen.
+ *
+ * - `bg-alt`: The alternative bg color used in places such as "sidebar",
+ *   or "code block".
+ *
+ * - `bg-elv`: The elevated bg color. This is used at parts where it "floats",
+ *   such as "dialog".
+ *
+ * - `bg-soft`: The bg color to slightly distinguish some components from
+ *   the page. Used for things like "carbon ads" or "table".
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-c-bg-alt: var(--color-gray-50);
+  --vp-c-bg-soft: var(--color-gray-50);
 }
 
-button.copy {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='rgb(255, 173, 14)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3C/svg%3E") !important;
+.dark {
+  --vp-c-bg: var(--color-primary-800);
+  --vp-c-bg-soft: var(--color-primary-900);
+  --vp-c-bg-elv: var(--color-primary-900);
+  --vp-c-bg-alt: var(--color-primary-900);
+}
+
+/**
+ * Colors: Borders
+ *
+ * - `divider`: This is used for separators. This is used to divide sections
+ *   within the same components, such as having separator on "h2" heading.
+ *
+ * - `border`: This is designed for borders on interactive components.
+ *   For example this should be used for a button outline.
+ *
+ * - `gutter`: This is used to divide components in the page. For example
+ *   the header and the lest of the page.
+ * -------------------------------------------------------------------------- */
+
+.dark {
+  --vp-c-divider: var(--color-white-20);
+  --vp-c-gutter: var(--color-white-20);
+}
+
+/**
+ * Colors: Function
+ *
+ * - `default`: The color used purely for subtle indication without any
+ *   special meanings attached to it such as bg color for menu hover state.
+ *
+ * - `brand`: Used for primary brand colors, such as link text, button with
+ *   brand theme, etc.
+ *
+ * - `tip`: Used to indicate useful information. The default theme uses the
+ *   brand color for this by default.
+ *
+ * - `warning`: Used to indicate warning to the users. Used in custom
+ *   container, badges, etc.
+ *
+ * - `danger`: Used to show error, or dangerous message to the users. Used
+ *   in custom container, badges, etc.
+ *
+ * To understand the scaling system, refer to "Colors: Palette" section.
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-c-brand-1: var(--color-accent);
+  --vp-c-brand-2: var(--color-accent);
+
+  --vp-c-tip-1: var(--color-accent);
+  --vp-c-tip-2: var(--color-accent);
+
+  --vp-custom-block-info-bg: var(--color-gray-50);
+  --vp-c-tip-soft: rgba(59, 137, 246, 0.4);
+
+  --vp-c-success-soft: rgba(52, 211, 153, 0.6);
+
+  --vp-c-warning-soft: rgba(245, 158, 11, 0.4);
+
+  --vp-c-danger-soft: rgba(248, 113, 113, 0.4);
+}
+
+.dark {
+  --vp-custom-block-info-bg: rgba(242, 246, 247, 0.4);
 }

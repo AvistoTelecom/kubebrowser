@@ -27,63 +27,6 @@ export default defineConfig({
         publicPath: "/kubebrowser/diagrams",
       });
     },
-    theme: {
-      name: "custom-theme",
-      type: "light",
-      settings: [
-        {
-          scope: [
-            "meta.object-literal.key",
-            "support.type.property-name.json",
-            "string.quoted.double.json",
-            "entity.name.tag.yaml",
-            "meta.structure.dictionary.key.python",
-            "meta.mapping.key",
-            "support.function",
-            "support.function.builtin",
-            "entity.name.function",
-            "meta.function-call.generic",
-          ],
-          settings: {
-            foreground: "#ffad0e",
-          },
-        },
-
-        {
-          scope: [
-            "string",
-            "constant.numeric",
-            "constant.language.boolean",
-            "constant.language.null",
-          ],
-          settings: {
-            foreground: "#e6eced",
-          },
-        },
-
-        {
-          scope: [
-            "comment",
-            "comment.line",
-            "comment.block",
-            "comment.line.double-slash",
-            "comment.line.number-sign",
-            "comment.line.double-dash",
-            "punctuation.definition.comment",
-          ],
-          settings: {
-            foreground: "#677b85",
-            fontStyle: "italic",
-          },
-        },
-
-        {
-          settings: {
-            foreground: "#e6eced",
-          },
-        },
-      ],
-    },
   },
   title: "KubeBrowser",
   description: "Your Kubernetes catalog with OIDC",
