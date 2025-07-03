@@ -76,7 +76,7 @@ export default defineConfig({
       "/0.7/": [
         {
           text: "Version 0.7",
-          items: [{ text: "What is Kubebrowser ?", link: "/" }],
+          items: [{ text: "What is Kubebrowser ?", link: "/0.7" }],
         },
       ],
     },
