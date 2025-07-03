@@ -6,7 +6,7 @@ KubeBrowser is an [Operator](https://kubernetes.io/docs/concepts/extend-kubernet
 
 ### Kubeconfig CRD
 
-Kubeconfig is the main component of Kubebrowser. You can create as many Kubeconfig as you want. Each Kubeconfig roughly represents a cluster, and is automatically displayed on Kubebrowser UI. See [kubeconfig reference](/reference/kubeconfig) for details on the resource.
+Kubeconfig is the main component of Kubebrowser. You can create as many Kubeconfig as you want. Each Kubeconfig roughly represents a cluster, and is automatically displayed on Kubebrowser UI. See [kubeconfig specification](/reference/kubeconfig-specification) for details on the resource.
 
 ## OpenID Connect
 

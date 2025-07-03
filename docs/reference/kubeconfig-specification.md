@@ -1,4 +1,4 @@
-# Kubeconfig
+# Kubeconfig Specification
 
 ```yaml
 apiVersion: kubebrowser.io/v1alpha1

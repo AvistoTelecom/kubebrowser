@@ -64,18 +64,19 @@ export default defineConfig({
             { text: "Expose Kubebrowser", link: "/expose" },
             { text: "How it works", link: "/how-it-works" },
             { text: "Contribute", link: "/contribute" },
+            { text: "Acknowledgments", link: "/acknowledgments" },
           ],
         },
         {
           text: "Reference",
-          items: [{ text: "Kubeconfig CRD", link: "/reference/kubeconfig" }],
+          items: [{ text: "Kubeconfig", link: "/reference/kubeconfig-specification" }],
           collapsed: true,
         },
       ],
       "/0.7/": [
         {
           text: "Version 0.7",
-          items: [{ text: "What is Kubebrowser ?", link: "/" }],
+          items: [{ text: "What is Kubebrowser ?", link: "/0.7" }],
         },
       ],
     },
