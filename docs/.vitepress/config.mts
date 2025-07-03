@@ -69,7 +69,7 @@ export default defineConfig({
         },
         {
           text: "Reference",
-          items: [{ text: "Kubeconfig CRD", link: "/reference/kubeconfig" }],
+          items: [{ text: "Kubeconfig", link: "/reference/kubeconfig-specification" }],
           collapsed: true,
         },
       ],
