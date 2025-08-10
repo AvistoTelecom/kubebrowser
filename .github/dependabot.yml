@@ -1,23 +1,9 @@
 version: 2
 updates:
-  # Custom ecosystem for Devbox
-  - package-ecosystem: "custom-ecosystem"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    allow:
-      - dependency-type: "all"
-    open-pull-requests-limit: 5
-    ignore:
-      - dependency-name: "*"
-
-  # Go modules in server folder
   - package-ecosystem: "gomod"
     directory: "/server"
     schedule:
       interval: "weekly"
-
-  # npm (pnpm workspace) in root, ui, and docs folders
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
