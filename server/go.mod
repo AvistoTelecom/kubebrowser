@@ -60,7 +60,7 @@ require (
 require (
 	github.com/coreos/go-oidc/v3 v3.13.0
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
-	github.com/gin-gonic/gin v1.10.0
+	github.com/gin-gonic/gin v1.10.1
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-openapi/jsonpointer v0.21.0 // indirect
 	github.com/go-openapi/jsonreference v0.20.2 // indirect
