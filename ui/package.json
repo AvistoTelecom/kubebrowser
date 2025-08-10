@@ -16,7 +16,7 @@
   "dependencies": {
     "@kalimahapps/vue-icons": "^1.7.1",
     "@lottiefiles/dotlottie-vue": "^0.6.3",
-    "@tailwindcss/vite": "^4.0.15",
+    "@tailwindcss/vite": "^4.1.11",
     "@types/prismjs": "^1.26.5",
     "axios": "^1.8.3",
     "js-yaml": "^4.1.0",
