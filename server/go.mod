@@ -5,7 +5,7 @@ go 1.24.1
 require (
 	github.com/gin-contrib/sessions v1.0.2
 	github.com/gin-contrib/zap v1.1.4
-	github.com/spf13/viper v1.20.0
+	github.com/spf13/viper v1.20.1
 	go.uber.org/zap v1.27.0
 	golang.org/x/oauth2 v0.28.0
 	k8s.io/apimachinery v0.32.3
