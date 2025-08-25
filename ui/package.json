@@ -27,7 +27,7 @@
     "yaml": "^2.8.1"
   },
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.0",
+    "@tsconfig/node22": "^22.0.2",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^24.3.0",
     "@vitejs/plugin-vue": "^5.2.1",
