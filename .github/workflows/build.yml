@@ -28,12 +28,15 @@ jobs:
           go-version: "1.24.1"
           cache-dependency-path: "server/go.sum"
       - uses: ko-build/setup-ko@v0.9
-      - name: Build and push on release
+      - name: Build and push
         run: |
           if [[ "${{ github.event_name }}" == "release" ]]; then
             echo "Building and pushing for release..."
-            ko build ./server --tags ${{ github.event.release.tag_name }},latest --bare
+            ko build ./server --tags ${{ github.event.release.tag_name }} --bare
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "Building and pushing latest (main branch)..."
+            ko build ./server --tags latest --bare
           else
-            echo "Building without pushing (non-release event)..."
+            echo "Building without pushing (PR or other event)..."
             ko build ./server --bare --push=false
           fi
