@@ -20,8 +20,8 @@ importers:
   ui:
     dependencies:
       '@kalimahapps/vue-icons':
-        specifier: ^1.7.1
-        version: 1.7.1(vue@3.5.13(typescript@5.9.2))
+        specifier: ^1.8.1
+        version: 1.8.1(vue@3.5.13(typescript@5.9.2))
       '@lottiefiles/dotlottie-vue':
         specifier: ^0.9.1
         version: 0.9.1(vue@3.5.13(typescript@5.9.2))
@@ -788,8 +788,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.30':
     resolution: {integrity: sha512-GQ7Nw5G2lTu/BtHTKfXhKHok2WGetd4XYcVKGx00SjAk8GMwgJM3zr6zORiPGuOE+/vkc90KtTosSSvaCjKb2Q==}
 
-  '@kalimahapps/vue-icons@1.7.1':
-    resolution: {integrity: sha512-PXMiVTPOZ0LTU8DuIIcuOc1FyC9I9e2SMz9XUzByZZEPN8ruDCdNw2fyVCH8rcNpVSrlMlfqDT7di7tPZgH8XA==}
+  '@kalimahapps/vue-icons@1.8.1':
+    resolution: {integrity: sha512-P8r7kQgxxbUiCoT2+QlJcWdD2smH5B2BAyfWJfladE4QdDT/i+FBbCJiYq/A4lKLCHRwqftUCjlTk8jQgdqAdg==}
     engines: {node: '>=14.16'}
     peerDependencies:
       vue: ^3.0.0
@@ -3791,7 +3791,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@kalimahapps/vue-icons@1.7.1(vue@3.5.13(typescript@5.9.2))':
+  '@kalimahapps/vue-icons@1.8.1(vue@3.5.13(typescript@5.9.2))':
     dependencies:
       svg-parser: 2.0.4
       vue: 3.5.13(typescript@5.9.2)
