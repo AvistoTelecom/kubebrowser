@@ -24,7 +24,7 @@ jobs:
           cache: "pnpm"
       - run: pnpm install --filter ui
       - run: ./scripts/buildFrontForBack.sh
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: "1.24.1"
           cache-dependency-path: "server/go.sum"
