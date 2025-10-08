@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { BsEmojiSurpriseFill } from '@kalimahapps/vue-icons'
+import YAML from 'yaml'
 
 import type { Kubeconfig } from '@/types/Kubeconfig'
 import * as api from '@/api/requests'
@@ -9,6 +10,7 @@ import AppHello from '@/components/AppHello.vue'
 import InputSearchBox from '@/components/InputSearchBox.vue'
 import KubeconfigCatalog from '@/components/KubeconfigCatalog.vue'
 import KubeconfigDisplay from '@/components/KubeconfigDisplay.vue'
+import CopyButton from '@/components/CopyButton.vue'
 
 const kubeconfigs = ref<Kubeconfig[]>([])
 const searchQuery = ref('')
@@ -19,9 +21,19 @@ const filteredKubeconfigs = computed(() => {
   if (!searchQuery.value) return kubeconfigs.value
   const query = searchQuery.value.toLowerCase()
   const filtered = kubeconfigs.value.filter((kubeconfig) =>
-    kubeconfig.name.toLowerCase().includes(query),
-  )
-  return filtered
+  kubeconfig.name.toLowerCase().includes(query),
+)
+return filtered
+})
+
+const filteredKubeconfigsContent = computed(() => {
+  let content = ''
+  filteredKubeconfigs.value.forEach((kubeconfig, index) => {
+    const prefix = index ? '\n---\n' : ''
+    content += prefix + YAML.stringify(kubeconfig.kubeconfig)
+  });
+
+  return content
 })
 
 async function loadConfigs() {
@@ -47,9 +59,12 @@ onMounted(async () => {
     <BsEmojiSurpriseFill class="w-10 h-10 text-gray-600" />
     <p class="text-gray-300">oops, it seems like you don't have acces to any clusters</p>
   </div>
-  <div v-else class="relative flex flex-1 gap-4 mx-4 overflow-y-hidden md:mx-8">
-    <div class="flex flex-col w-full gap-4 md:w-1/3 xl:w-1/5 2xl:w-1/6">
-      <InputSearchBox v-model="searchQuery" placeholder="Search clusters..." class="md:pr-2" />
+  <div v-else class="relative flex flex-1 mx-4 overflow-y-hidden md:mx-8">
+    <div class="flex flex-col w-full gap-3 mr-6 md:w-1/3 xl:w-1/5 2xl:w-1/6">
+      <div class="flex flex-col gap-3 pb-3" :class="{'border-gray-600 border-b-1' : filteredKubeconfigs.length}">
+        <InputSearchBox v-model="searchQuery" placeholder="Search clusters..." />
+        <CopyButton v-if="filteredKubeconfigs.length" class="w-full" :content="filteredKubeconfigsContent" :text-before="'Copy all clusters'"/>
+      </div>
       <div class="overflow-y-auto">
         <KubeconfigCatalog :kubeconfigs="filteredKubeconfigs" v-model="selectedKubeconfig" />
       </div>
