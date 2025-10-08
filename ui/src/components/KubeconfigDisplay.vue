@@ -53,7 +53,7 @@ const redactedKubeconfigAsYaml = computed(() =>
 
 <template>
   <div
-    class="p-4 overflow-auto border-2 border-gray-600 rounded-md"
+    class="p-4 overflow-auto border-2 border-gray-600 rounded-xl"
     :class="{
       'flex items-center justify-center': !props.kubeconfig,
       'bg-primary-950': props.kubeconfig,

@@ -58,7 +58,7 @@ watch(
 
 <template>
   <div
-    class="inline-flex items-center justify-center w-24 p-3 text-gray-800 duration-500 cursor-pointer transition-width bg-accent rounded-tr-md rounded-bl-md"
+    class="inline-flex items-center justify-center w-24 p-3 text-gray-800 duration-500 cursor-pointer rounded-xl transition-width bg-accent"
     :class="{
       'w-27': copied,
     }"

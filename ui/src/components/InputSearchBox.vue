@@ -20,7 +20,7 @@ const model = defineModel<string>()
       v-model="model"
       type="search"
       :placeholder="props.placeholder"
-      class="w-full py-2 pl-10 bg-gray-800 border border-gray-600 rounded-md focus:outline-hidden focus:border-accent"
+      class="w-full py-2 pl-10 bg-gray-800 border border-gray-600 rounded-xl focus:outline-hidden focus:border-accent"
     />
   </div>
 </template>
