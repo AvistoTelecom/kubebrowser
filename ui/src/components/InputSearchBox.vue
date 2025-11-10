@@ -14,13 +14,13 @@ const model = defineModel<string>()
 </script>
 
 <template>
-  <div class="relative flex items-center">
-    <AnOutlinedSearch class="absolute text-gray-400 pointer-events-none left-3" />
+  <div class="relative flex items-center text-gray-400">
+    <AnOutlinedSearch class="absolute w-5 h-5 pointer-events-none left-4" />
     <input
       v-model="model"
       type="search"
       :placeholder="props.placeholder"
-      class="w-full py-2 pl-10 bg-gray-800 border border-gray-600 rounded-xl focus:outline-hidden focus:border-accent"
+      class="w-full py-2 pl-10 border border-gray-100 bg-gray-050 rounded-xl focus:outline-hidden focus:border-accent"
     />
   </div>
 </template>

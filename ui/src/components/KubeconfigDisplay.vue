@@ -53,10 +53,10 @@ const redactedKubeconfigAsYaml = computed(() =>
 
 <template>
   <div
-    class="p-4 overflow-auto border-2 border-gray-600 rounded-xl"
+    class="p-4 overflow-auto border-2 border-gray-100 rounded-xl"
     :class="{
       'flex items-center justify-center': !props.kubeconfig,
-      'bg-primary-950': props.kubeconfig,
+      'bg-gray-050': props.kubeconfig,
     }"
   >
     <div v-if="redactedKubeconfigAsYaml && kubeconfigAsYaml">
@@ -65,10 +65,10 @@ const redactedKubeconfigAsYaml = computed(() =>
     </div>
     <div v-else>
       <div v-if="!props.catalogLength">
-        <p class="text-center text-gray-300">No results</p>
+        <p class="text-center text-gray-400">No results</p>
       </div>
       <div v-else>
-        <p class="text-center text-gray-300">Select a cluster to display kubeconfig content</p>
+        <p class="text-center text-gray-400">Select a cluster to display kubeconfig content</p>
       </div>
     </div>
   </div>

@@ -13,9 +13,9 @@ const model = defineModel<Kubeconfig | null>()
     <button
       v-for="kubeconfig in props.kubeconfigs"
       :key="kubeconfig.name"
-      class="px-4 py-6 text-lg break-words cursor-pointer rounded-xl"
+      class="px-4 py-6 text-lg break-words border-2 cursor-pointer rounded-xl"
       :class="
-        model && model.name === kubeconfig.name ? 'bg-accent text-primary-950' : 'bg-gray-700'
+        model && model.name === kubeconfig.name ? 'bg-accent text-blue-900' : 'border-gray-100 hover:bg-gray-100'
       "
       @click="model = kubeconfig"
     >

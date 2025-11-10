@@ -49,7 +49,7 @@ onMounted(async () => {
 <template>
   <AppHello class="mx-4 md:mx-8" />
 
-  <div v-if="loading" class="flex items-center justify-center flex-1 gap-4 text-gray-300">
+  <div v-if="loading" class="flex items-center justify-center flex-1 gap-4 text-gray-400">
     Loading Kubeconfigs...
   </div>
   <div
@@ -57,13 +57,13 @@ onMounted(async () => {
     class="flex flex-col items-center justify-center flex-1 gap-4"
   >
     <BsEmojiSurpriseFill class="w-10 h-10 text-gray-600" />
-    <p class="text-gray-300">oops, it seems like you don't have acces to any clusters</p>
+    <p class="text-gray-400">oops, it seems like you don't have acces to any clusters</p>
   </div>
   <div v-else class="relative flex flex-1 mx-4 overflow-y-hidden md:mx-8">
     <div class="flex flex-col w-full gap-3 mr-6 md:w-1/3 xl:w-1/5 2xl:w-1/6">
       <div class="flex flex-col gap-3 pb-3" :class="{'border-gray-600 border-b-1' : filteredKubeconfigs.length}">
         <InputSearchBox v-model="searchQuery" placeholder="Search clusters..." />
-        <CopyButton v-if="filteredKubeconfigs.length" class="w-full" :content="filteredKubeconfigsContent" :text-before="'Copy all clusters'"/>
+        <CopyButton v-if="filteredKubeconfigs.length" class="w-full text-white bg-transparent border-2 border-gray-100" :content="filteredKubeconfigsContent" :text-before="'Copy all clusters'"/>
       </div>
       <div class="overflow-y-auto">
         <KubeconfigCatalog :kubeconfigs="filteredKubeconfigs" v-model="selectedKubeconfig" />
