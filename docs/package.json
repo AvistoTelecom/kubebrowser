@@ -9,6 +9,6 @@
   },
   "devDependencies": {
     "vitepress": "^1.6.4",
-    "vitepress-plugin-diagrams": "^1.0.0"
+    "vitepress-plugin-diagrams": "^1.1.2"
   }
 }
