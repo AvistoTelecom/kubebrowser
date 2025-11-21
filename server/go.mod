@@ -69,7 +69,7 @@ require (
 )
 
 require (
-	github.com/coreos/go-oidc/v3 v3.16.0
+	github.com/coreos/go-oidc/v3 v3.17.0
 	github.com/fxamacker/cbor/v2 v2.9.0 // indirect
 	github.com/gin-gonic/gin v1.11.0
 	github.com/go-logr/logr v1.4.2 // indirect
