@@ -55,11 +55,14 @@ const redactedKubeconfigAsYaml = computed(() =>
   <div
     class="p-4 overflow-auto border border-gray-100 bg-blue-950 rounded-xl"
     :class="{
-      'flex items-center justify-center': !props.kubeconfig
+      'flex items-center justify-center': !props.kubeconfig,
     }"
   >
     <div v-if="redactedKubeconfigAsYaml && kubeconfigAsYaml">
-      <CopyButton class="absolute z-10 text-gray-800 top-6 right-6 bg-accent-500 hover:bg-accent-600" :content="kubeconfigAsYaml" />
+      <CopyButton
+        class="absolute z-10 text-gray-800 top-6 right-6 bg-accent-500 hover:bg-accent-600"
+        :content="kubeconfigAsYaml"
+      />
       <pre class="select-none language-yaml" v-html="highlightedYaml" />
     </div>
     <div v-else>

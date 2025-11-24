@@ -16,7 +16,7 @@ const props = withDefaults(
   {
     textBefore: 'Copy',
     textAfter: 'Copied',
-  }
+  },
 )
 
 const copyAnimationRef = ref<DotLottieVueInstance | null>(null)
