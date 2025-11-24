@@ -4,12 +4,14 @@ import { DotLottieVue, type DotLottie, type DotLottieVueInstance } from '@lottie
 
 import { copyToClipboard } from '@/utils/clipboard'
 import copyAnimation from '@/assets/copy.lottie'
+import copyLightAnimation from '@/assets/copy-light.lottie'
 
 const props = withDefaults(
   defineProps<{
     content: string
     textBefore?: string
     textAfter?: string
+    light?: boolean
   }>(),
   {
     textBefore: 'Copy',
@@ -58,7 +60,7 @@ watch(
 
 <template>
   <div
-    class="inline-flex items-center justify-center w-24 p-3 text-gray-800 duration-500 cursor-pointer rounded-xl transition-width bg-accent"
+    class="inline-flex items-center justify-center w-24 p-3 duration-500 cursor-pointer rounded-xl transition-width"
     :class="{
       'w-27': copied,
     }"
@@ -68,7 +70,7 @@ watch(
       class="-m-4 -mr-2 shrink-0 w-14"
       ref="copyAnimationRef"
       alt="Copy"
-      :src="copyAnimation"
+      :src="props.light ? copyLightAnimation : copyAnimation"
     />
     <span> {{ copied ? props.textAfter : props.textBefore }}</span>
   </div>

@@ -11,19 +11,20 @@
 @theme {
   --font-display: 'Outfit', 'sans-serif';
 
-  --color-blue-900: #020930;
   --color-gray-050: #161c40;
   --color-gray-100: #3b446d;
   --color-gray-200: #5c617a;
   --color-gray-400: #a2a4b3;
-
-  --color-primary-900: #192454;
-  --color-primary-950: #020930;
-  --color-accent: #ffad0e;
   --color-gray-800: #1c224d;
   --color-gray-700: #3c456e;
   --color-gray-600: #4d557d;
   --color-gray-300: #abb1c2;
+
+  --color-accent-500: #ffad0e;
+  --color-accent-600: #e6960b;
+
+  --color-blue-900: #020930;
+  --color-blue-950: #01051e;
 }
 
 /* prism-theme.css (for dark mode + Tailwind palette) */
@@ -50,7 +51,7 @@ pre[class*='language-'] {
 .token.constant,
 .token.symbol,
 .token.deleted {
-  color: var(--color-accent);
+  color: var(--color-accent-500);
 }
 
 .token.boolean,
@@ -81,7 +82,7 @@ pre[class*='language-'] {
 
 .token.function,
 .token.class-name {
-  color: var(--color-accent);
+  color: var(--color-accent-500);
 }
 
 .token.regex,
