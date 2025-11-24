@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AnOutlinedSearch } from '@kalimahapps/vue-icons'
+import VueIcon from '@kalimahapps/vue-icons/VueIcon'
 
 const props = withDefaults(
   defineProps<{
@@ -15,7 +15,10 @@ const model = defineModel<string>()
 
 <template>
   <div class="relative flex items-center group">
-    <AnOutlinedSearch class="absolute w-5 h-5 text-white pointer-events-none left-4" />
+    <VueIcon
+      name="an:outlined-search"
+      class="absolute w-5 h-5 text-white pointer-events-none left-4"
+    />
     <input
       v-model="model"
       type="search"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { BsEmojiSurpriseFill } from '@kalimahapps/vue-icons'
+import { ref, computed, onMounted, watch } from 'vue'
 import YAML from 'yaml'
+import VueIcon from '@kalimahapps/vue-icons/VueIcon'
 
 import type { Kubeconfig } from '@/types/Kubeconfig'
 import * as api from '@/api/requests'
@@ -24,6 +24,12 @@ const filteredKubeconfigs = computed(() => {
     kubeconfig.name.toLowerCase().includes(query),
   )
   return filtered
+})
+
+watch(filteredKubeconfigs, (val) => {
+  if (!val.length && selectedKubeconfig.value) {
+    selectedKubeconfig.value = null
+  }
 })
 
 const filteredKubeconfigsContent = computed(() => {
@@ -98,7 +104,7 @@ onMounted(async () => {
     v-else-if="!loading && !kubeconfigs.length"
     class="flex flex-col items-center justify-center flex-1 gap-4"
   >
-    <BsEmojiSurpriseFill class="w-10 h-10 text-gray-600" />
+    <VueIcon name="bs:emoji-surprise-fill" class="w-10 h-10 text-gray-600 shrink-0" />
     <p class="text-gray-400">oops, it seems like you don't have acces to any clusters</p>
   </div>
   <div v-else class="relative flex flex-1 mx-4 overflow-y-hidden md:mx-8">

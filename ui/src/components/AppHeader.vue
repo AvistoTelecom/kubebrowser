@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import AppLogoFull from '@/components/AppLogoFull.vue'
 import { RouteName } from '@/router'
-
-import { BxSolidHelpCircle } from '@kalimahapps/vue-icons'
+import VueIcon from '@kalimahapps/vue-icons/VueIcon'
 
 const helpURL = window._env_.HELP_PAGE
 </script>
@@ -21,7 +20,7 @@ const helpURL = window._env_.HELP_PAGE
       rel="noopener noreferrer"
       title="Open documentation"
     >
-      <BxSolidHelpCircle class="w-6 h-6 text-gray-400 md:w-8 md:h-8" />
+      <VueIcon name="bx:solid-help-circle" class="w-6 h-6 text-gray-400 md:w-8 md:h-8" />
     </a>
   </header>
 </template>
