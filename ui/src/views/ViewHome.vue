@@ -27,14 +27,57 @@ return filtered
 })
 
 const filteredKubeconfigsContent = computed(() => {
-  let content = ''
-  filteredKubeconfigs.value.forEach((kubeconfig, index) => {
-    const prefix = index ? '\n---\n' : ''
-    content += prefix + YAML.stringify(kubeconfig.kubeconfig)
-  });
+  // Create a merged Kubeconfig
+  const mergedKubeconfig: Kubeconfig['kubeconfig'] = {
+    apiVersion: 'v1',
+    kind: 'Config',
+    clusters: [],
+    contexts: [],
+    users: [],
+    'current-context': '',
+  }
 
-  return content
+  // Merge clusters, contexts, and users from all filtered kubeconfigs
+  filteredKubeconfigs.value.forEach((kubeconfig) => {
+    const kc = kubeconfig.kubeconfig
+
+    // Append clusters
+    if (kc.clusters?.length) {
+      mergedKubeconfig.clusters.push(...kc.clusters)
+    }
+
+    // Append contexts
+    if (kc.contexts?.length) {
+      mergedKubeconfig.contexts!.push(...kc.contexts)
+    }
+
+    // Append users
+    if (kc.users?.length) {
+      mergedKubeconfig.users!.push(...kc.users)
+    }
+
+    // Optionally set current-context (only if not set yet)
+    if (!mergedKubeconfig['current-context'] && kc['current-context']) {
+      mergedKubeconfig['current-context'] = kc['current-context']
+    }
+  })
+
+  // Optional: remove duplicates (by name)
+  mergedKubeconfig.clusters = Object.values(
+    Object.fromEntries(mergedKubeconfig.clusters.map((c) => [c.name, c])),
+  )
+  mergedKubeconfig.contexts = Object.values(
+    Object.fromEntries(mergedKubeconfig.contexts!.map((c) => [c.name, c])),
+  )
+  mergedKubeconfig.users = Object.values(
+    Object.fromEntries(mergedKubeconfig.users!.map((u) => [u.name, u])),
+  )
+
+  // Convert to YAML
+  const yamlContent = YAML.stringify(mergedKubeconfig)
+  return yamlContent
 })
+
 
 async function loadConfigs() {
   kubeconfigs.value = await api.getConfigs()
@@ -63,7 +106,7 @@ onMounted(async () => {
     <div class="flex flex-col w-full gap-3 mr-6 md:w-1/3 xl:w-1/5 2xl:w-1/6">
       <div class="flex flex-col gap-3 pb-3" :class="{'border-gray-600 border-b-1' : filteredKubeconfigs.length}">
         <InputSearchBox v-model="searchQuery" placeholder="Search clusters..." />
-        <CopyButton v-if="filteredKubeconfigs.length" class="w-full text-white bg-transparent border-2 border-gray-100" :content="filteredKubeconfigsContent" :text-before="'Copy all clusters'"/>
+        <CopyButton v-if="filteredKubeconfigs.length" class="w-full text-white border border-gray-100 hover:bg-gray-050" :content="filteredKubeconfigsContent" :text-before="'Copy all clusters'" light />
       </div>
       <div class="overflow-y-auto">
         <KubeconfigCatalog :kubeconfigs="filteredKubeconfigs" v-model="selectedKubeconfig" />
