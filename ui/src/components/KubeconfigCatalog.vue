@@ -9,13 +9,15 @@ const model = defineModel<Kubeconfig | null>()
 </script>
 
 <template>
-  <div class="flex flex-col flex-none w-full gap-4 md:pr-2">
+  <div class="flex flex-col flex-none w-full gap-3">
     <button
       v-for="kubeconfig in props.kubeconfigs"
       :key="kubeconfig.name"
-      class="px-4 py-6 text-lg break-words border-2 border-gray-600 rounded-md cursor-pointer"
+      class="px-4 py-8 text-lg break-words border cursor-pointer rounded-xl"
       :class="
-        model && model.name === kubeconfig.name ? 'bg-accent text-primary-950' : 'bg-gray-700'
+        model && model.name === kubeconfig.name
+          ? 'bg-accent-500 text-blue-900'
+          : 'border-gray-100 hover:bg-gray-050'
       "
       @click="model = kubeconfig"
     >

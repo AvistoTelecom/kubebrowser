@@ -6,7 +6,7 @@ const version = import.meta.env.VITE_VERSION || 'dev'
 </script>
 
 <template>
-  <div class="flex flex-col items-center w-full mb-6 text-gray-300 group">
+  <div class="flex flex-col items-center w-full mb-6 text-gray-400 group">
     <span
       class="flex items-center duration-500 ease-in-out delay-100 opacity-0 transition-10 group-hover:translate-y-2 group-hover:opacity-100"
       >Made with <DotLottieVue class="w-6 h-6" autoplay loop :src="heartAnimation" /> by Avisto
