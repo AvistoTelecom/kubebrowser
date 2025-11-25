@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import YAML from 'yaml'
 
 import type { Kubeconfig } from '@/types/Kubeconfig'
@@ -24,6 +24,12 @@ const filteredKubeconfigs = computed(() => {
     kubeconfig.name.toLowerCase().includes(query),
   )
   return filtered
+})
+
+watch(filteredKubeconfigs, (val) => {
+  if (!val.length && selectedKubeconfig.value) {
+    selectedKubeconfig.value = null
+  }
 })
 
 const filteredKubeconfigsContent = computed(() => {
