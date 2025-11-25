@@ -44,8 +44,12 @@ export default defineConfig({
         text: "Versions",
         items: [
           {
-            text: "0.8 (latest)",
+            text: "0.9 (latest)",
             link: "/",
+          },
+          {
+            text: "0.8",
+            link: "/0.8",
           },
           {
             text: "0.7",
@@ -57,7 +61,7 @@ export default defineConfig({
     sidebar: {
       "/": [
         {
-          text: "Version 0.8 (latest)",
+          text: "Version 0.9 (latest)",
           items: [
             { text: "What is Kubebrowser ?", link: "/" },
             { text: "Getting started", link: "/getting-started" },
@@ -70,6 +74,24 @@ export default defineConfig({
         {
           text: "Reference",
           items: [{ text: "Kubeconfig", link: "/reference/kubeconfig-specification" }],
+          collapsed: true,
+        },
+      ],
+      "/0.8/": [
+        {
+          text: "Version 0.8",
+          items: [
+            { text: "What is Kubebrowser ?", link: "/0.8/" },
+            { text: "Getting started", link: "/0.8/getting-started" },
+            { text: "Expose Kubebrowser", link: "/0.8/expose" },
+            { text: "How it works", link: "/0.8/how-it-works" },
+            { text: "Contribute", link: "/0.8/contribute" },
+            { text: "Acknowledgments", link: "/0.8/acknowledgments" },
+          ],
+        },
+        {
+          text: "Reference",
+          items: [{ text: "Kubeconfig", link: "/0.8/reference/kubeconfig-specification" }],
           collapsed: true,
         },
       ],

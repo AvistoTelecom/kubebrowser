@@ -1,5 +1,3 @@
 # Acknowledgments
 
 A special thanks to Emeline GRADELER for her outstanding work on Kubebrowser's logos and overall theme.
-
-Also thanks to Patrick COTTAZ for all his help on the UI part.
