@@ -29,7 +29,7 @@
 
 /* prism-theme.css (for dark mode + Tailwind palette) */
 pre[class*='language-'] {
-  color: var(--color-gray-300);
+  color: var(--color-gray-400);
   font-family: 'Fira Code', monospace;
 }
 
@@ -43,7 +43,7 @@ pre[class*='language-'] {
 }
 
 .token.punctuation {
-  color: var(--color-gray-300);
+  color: var(--color-gray-400);
 }
 
 .token.property,

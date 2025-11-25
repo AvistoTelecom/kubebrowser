@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { BsEmojiSurpriseFill } from '@kalimahapps/vue-icons'
+import { ref, computed, onMounted, watch } from 'vue'
 import YAML from 'yaml'
 
 import type { Kubeconfig } from '@/types/Kubeconfig'
@@ -11,6 +10,7 @@ import InputSearchBox from '@/components/InputSearchBox.vue'
 import KubeconfigCatalog from '@/components/KubeconfigCatalog.vue'
 import KubeconfigDisplay from '@/components/KubeconfigDisplay.vue'
 import CopyButton from '@/components/CopyButton.vue'
+import IconEmojiSad from '@/icons/IconEmojiSad.vue'
 
 const kubeconfigs = ref<Kubeconfig[]>([])
 const searchQuery = ref('')
@@ -24,6 +24,12 @@ const filteredKubeconfigs = computed(() => {
     kubeconfig.name.toLowerCase().includes(query),
   )
   return filtered
+})
+
+watch(filteredKubeconfigs, (val) => {
+  if (!val.length && selectedKubeconfig.value) {
+    selectedKubeconfig.value = null
+  }
 })
 
 const filteredKubeconfigsContent = computed(() => {
@@ -98,8 +104,8 @@ onMounted(async () => {
     v-else-if="!loading && !kubeconfigs.length"
     class="flex flex-col items-center justify-center flex-1 gap-4"
   >
-    <BsEmojiSurpriseFill class="w-10 h-10 text-gray-600" />
-    <p class="text-gray-400">oops, it seems like you don't have acces to any clusters</p>
+    <IconEmojiSad class="w-10 h-10 text-gray-600" />
+    <p class="text-gray-400">oops, it seems like you don't have access to any clusters</p>
   </div>
   <div v-else class="relative flex flex-1 mx-4 overflow-y-hidden md:mx-8">
     <div class="flex flex-col w-full gap-3 mr-6 md:w-1/3 xl:w-1/5 2xl:w-1/6">

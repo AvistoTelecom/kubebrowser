@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Kubeconfig } from '@/types/Kubeconfig'
+import IconEmojiSad from '@/icons/IconEmojiSad.vue'
 
 const props = defineProps<{
   kubeconfigs: Kubeconfig[]
@@ -23,5 +24,12 @@ const model = defineModel<Kubeconfig | null>()
     >
       {{ kubeconfig.name }}
     </button>
+    <div
+      v-if="!kubeconfigs.length"
+      class="flex flex-col items-center justify-center flex-1 gap-1.5"
+    >
+      <IconEmojiSad class="w-10 h-10 text-gray-600 shrink-0" />
+      <p class="text-gray-400">No results found</p>
+    </div>
   </div>
 </template>
