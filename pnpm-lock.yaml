@@ -20,8 +20,8 @@ importers:
   ui:
     dependencies:
       '@lottiefiles/dotlottie-vue':
-        specifier: ^0.9.2
-        version: 0.9.2(vue@3.5.21(typescript@5.9.3))
+        specifier: ^0.10.8
+        version: 0.10.8(vue@3.5.21(typescript@5.9.3))
       '@tailwindcss/vite':
         specifier: ^4.1.14
         version: 4.1.14(vite@7.1.4(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1))
@@ -774,13 +774,13 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@lottiefiles/dotlottie-vue@0.9.2':
-    resolution: {integrity: sha512-ZGVWqlLiNW9t6cxlu9iMcBWwfnBjU5/l/LOZ37rMw66qaMVYrfhAnAS6qEvVGsMZ5ay2W1vyTfphyypS2YKGDQ==}
+  '@lottiefiles/dotlottie-vue@0.10.8':
+    resolution: {integrity: sha512-FNWkHzp/sl16VDP0cpHMyIAwF7YDBbhMFc/zS6RwXiZkPVSI3qCdDhhPhw3N5ApsS2QldfvVAqu8NR0eK8GSiw==}
     peerDependencies:
       vue: ^3.3.4
 
-  '@lottiefiles/dotlottie-web@0.50.2':
-    resolution: {integrity: sha512-CKABl0kI9yY48FamEMDsYWKQQWP4VgInhwOSG/1Q2I7gOSHGv6YalNiOkiYRjVznEjavuRvfarX6cMKhcbZKew==}
+  '@lottiefiles/dotlottie-web@0.57.0':
+    resolution: {integrity: sha512-gcgvu9T21YzeY3JjHCZrxftucsxzMH6e9h+8NMv8mbfo1y1M9/jdcsdu40S+pnSLz9/OyiSBQ/EjDsbSOHZy0w==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -3770,12 +3770,12 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@lottiefiles/dotlottie-vue@0.9.2(vue@3.5.21(typescript@5.9.3))':
+  '@lottiefiles/dotlottie-vue@0.10.8(vue@3.5.21(typescript@5.9.3))':
     dependencies:
-      '@lottiefiles/dotlottie-web': 0.50.2
+      '@lottiefiles/dotlottie-web': 0.57.0
       vue: 3.5.21(typescript@5.9.3)
 
-  '@lottiefiles/dotlottie-web@0.50.2': {}
+  '@lottiefiles/dotlottie-web@0.57.0': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
