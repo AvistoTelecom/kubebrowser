@@ -18,7 +18,7 @@ const model = defineModel<Kubeconfig | null>()
       :class="
         model && model.name === kubeconfig.name
           ? 'bg-accent-500 text-blue-900'
-          : 'border-gray-100 hover:bg-gray-050'
+          : 'border-gray-100 hover:bg-gray-80'
       "
       @click="model = kubeconfig"
     >

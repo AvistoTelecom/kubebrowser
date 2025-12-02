@@ -60,7 +60,7 @@ watch(
 
 <template>
   <div
-    class="inline-flex items-center justify-center w-24 p-3 duration-500 cursor-pointer rounded-xl transition-width"
+    class="inline-flex items-center justify-center w-24 p-3 transition-[width] duration-500 cursor-pointer rounded-xl transition-width"
     :class="{
       'w-27': copied,
     }"
