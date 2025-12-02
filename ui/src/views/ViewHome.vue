@@ -116,7 +116,7 @@ onMounted(async () => {
         <InputSearchBox v-model="searchQuery" placeholder="Search clusters..." />
         <CopyButton
           v-if="filteredKubeconfigs.length"
-          class="w-full text-white border border-gray-100 hover:bg-gray-050"
+          class="w-full text-white border border-gray-100 hover:bg-gray-100"
           :content="filteredKubeconfigsContent"
           :text-before="'Copy all clusters'"
           light
