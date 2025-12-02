@@ -25,7 +25,7 @@ const clearInput = () => {
       v-model="model"
       type="text"
       :placeholder="props.placeholder"
-      class="w-full py-2 pl-10 border border-gray-100 outline-none placeholder:text-gray-400 bg-gray-050 rounded-xl focus-within:border-accent-500 hover:border-accent-500"
+      class="w-full py-2 pl-10 border border-gray-100 outline-none placeholder:text-gray-400 bg-gray-050 rounded-xl focus:border-accent-500 hover:border-gray-300"
     />
     <IconXMark
       v-if="model"
