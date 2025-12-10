@@ -8,7 +8,7 @@ require (
 	github.com/spf13/viper v1.21.0
 	go.uber.org/zap v1.27.1
 	golang.org/x/oauth2 v0.34.0
-	k8s.io/apimachinery v0.34.2
+	k8s.io/apimachinery v0.34.3
 )
 
 require (
