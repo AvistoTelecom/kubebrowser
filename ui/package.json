@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.5",
-    "@types/jsdom": "^21.1.7",
+    "@types/jsdom": "^27.0.0",
     "@types/node": "^24.10.2",
     "@vitejs/plugin-vue": "^6.0.2",
     "@vitest/eslint-plugin": "^1.5.2",
@@ -38,7 +38,7 @@
     "eslint": "^9.39.1",
     "eslint-plugin-vue": "~10.6.2",
     "jiti": "^2.6.1",
-    "jsdom": "^26.0.0",
+    "jsdom": "^27.3.0",
     "npm-run-all2": "^8.0.4",
     "prettier": "3.7.4",
     "typescript": "~5.9.3",
