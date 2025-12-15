@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@lottiefiles/dotlottie-vue": "^0.10.10",
-    "@tailwindcss/vite": "^4.1.17",
+    "@tailwindcss/vite": "^4.1.18",
     "@types/prismjs": "^1.26.5",
     "axios": "^1.13.2",
     "js-yaml": "^4.1.1",
