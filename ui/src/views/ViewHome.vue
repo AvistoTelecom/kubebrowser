@@ -122,7 +122,7 @@ onMounted(async () => {
           light
         />
       </div>
-      <div class="overflow-y-auto">
+      <div class="overflow-y-auto pr-1">
         <KubeconfigCatalog :kubeconfigs="filteredKubeconfigs" v-model="selectedKubeconfig" />
       </div>
     </div>

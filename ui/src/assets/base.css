@@ -28,6 +28,12 @@
   --color-blue-950: #01051e;
 }
 
+/* Custom Scrollbar Styles */
+.scrollable {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gray-100) var(--color-gray-050);
+}
+
 /* prism-theme.css (for dark mode + Tailwind palette) */
 pre[class*='language-'] {
   color: var(--color-gray-400);
