@@ -29,7 +29,7 @@
 }
 
 /* Custom Scrollbar Styles */
-* {
+.scrollable {
   scrollbar-width: thin;
   scrollbar-color: var(--color-gray-100) var(--color-gray-050);
 }
