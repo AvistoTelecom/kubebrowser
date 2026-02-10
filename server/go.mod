@@ -7,7 +7,7 @@ require (
 	github.com/gin-contrib/zap v1.1.6
 	github.com/spf13/viper v1.21.0
 	go.uber.org/zap v1.27.1
-	golang.org/x/oauth2 v0.34.0
+	golang.org/x/oauth2 v0.35.0
 	k8s.io/apimachinery v0.34.3
 )
 
