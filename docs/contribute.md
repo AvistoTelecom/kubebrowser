@@ -67,7 +67,7 @@ Either use Devbox as [stated above](#local-setup) or check in `devbox.json` for 
 ### Run Kubebrowser locally
 
 Set up your environment
-1. Create a new OIDC application following your provider's documentation (you can set the redirect address to `http://localhost:8080`).
+1. Create a new OIDC application following your provider's documentation (you can set the redirect address to `http://localhost:8080/auth/callback`).
 1. Copy the `./dev/values.example.yaml` to a new file named `./dev/values.yaml`.
 1. Update `client_id`, `client_secret` and `issuer_url` in the newly created `./dev/values.yaml` (from your OIDC application in step 1).
 1. Make sure your cluster is running and your context is correct. Run `minikube start` if you're using minikube.
