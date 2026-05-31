@@ -35,6 +35,18 @@ server:
     clientSecret: <your-client-secret>
     issuerURL: <your-issuer-url>
 ```
+
+If you intend to run it locally, add the following properties :
+```yaml 
+server:
+  hostname: localhost:8080  # [!code ++]
+  insecure: true            # [!code ++]
+  oidc:
+    clientID: <your-client-id>
+    clientSecret: <your-client-secret>
+    issuerURL: <your-issuer-url>
+```
+
 Second, run the command:
 
 ```sh
